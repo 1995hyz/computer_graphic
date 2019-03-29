@@ -38,7 +38,7 @@ void main()
 
     fColor = vColor;
     gl_Position = modelViewMatrix * vPosition;//rz * ry * rx * vPosition;
-    //gl_Position.z = -gl_Position.z;
+    gl_Position.z = -gl_Position.z;
 }
 </script>
 

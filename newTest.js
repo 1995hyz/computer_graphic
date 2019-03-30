@@ -28,125 +28,126 @@ var ctm2;
 var angle = 0;
 var test = vec2();
 
-var edgeLength = 0.2;
+const edgeLength = 0.2;
+const gap = 0.01;
 var vertices = [
     //1
-    vec4( -edgeLength/2-edgeLength, -edgeLength/2-edgeLength,  edgeLength/2+edgeLength, 1.0 ),
-    vec4( -edgeLength/2-edgeLength,  edgeLength/2-edgeLength,  edgeLength/2+edgeLength, 1.0 ),
-    vec4(  edgeLength/2-edgeLength,  edgeLength/2-edgeLength,  edgeLength/2+edgeLength, 1.0 ),
-    vec4(  edgeLength/2-edgeLength, -edgeLength/2-edgeLength,  edgeLength/2+edgeLength, 1.0 ),
-    vec4( -edgeLength/2-edgeLength, -edgeLength/2-edgeLength, -edgeLength/2+edgeLength, 1.0 ),
-    vec4( -edgeLength/2-edgeLength,  edgeLength/2-edgeLength, -edgeLength/2+edgeLength, 1.0 ),
-    vec4(  edgeLength/2-edgeLength,  edgeLength/2-edgeLength, -edgeLength/2+edgeLength, 1.0 ),
-    vec4(  edgeLength/2-edgeLength, -edgeLength/2-edgeLength, -edgeLength/2+edgeLength, 1.0 ),
+    vec4( -edgeLength/2-edgeLength-gap, -edgeLength/2-edgeLength-gap,  edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4( -edgeLength/2-edgeLength-gap,  edgeLength/2-edgeLength-gap,  edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4(  edgeLength/2-edgeLength-gap,  edgeLength/2-edgeLength-gap,  edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4(  edgeLength/2-edgeLength-gap, -edgeLength/2-edgeLength-gap,  edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4( -edgeLength/2-edgeLength-gap, -edgeLength/2-edgeLength-gap, -edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4( -edgeLength/2-edgeLength-gap,  edgeLength/2-edgeLength-gap, -edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4(  edgeLength/2-edgeLength-gap,  edgeLength/2-edgeLength-gap, -edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4(  edgeLength/2-edgeLength-gap, -edgeLength/2-edgeLength-gap, -edgeLength/2+edgeLength+gap, 1.0 ),
     //2
-    vec4( -edgeLength/2, -edgeLength/2-edgeLength,  edgeLength/2+edgeLength, 1.0 ),
-    vec4( -edgeLength/2,  edgeLength/2-edgeLength,  edgeLength/2+edgeLength, 1.0 ),
-    vec4(  edgeLength/2,  edgeLength/2-edgeLength,  edgeLength/2+edgeLength, 1.0 ),
-    vec4(  edgeLength/2, -edgeLength/2-edgeLength,  edgeLength/2+edgeLength, 1.0 ),
-    vec4( -edgeLength/2, -edgeLength/2-edgeLength, -edgeLength/2+edgeLength, 1.0 ),
-    vec4( -edgeLength/2,  edgeLength/2-edgeLength, -edgeLength/2+edgeLength, 1.0 ),
-    vec4(  edgeLength/2,  edgeLength/2-edgeLength, -edgeLength/2+edgeLength, 1.0 ),
-    vec4(  edgeLength/2, -edgeLength/2-edgeLength, -edgeLength/2+edgeLength, 1.0 ),
+    vec4( -edgeLength/2, -edgeLength/2-edgeLength-gap,  edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4( -edgeLength/2,  edgeLength/2-edgeLength-gap,  edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4(  edgeLength/2,  edgeLength/2-edgeLength-gap,  edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4(  edgeLength/2, -edgeLength/2-edgeLength-gap,  edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4( -edgeLength/2, -edgeLength/2-edgeLength-gap, -edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4( -edgeLength/2,  edgeLength/2-edgeLength-gap, -edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4(  edgeLength/2,  edgeLength/2-edgeLength-gap, -edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4(  edgeLength/2, -edgeLength/2-edgeLength-gap, -edgeLength/2+edgeLength+gap, 1.0 ),
     //3
-    vec4( -edgeLength/2+edgeLength, -edgeLength/2-edgeLength,  edgeLength/2+edgeLength, 1.0 ),
-    vec4( -edgeLength/2+edgeLength,  edgeLength/2-edgeLength,  edgeLength/2+edgeLength, 1.0 ),
-    vec4(  edgeLength/2+edgeLength,  edgeLength/2-edgeLength,  edgeLength/2+edgeLength, 1.0 ),
-    vec4(  edgeLength/2+edgeLength, -edgeLength/2-edgeLength,  edgeLength/2+edgeLength, 1.0 ),
-    vec4( -edgeLength/2+edgeLength, -edgeLength/2-edgeLength, -edgeLength/2+edgeLength, 1.0 ),
-    vec4( -edgeLength/2+edgeLength,  edgeLength/2-edgeLength, -edgeLength/2+edgeLength, 1.0 ),
-    vec4(  edgeLength/2+edgeLength,  edgeLength/2-edgeLength, -edgeLength/2+edgeLength, 1.0 ),
-    vec4(  edgeLength/2+edgeLength, -edgeLength/2-edgeLength, -edgeLength/2+edgeLength, 1.0 ),
+    vec4( -edgeLength/2+edgeLength+gap, -edgeLength/2-edgeLength-gap,  edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4( -edgeLength/2+edgeLength+gap,  edgeLength/2-edgeLength-gap,  edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4(  edgeLength/2+edgeLength+gap,  edgeLength/2-edgeLength-gap,  edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4(  edgeLength/2+edgeLength+gap, -edgeLength/2-edgeLength-gap,  edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4( -edgeLength/2+edgeLength+gap, -edgeLength/2-edgeLength-gap, -edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4( -edgeLength/2+edgeLength+gap,  edgeLength/2-edgeLength-gap, -edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4(  edgeLength/2+edgeLength+gap,  edgeLength/2-edgeLength-gap, -edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4(  edgeLength/2+edgeLength+gap, -edgeLength/2-edgeLength-gap, -edgeLength/2+edgeLength+gap, 1.0 ),
     //4
-    vec4( -edgeLength/2-edgeLength, -edgeLength/2-edgeLength,  edgeLength/2, 1.0 ),
-    vec4( -edgeLength/2-edgeLength,  edgeLength/2-edgeLength,  edgeLength/2, 1.0 ),
-    vec4(  edgeLength/2-edgeLength,  edgeLength/2-edgeLength,  edgeLength/2, 1.0 ),
-    vec4(  edgeLength/2-edgeLength, -edgeLength/2-edgeLength,  edgeLength/2, 1.0 ),
-    vec4( -edgeLength/2-edgeLength, -edgeLength/2-edgeLength, -edgeLength/2, 1.0 ),
-    vec4( -edgeLength/2-edgeLength,  edgeLength/2-edgeLength, -edgeLength/2, 1.0 ),
-    vec4(  edgeLength/2-edgeLength,  edgeLength/2-edgeLength, -edgeLength/2, 1.0 ),
-    vec4(  edgeLength/2-edgeLength, -edgeLength/2-edgeLength, -edgeLength/2, 1.0 ),
+    vec4( -edgeLength/2-edgeLength-gap, -edgeLength/2-edgeLength-gap,  edgeLength/2, 1.0 ),
+    vec4( -edgeLength/2-edgeLength-gap,  edgeLength/2-edgeLength-gap,  edgeLength/2, 1.0 ),
+    vec4(  edgeLength/2-edgeLength-gap,  edgeLength/2-edgeLength-gap,  edgeLength/2, 1.0 ),
+    vec4(  edgeLength/2-edgeLength-gap, -edgeLength/2-edgeLength-gap,  edgeLength/2, 1.0 ),
+    vec4( -edgeLength/2-edgeLength-gap, -edgeLength/2-edgeLength-gap, -edgeLength/2, 1.0 ),
+    vec4( -edgeLength/2-edgeLength-gap,  edgeLength/2-edgeLength-gap, -edgeLength/2, 1.0 ),
+    vec4(  edgeLength/2-edgeLength-gap,  edgeLength/2-edgeLength-gap, -edgeLength/2, 1.0 ),
+    vec4(  edgeLength/2-edgeLength-gap, -edgeLength/2-edgeLength-gap, -edgeLength/2, 1.0 ),
     //5
-    vec4( -edgeLength/2, -edgeLength/2-edgeLength,  edgeLength/2, 1.0 ),
-    vec4( -edgeLength/2,  edgeLength/2-edgeLength,  edgeLength/2, 1.0 ),
-    vec4(  edgeLength/2,  edgeLength/2-edgeLength,  edgeLength/2, 1.0 ),
-    vec4(  edgeLength/2, -edgeLength/2-edgeLength,  edgeLength/2, 1.0 ),
-    vec4( -edgeLength/2, -edgeLength/2-edgeLength, -edgeLength/2, 1.0 ),
-    vec4( -edgeLength/2,  edgeLength/2-edgeLength, -edgeLength/2, 1.0 ),
-    vec4(  edgeLength/2,  edgeLength/2-edgeLength, -edgeLength/2, 1.0 ),
-    vec4(  edgeLength/2, -edgeLength/2-edgeLength, -edgeLength/2, 1.0 ),
+    vec4( -edgeLength/2, -edgeLength/2-edgeLength-gap,  edgeLength/2, 1.0 ),
+    vec4( -edgeLength/2,  edgeLength/2-edgeLength-gap,  edgeLength/2, 1.0 ),
+    vec4(  edgeLength/2,  edgeLength/2-edgeLength-gap,  edgeLength/2, 1.0 ),
+    vec4(  edgeLength/2, -edgeLength/2-edgeLength-gap,  edgeLength/2, 1.0 ),
+    vec4( -edgeLength/2, -edgeLength/2-edgeLength-gap, -edgeLength/2, 1.0 ),
+    vec4( -edgeLength/2,  edgeLength/2-edgeLength-gap, -edgeLength/2, 1.0 ),
+    vec4(  edgeLength/2,  edgeLength/2-edgeLength-gap, -edgeLength/2, 1.0 ),
+    vec4(  edgeLength/2, -edgeLength/2-edgeLength-gap, -edgeLength/2, 1.0 ),
     //6
-    vec4( -edgeLength/2+edgeLength, -edgeLength/2-edgeLength,  edgeLength/2, 1.0 ),
-    vec4( -edgeLength/2+edgeLength,  edgeLength/2-edgeLength,  edgeLength/2, 1.0 ),
-    vec4(  edgeLength/2+edgeLength,  edgeLength/2-edgeLength,  edgeLength/2, 1.0 ),
-    vec4(  edgeLength/2+edgeLength, -edgeLength/2-edgeLength,  edgeLength/2, 1.0 ),
-    vec4( -edgeLength/2+edgeLength, -edgeLength/2-edgeLength, -edgeLength/2, 1.0 ),
-    vec4( -edgeLength/2+edgeLength,  edgeLength/2-edgeLength, -edgeLength/2, 1.0 ),
-    vec4(  edgeLength/2+edgeLength,  edgeLength/2-edgeLength, -edgeLength/2, 1.0 ),
-    vec4(  edgeLength/2+edgeLength, -edgeLength/2-edgeLength, -edgeLength/2, 1.0 ),
+    vec4( -edgeLength/2+edgeLength+gap, -edgeLength/2-edgeLength-gap,  edgeLength/2, 1.0 ),
+    vec4( -edgeLength/2+edgeLength+gap,  edgeLength/2-edgeLength-gap,  edgeLength/2, 1.0 ),
+    vec4(  edgeLength/2+edgeLength+gap,  edgeLength/2-edgeLength-gap,  edgeLength/2, 1.0 ),
+    vec4(  edgeLength/2+edgeLength+gap, -edgeLength/2-edgeLength-gap,  edgeLength/2, 1.0 ),
+    vec4( -edgeLength/2+edgeLength+gap, -edgeLength/2-edgeLength-gap, -edgeLength/2, 1.0 ),
+    vec4( -edgeLength/2+edgeLength+gap,  edgeLength/2-edgeLength-gap, -edgeLength/2, 1.0 ),
+    vec4(  edgeLength/2+edgeLength+gap,  edgeLength/2-edgeLength-gap, -edgeLength/2, 1.0 ),
+    vec4(  edgeLength/2+edgeLength+gap, -edgeLength/2-edgeLength-gap, -edgeLength/2, 1.0 ),
     //7
-    vec4( -edgeLength/2-edgeLength, -edgeLength/2-edgeLength,  edgeLength/2-edgeLength, 1.0 ),
-    vec4( -edgeLength/2-edgeLength,  edgeLength/2-edgeLength,  edgeLength/2-edgeLength, 1.0 ),
-    vec4(  edgeLength/2-edgeLength,  edgeLength/2-edgeLength,  edgeLength/2-edgeLength, 1.0 ),
-    vec4(  edgeLength/2-edgeLength, -edgeLength/2-edgeLength,  edgeLength/2-edgeLength, 1.0 ),
-    vec4( -edgeLength/2-edgeLength, -edgeLength/2-edgeLength, -edgeLength/2-edgeLength, 1.0 ),
-    vec4( -edgeLength/2-edgeLength,  edgeLength/2-edgeLength, -edgeLength/2-edgeLength, 1.0 ),
-    vec4(  edgeLength/2-edgeLength,  edgeLength/2-edgeLength, -edgeLength/2-edgeLength, 1.0 ),
-    vec4(  edgeLength/2-edgeLength, -edgeLength/2-edgeLength, -edgeLength/2-edgeLength, 1.0 ),
+    vec4( -edgeLength/2-edgeLength-gap, -edgeLength/2-edgeLength-gap,  edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4( -edgeLength/2-edgeLength-gap,  edgeLength/2-edgeLength-gap,  edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4(  edgeLength/2-edgeLength-gap,  edgeLength/2-edgeLength-gap,  edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4(  edgeLength/2-edgeLength-gap, -edgeLength/2-edgeLength-gap,  edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4( -edgeLength/2-edgeLength-gap, -edgeLength/2-edgeLength-gap, -edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4( -edgeLength/2-edgeLength-gap,  edgeLength/2-edgeLength-gap, -edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4(  edgeLength/2-edgeLength-gap,  edgeLength/2-edgeLength-gap, -edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4(  edgeLength/2-edgeLength-gap, -edgeLength/2-edgeLength-gap, -edgeLength/2-edgeLength-gap, 1.0 ),
     //8
-    vec4( -edgeLength/2, -edgeLength/2-edgeLength,  edgeLength/2-edgeLength, 1.0 ),
-    vec4( -edgeLength/2,  edgeLength/2-edgeLength,  edgeLength/2-edgeLength, 1.0 ),
-    vec4(  edgeLength/2,  edgeLength/2-edgeLength,  edgeLength/2-edgeLength, 1.0 ),
-    vec4(  edgeLength/2, -edgeLength/2-edgeLength,  edgeLength/2-edgeLength, 1.0 ),
-    vec4( -edgeLength/2, -edgeLength/2-edgeLength, -edgeLength/2-edgeLength, 1.0 ),
-    vec4( -edgeLength/2,  edgeLength/2-edgeLength, -edgeLength/2-edgeLength, 1.0 ),
-    vec4(  edgeLength/2,  edgeLength/2-edgeLength, -edgeLength/2-edgeLength, 1.0 ),
-    vec4(  edgeLength/2, -edgeLength/2-edgeLength, -edgeLength/2-edgeLength, 1.0 ),
+    vec4( -edgeLength/2, -edgeLength/2-edgeLength-gap,  edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4( -edgeLength/2,  edgeLength/2-edgeLength-gap,  edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4(  edgeLength/2,  edgeLength/2-edgeLength-gap,  edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4(  edgeLength/2, -edgeLength/2-edgeLength-gap,  edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4( -edgeLength/2, -edgeLength/2-edgeLength-gap, -edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4( -edgeLength/2,  edgeLength/2-edgeLength-gap, -edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4(  edgeLength/2,  edgeLength/2-edgeLength-gap, -edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4(  edgeLength/2, -edgeLength/2-edgeLength-gap, -edgeLength/2-edgeLength-gap, 1.0 ),
     //9
-    vec4( -edgeLength/2+edgeLength, -edgeLength/2-edgeLength,  edgeLength/2-edgeLength, 1.0 ),
-    vec4( -edgeLength/2+edgeLength,  edgeLength/2-edgeLength,  edgeLength/2-edgeLength, 1.0 ),
-    vec4(  edgeLength/2+edgeLength,  edgeLength/2-edgeLength,  edgeLength/2-edgeLength, 1.0 ),
-    vec4(  edgeLength/2+edgeLength, -edgeLength/2-edgeLength,  edgeLength/2-edgeLength, 1.0 ),
-    vec4( -edgeLength/2+edgeLength, -edgeLength/2-edgeLength, -edgeLength/2-edgeLength, 1.0 ),
-    vec4( -edgeLength/2+edgeLength,  edgeLength/2-edgeLength, -edgeLength/2-edgeLength, 1.0 ),
-    vec4(  edgeLength/2+edgeLength,  edgeLength/2-edgeLength, -edgeLength/2-edgeLength, 1.0 ),
-    vec4(  edgeLength/2+edgeLength, -edgeLength/2-edgeLength, -edgeLength/2-edgeLength, 1.0 ),
+    vec4( -edgeLength/2+edgeLength+gap, -edgeLength/2-edgeLength-gap,  edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4( -edgeLength/2+edgeLength+gap,  edgeLength/2-edgeLength-gap,  edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4(  edgeLength/2+edgeLength+gap,  edgeLength/2-edgeLength-gap,  edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4(  edgeLength/2+edgeLength+gap, -edgeLength/2-edgeLength-gap,  edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4( -edgeLength/2+edgeLength+gap, -edgeLength/2-edgeLength-gap, -edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4( -edgeLength/2+edgeLength+gap,  edgeLength/2-edgeLength-gap, -edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4(  edgeLength/2+edgeLength+gap,  edgeLength/2-edgeLength-gap, -edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4(  edgeLength/2+edgeLength+gap, -edgeLength/2-edgeLength-gap, -edgeLength/2-edgeLength-gap, 1.0 ),
     //10
-    vec4( -edgeLength/2-edgeLength, -edgeLength/2,  edgeLength/2+edgeLength, 1.0 ),
-    vec4( -edgeLength/2-edgeLength,  edgeLength/2,  edgeLength/2+edgeLength, 1.0 ),
-    vec4(  edgeLength/2-edgeLength,  edgeLength/2,  edgeLength/2+edgeLength, 1.0 ),
-    vec4(  edgeLength/2-edgeLength, -edgeLength/2,  edgeLength/2+edgeLength, 1.0 ),
-    vec4( -edgeLength/2-edgeLength, -edgeLength/2, -edgeLength/2+edgeLength, 1.0 ),
-    vec4( -edgeLength/2-edgeLength,  edgeLength/2, -edgeLength/2+edgeLength, 1.0 ),
-    vec4(  edgeLength/2-edgeLength,  edgeLength/2, -edgeLength/2+edgeLength, 1.0 ),
-    vec4(  edgeLength/2-edgeLength, -edgeLength/2, -edgeLength/2+edgeLength, 1.0 ),
+    vec4( -edgeLength/2-edgeLength-gap, -edgeLength/2,  edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4( -edgeLength/2-edgeLength-gap,  edgeLength/2,  edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4(  edgeLength/2-edgeLength-gap,  edgeLength/2,  edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4(  edgeLength/2-edgeLength-gap, -edgeLength/2,  edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4( -edgeLength/2-edgeLength-gap, -edgeLength/2, -edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4( -edgeLength/2-edgeLength-gap,  edgeLength/2, -edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4(  edgeLength/2-edgeLength-gap,  edgeLength/2, -edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4(  edgeLength/2-edgeLength-gap, -edgeLength/2, -edgeLength/2+edgeLength+gap, 1.0 ),
     //11
-    vec4( -edgeLength/2, -edgeLength/2,  edgeLength/2+edgeLength, 1.0 ),
-    vec4( -edgeLength/2,  edgeLength/2,  edgeLength/2+edgeLength, 1.0 ),
-    vec4(  edgeLength/2,  edgeLength/2,  edgeLength/2+edgeLength, 1.0 ),
-    vec4(  edgeLength/2, -edgeLength/2,  edgeLength/2+edgeLength, 1.0 ),
-    vec4( -edgeLength/2, -edgeLength/2, -edgeLength/2+edgeLength, 1.0 ),
-    vec4( -edgeLength/2,  edgeLength/2, -edgeLength/2+edgeLength, 1.0 ),
-    vec4(  edgeLength/2,  edgeLength/2, -edgeLength/2+edgeLength, 1.0 ),
-    vec4(  edgeLength/2, -edgeLength/2, -edgeLength/2+edgeLength, 1.0 ),
+    vec4( -edgeLength/2, -edgeLength/2,  edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4( -edgeLength/2,  edgeLength/2,  edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4(  edgeLength/2,  edgeLength/2,  edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4(  edgeLength/2, -edgeLength/2,  edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4( -edgeLength/2, -edgeLength/2, -edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4( -edgeLength/2,  edgeLength/2, -edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4(  edgeLength/2,  edgeLength/2, -edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4(  edgeLength/2, -edgeLength/2, -edgeLength/2+edgeLength+gap, 1.0 ),
     //12
-    vec4( -edgeLength/2+edgeLength, -edgeLength/2,  edgeLength/2+edgeLength, 1.0 ),
-    vec4( -edgeLength/2+edgeLength,  edgeLength/2,  edgeLength/2+edgeLength, 1.0 ),
-    vec4(  edgeLength/2+edgeLength,  edgeLength/2,  edgeLength/2+edgeLength, 1.0 ),
-    vec4(  edgeLength/2+edgeLength, -edgeLength/2,  edgeLength/2+edgeLength, 1.0 ),
-    vec4( -edgeLength/2+edgeLength, -edgeLength/2, -edgeLength/2+edgeLength, 1.0 ),
-    vec4( -edgeLength/2+edgeLength,  edgeLength/2, -edgeLength/2+edgeLength, 1.0 ),
-    vec4(  edgeLength/2+edgeLength,  edgeLength/2, -edgeLength/2+edgeLength, 1.0 ),
-    vec4(  edgeLength/2+edgeLength, -edgeLength/2, -edgeLength/2+edgeLength, 1.0 ),
+    vec4( -edgeLength/2+edgeLength+gap, -edgeLength/2,  edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4( -edgeLength/2+edgeLength+gap,  edgeLength/2,  edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4(  edgeLength/2+edgeLength+gap,  edgeLength/2,  edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4(  edgeLength/2+edgeLength+gap, -edgeLength/2,  edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4( -edgeLength/2+edgeLength+gap, -edgeLength/2, -edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4( -edgeLength/2+edgeLength+gap,  edgeLength/2, -edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4(  edgeLength/2+edgeLength+gap,  edgeLength/2, -edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4(  edgeLength/2+edgeLength+gap, -edgeLength/2, -edgeLength/2+edgeLength+gap, 1.0 ),
     //13
-    vec4( -edgeLength/2-edgeLength, -edgeLength/2,  edgeLength/2, 1.0 ),
-    vec4( -edgeLength/2-edgeLength,  edgeLength/2,  edgeLength/2, 1.0 ),
-    vec4(  edgeLength/2-edgeLength,  edgeLength/2,  edgeLength/2, 1.0 ),
-    vec4(  edgeLength/2-edgeLength, -edgeLength/2,  edgeLength/2, 1.0 ),
-    vec4( -edgeLength/2-edgeLength, -edgeLength/2, -edgeLength/2, 1.0 ),
-    vec4( -edgeLength/2-edgeLength,  edgeLength/2, -edgeLength/2, 1.0 ),
-    vec4(  edgeLength/2-edgeLength,  edgeLength/2, -edgeLength/2, 1.0 ),
-    vec4(  edgeLength/2-edgeLength, -edgeLength/2, -edgeLength/2, 1.0 ),
+    vec4( -edgeLength/2-edgeLength-gap, -edgeLength/2,  edgeLength/2, 1.0 ),
+    vec4( -edgeLength/2-edgeLength-gap,  edgeLength/2,  edgeLength/2, 1.0 ),
+    vec4(  edgeLength/2-edgeLength-gap,  edgeLength/2,  edgeLength/2, 1.0 ),
+    vec4(  edgeLength/2-edgeLength-gap, -edgeLength/2,  edgeLength/2, 1.0 ),
+    vec4( -edgeLength/2-edgeLength-gap, -edgeLength/2, -edgeLength/2, 1.0 ),
+    vec4( -edgeLength/2-edgeLength-gap,  edgeLength/2, -edgeLength/2, 1.0 ),
+    vec4(  edgeLength/2-edgeLength-gap,  edgeLength/2, -edgeLength/2, 1.0 ),
+    vec4(  edgeLength/2-edgeLength-gap, -edgeLength/2, -edgeLength/2, 1.0 ),
     //14
     vec4( -edgeLength/2, -edgeLength/2,  edgeLength/2, 1.0 ),
     vec4( -edgeLength/2,  edgeLength/2,  edgeLength/2, 1.0 ),
@@ -157,122 +158,122 @@ var vertices = [
     vec4(  edgeLength/2,  edgeLength/2, -edgeLength/2, 1.0 ),
     vec4(  edgeLength/2, -edgeLength/2, -edgeLength/2, 1.0 ),
     //15
-    vec4( -edgeLength/2+edgeLength, -edgeLength/2,  edgeLength/2, 1.0 ),
-    vec4( -edgeLength/2+edgeLength,  edgeLength/2,  edgeLength/2, 1.0 ),
-    vec4(  edgeLength/2+edgeLength,  edgeLength/2,  edgeLength/2, 1.0 ),
-    vec4(  edgeLength/2+edgeLength, -edgeLength/2,  edgeLength/2, 1.0 ),
-    vec4( -edgeLength/2+edgeLength, -edgeLength/2, -edgeLength/2, 1.0 ),
-    vec4( -edgeLength/2+edgeLength,  edgeLength/2, -edgeLength/2, 1.0 ),
-    vec4(  edgeLength/2+edgeLength,  edgeLength/2, -edgeLength/2, 1.0 ),
-    vec4(  edgeLength/2+edgeLength, -edgeLength/2, -edgeLength/2, 1.0 ),
+    vec4( -edgeLength/2+edgeLength+gap, -edgeLength/2,  edgeLength/2, 1.0 ),
+    vec4( -edgeLength/2+edgeLength+gap,  edgeLength/2,  edgeLength/2, 1.0 ),
+    vec4(  edgeLength/2+edgeLength+gap,  edgeLength/2,  edgeLength/2, 1.0 ),
+    vec4(  edgeLength/2+edgeLength+gap, -edgeLength/2,  edgeLength/2, 1.0 ),
+    vec4( -edgeLength/2+edgeLength+gap, -edgeLength/2, -edgeLength/2, 1.0 ),
+    vec4( -edgeLength/2+edgeLength+gap,  edgeLength/2, -edgeLength/2, 1.0 ),
+    vec4(  edgeLength/2+edgeLength+gap,  edgeLength/2, -edgeLength/2, 1.0 ),
+    vec4(  edgeLength/2+edgeLength+gap, -edgeLength/2, -edgeLength/2, 1.0 ),
     //16
-    vec4( -edgeLength/2-edgeLength, -edgeLength/2,  edgeLength/2-edgeLength, 1.0 ),
-    vec4( -edgeLength/2-edgeLength,  edgeLength/2,  edgeLength/2-edgeLength, 1.0 ),
-    vec4(  edgeLength/2-edgeLength,  edgeLength/2,  edgeLength/2-edgeLength, 1.0 ),
-    vec4(  edgeLength/2-edgeLength, -edgeLength/2,  edgeLength/2-edgeLength, 1.0 ),
-    vec4( -edgeLength/2-edgeLength, -edgeLength/2, -edgeLength/2-edgeLength, 1.0 ),
-    vec4( -edgeLength/2-edgeLength,  edgeLength/2, -edgeLength/2-edgeLength, 1.0 ),
-    vec4(  edgeLength/2-edgeLength,  edgeLength/2, -edgeLength/2-edgeLength, 1.0 ),
-    vec4(  edgeLength/2-edgeLength, -edgeLength/2, -edgeLength/2-edgeLength, 1.0 ),
+    vec4( -edgeLength/2-edgeLength-gap, -edgeLength/2,  edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4( -edgeLength/2-edgeLength-gap,  edgeLength/2,  edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4(  edgeLength/2-edgeLength-gap,  edgeLength/2,  edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4(  edgeLength/2-edgeLength-gap, -edgeLength/2,  edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4( -edgeLength/2-edgeLength-gap, -edgeLength/2, -edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4( -edgeLength/2-edgeLength-gap,  edgeLength/2, -edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4(  edgeLength/2-edgeLength-gap,  edgeLength/2, -edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4(  edgeLength/2-edgeLength-gap, -edgeLength/2, -edgeLength/2-edgeLength-gap, 1.0 ),
     //17
-    vec4( -edgeLength/2, -edgeLength/2,  edgeLength/2-edgeLength, 1.0 ),
-    vec4( -edgeLength/2,  edgeLength/2,  edgeLength/2-edgeLength, 1.0 ),
-    vec4(  edgeLength/2,  edgeLength/2,  edgeLength/2-edgeLength, 1.0 ),
-    vec4(  edgeLength/2, -edgeLength/2,  edgeLength/2-edgeLength, 1.0 ),
-    vec4( -edgeLength/2, -edgeLength/2, -edgeLength/2-edgeLength, 1.0 ),
-    vec4( -edgeLength/2,  edgeLength/2, -edgeLength/2-edgeLength, 1.0 ),
-    vec4(  edgeLength/2,  edgeLength/2, -edgeLength/2-edgeLength, 1.0 ),
-    vec4(  edgeLength/2, -edgeLength/2, -edgeLength/2-edgeLength, 1.0 ),
+    vec4( -edgeLength/2, -edgeLength/2,  edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4( -edgeLength/2,  edgeLength/2,  edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4(  edgeLength/2,  edgeLength/2,  edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4(  edgeLength/2, -edgeLength/2,  edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4( -edgeLength/2, -edgeLength/2, -edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4( -edgeLength/2,  edgeLength/2, -edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4(  edgeLength/2,  edgeLength/2, -edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4(  edgeLength/2, -edgeLength/2, -edgeLength/2-edgeLength-gap, 1.0 ),
     //18
-    vec4( -edgeLength/2+edgeLength, -edgeLength/2,  edgeLength/2-edgeLength, 1.0 ),
-    vec4( -edgeLength/2+edgeLength,  edgeLength/2,  edgeLength/2-edgeLength, 1.0 ),
-    vec4(  edgeLength/2+edgeLength,  edgeLength/2,  edgeLength/2-edgeLength, 1.0 ),
-    vec4(  edgeLength/2+edgeLength, -edgeLength/2,  edgeLength/2-edgeLength, 1.0 ),
-    vec4( -edgeLength/2+edgeLength, -edgeLength/2, -edgeLength/2-edgeLength, 1.0 ),
-    vec4( -edgeLength/2+edgeLength,  edgeLength/2, -edgeLength/2-edgeLength, 1.0 ),
-    vec4(  edgeLength/2+edgeLength,  edgeLength/2, -edgeLength/2-edgeLength, 1.0 ),
-    vec4(  edgeLength/2+edgeLength, -edgeLength/2, -edgeLength/2-edgeLength, 1.0 ),
+    vec4( -edgeLength/2+edgeLength+gap, -edgeLength/2,  edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4( -edgeLength/2+edgeLength+gap,  edgeLength/2,  edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4(  edgeLength/2+edgeLength+gap,  edgeLength/2,  edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4(  edgeLength/2+edgeLength+gap, -edgeLength/2,  edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4( -edgeLength/2+edgeLength+gap, -edgeLength/2, -edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4( -edgeLength/2+edgeLength+gap,  edgeLength/2, -edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4(  edgeLength/2+edgeLength+gap,  edgeLength/2, -edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4(  edgeLength/2+edgeLength+gap, -edgeLength/2, -edgeLength/2-edgeLength-gap, 1.0 ),
     //19
-    vec4( -edgeLength/2-edgeLength, -edgeLength/2+edgeLength,  edgeLength/2+edgeLength, 1.0 ),
-    vec4( -edgeLength/2-edgeLength,  edgeLength/2+edgeLength,  edgeLength/2+edgeLength, 1.0 ),
-    vec4(  edgeLength/2-edgeLength,  edgeLength/2+edgeLength,  edgeLength/2+edgeLength, 1.0 ),
-    vec4(  edgeLength/2-edgeLength, -edgeLength/2+edgeLength,  edgeLength/2+edgeLength, 1.0 ),
-    vec4( -edgeLength/2-edgeLength, -edgeLength/2+edgeLength, -edgeLength/2+edgeLength, 1.0 ),
-    vec4( -edgeLength/2-edgeLength,  edgeLength/2+edgeLength, -edgeLength/2+edgeLength, 1.0 ),
-    vec4(  edgeLength/2-edgeLength,  edgeLength/2+edgeLength, -edgeLength/2+edgeLength, 1.0 ),
-    vec4(  edgeLength/2-edgeLength, -edgeLength/2+edgeLength, -edgeLength/2+edgeLength, 1.0 ),
+    vec4( -edgeLength/2-edgeLength-gap, -edgeLength/2+edgeLength+gap,  edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4( -edgeLength/2-edgeLength-gap,  edgeLength/2+edgeLength+gap,  edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4(  edgeLength/2-edgeLength-gap,  edgeLength/2+edgeLength+gap,  edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4(  edgeLength/2-edgeLength-gap, -edgeLength/2+edgeLength+gap,  edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4( -edgeLength/2-edgeLength-gap, -edgeLength/2+edgeLength+gap, -edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4( -edgeLength/2-edgeLength-gap,  edgeLength/2+edgeLength+gap, -edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4(  edgeLength/2-edgeLength-gap,  edgeLength/2+edgeLength+gap, -edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4(  edgeLength/2-edgeLength-gap, -edgeLength/2+edgeLength+gap, -edgeLength/2+edgeLength+gap, 1.0 ),
     //20
-    vec4( -edgeLength/2, -edgeLength/2+edgeLength,  edgeLength/2+edgeLength, 1.0 ),
-    vec4( -edgeLength/2,  edgeLength/2+edgeLength,  edgeLength/2+edgeLength, 1.0 ),
-    vec4(  edgeLength/2,  edgeLength/2+edgeLength,  edgeLength/2+edgeLength, 1.0 ),
-    vec4(  edgeLength/2, -edgeLength/2+edgeLength,  edgeLength/2+edgeLength, 1.0 ),
-    vec4( -edgeLength/2, -edgeLength/2+edgeLength, -edgeLength/2+edgeLength, 1.0 ),
-    vec4( -edgeLength/2,  edgeLength/2+edgeLength, -edgeLength/2+edgeLength, 1.0 ),
-    vec4(  edgeLength/2,  edgeLength/2+edgeLength, -edgeLength/2+edgeLength, 1.0 ),
-    vec4(  edgeLength/2, -edgeLength/2+edgeLength, -edgeLength/2+edgeLength, 1.0 ),
+    vec4( -edgeLength/2, -edgeLength/2+edgeLength+gap,  edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4( -edgeLength/2,  edgeLength/2+edgeLength+gap,  edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4(  edgeLength/2,  edgeLength/2+edgeLength+gap,  edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4(  edgeLength/2, -edgeLength/2+edgeLength+gap,  edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4( -edgeLength/2, -edgeLength/2+edgeLength+gap, -edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4( -edgeLength/2,  edgeLength/2+edgeLength+gap, -edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4(  edgeLength/2,  edgeLength/2+edgeLength+gap, -edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4(  edgeLength/2, -edgeLength/2+edgeLength+gap, -edgeLength/2+edgeLength+gap, 1.0 ),
     //21
-    vec4( -edgeLength/2+edgeLength, -edgeLength/2+edgeLength,  edgeLength/2+edgeLength, 1.0 ),
-    vec4( -edgeLength/2+edgeLength,  edgeLength/2+edgeLength,  edgeLength/2+edgeLength, 1.0 ),
-    vec4(  edgeLength/2+edgeLength,  edgeLength/2+edgeLength,  edgeLength/2+edgeLength, 1.0 ),
-    vec4(  edgeLength/2+edgeLength, -edgeLength/2+edgeLength,  edgeLength/2+edgeLength, 1.0 ),
-    vec4( -edgeLength/2+edgeLength, -edgeLength/2+edgeLength, -edgeLength/2+edgeLength, 1.0 ),
-    vec4( -edgeLength/2+edgeLength,  edgeLength/2+edgeLength, -edgeLength/2+edgeLength, 1.0 ),
-    vec4(  edgeLength/2+edgeLength,  edgeLength/2+edgeLength, -edgeLength/2+edgeLength, 1.0 ),
-    vec4(  edgeLength/2+edgeLength, -edgeLength/2+edgeLength, -edgeLength/2+edgeLength, 1.0 ),
+    vec4( -edgeLength/2+edgeLength+gap, -edgeLength/2+edgeLength+gap,  edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4( -edgeLength/2+edgeLength+gap,  edgeLength/2+edgeLength+gap,  edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4(  edgeLength/2+edgeLength+gap,  edgeLength/2+edgeLength+gap,  edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4(  edgeLength/2+edgeLength+gap, -edgeLength/2+edgeLength+gap,  edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4( -edgeLength/2+edgeLength+gap, -edgeLength/2+edgeLength+gap, -edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4( -edgeLength/2+edgeLength+gap,  edgeLength/2+edgeLength+gap, -edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4(  edgeLength/2+edgeLength+gap,  edgeLength/2+edgeLength+gap, -edgeLength/2+edgeLength+gap, 1.0 ),
+    vec4(  edgeLength/2+edgeLength+gap, -edgeLength/2+edgeLength+gap, -edgeLength/2+edgeLength+gap, 1.0 ),
     //22
-    vec4( -edgeLength/2-edgeLength, -edgeLength/2+edgeLength,  edgeLength/2, 1.0 ),
-    vec4( -edgeLength/2-edgeLength,  edgeLength/2+edgeLength,  edgeLength/2, 1.0 ),
-    vec4(  edgeLength/2-edgeLength,  edgeLength/2+edgeLength,  edgeLength/2, 1.0 ),
-    vec4(  edgeLength/2-edgeLength, -edgeLength/2+edgeLength,  edgeLength/2, 1.0 ),
-    vec4( -edgeLength/2-edgeLength, -edgeLength/2+edgeLength, -edgeLength/2, 1.0 ),
-    vec4( -edgeLength/2-edgeLength,  edgeLength/2+edgeLength, -edgeLength/2, 1.0 ),
-    vec4(  edgeLength/2-edgeLength,  edgeLength/2+edgeLength, -edgeLength/2, 1.0 ),
-    vec4(  edgeLength/2-edgeLength, -edgeLength/2+edgeLength, -edgeLength/2, 1.0 ),
+    vec4( -edgeLength/2-edgeLength-gap, -edgeLength/2+edgeLength+gap,  edgeLength/2, 1.0 ),
+    vec4( -edgeLength/2-edgeLength-gap,  edgeLength/2+edgeLength+gap,  edgeLength/2, 1.0 ),
+    vec4(  edgeLength/2-edgeLength-gap,  edgeLength/2+edgeLength+gap,  edgeLength/2, 1.0 ),
+    vec4(  edgeLength/2-edgeLength-gap, -edgeLength/2+edgeLength+gap,  edgeLength/2, 1.0 ),
+    vec4( -edgeLength/2-edgeLength-gap, -edgeLength/2+edgeLength+gap, -edgeLength/2, 1.0 ),
+    vec4( -edgeLength/2-edgeLength-gap,  edgeLength/2+edgeLength+gap, -edgeLength/2, 1.0 ),
+    vec4(  edgeLength/2-edgeLength-gap,  edgeLength/2+edgeLength+gap, -edgeLength/2, 1.0 ),
+    vec4(  edgeLength/2-edgeLength-gap, -edgeLength/2+edgeLength+gap, -edgeLength/2, 1.0 ),
     //23
-    vec4( -edgeLength/2, -edgeLength/2+edgeLength,  edgeLength/2, 1.0 ),
-    vec4( -edgeLength/2,  edgeLength/2+edgeLength,  edgeLength/2, 1.0 ),
-    vec4(  edgeLength/2,  edgeLength/2+edgeLength,  edgeLength/2, 1.0 ),
-    vec4(  edgeLength/2, -edgeLength/2+edgeLength,  edgeLength/2, 1.0 ),
-    vec4( -edgeLength/2, -edgeLength/2+edgeLength, -edgeLength/2, 1.0 ),
-    vec4( -edgeLength/2,  edgeLength/2+edgeLength, -edgeLength/2, 1.0 ),
-    vec4(  edgeLength/2,  edgeLength/2+edgeLength, -edgeLength/2, 1.0 ),
-    vec4(  edgeLength/2, -edgeLength/2+edgeLength, -edgeLength/2, 1.0 ),
+    vec4( -edgeLength/2, -edgeLength/2+edgeLength+gap,  edgeLength/2, 1.0 ),
+    vec4( -edgeLength/2,  edgeLength/2+edgeLength+gap,  edgeLength/2, 1.0 ),
+    vec4(  edgeLength/2,  edgeLength/2+edgeLength+gap,  edgeLength/2, 1.0 ),
+    vec4(  edgeLength/2, -edgeLength/2+edgeLength+gap,  edgeLength/2, 1.0 ),
+    vec4( -edgeLength/2, -edgeLength/2+edgeLength+gap, -edgeLength/2, 1.0 ),
+    vec4( -edgeLength/2,  edgeLength/2+edgeLength+gap, -edgeLength/2, 1.0 ),
+    vec4(  edgeLength/2,  edgeLength/2+edgeLength+gap, -edgeLength/2, 1.0 ),
+    vec4(  edgeLength/2, -edgeLength/2+edgeLength+gap, -edgeLength/2, 1.0 ),
     //24
-    vec4( -edgeLength/2+edgeLength, -edgeLength/2+edgeLength,  edgeLength/2, 1.0 ),
-    vec4( -edgeLength/2+edgeLength,  edgeLength/2+edgeLength,  edgeLength/2, 1.0 ),
-    vec4(  edgeLength/2+edgeLength,  edgeLength/2+edgeLength,  edgeLength/2, 1.0 ),
-    vec4(  edgeLength/2+edgeLength, -edgeLength/2+edgeLength,  edgeLength/2, 1.0 ),
-    vec4( -edgeLength/2+edgeLength, -edgeLength/2+edgeLength, -edgeLength/2, 1.0 ),
-    vec4( -edgeLength/2+edgeLength,  edgeLength/2+edgeLength, -edgeLength/2, 1.0 ),
-    vec4(  edgeLength/2+edgeLength,  edgeLength/2+edgeLength, -edgeLength/2, 1.0 ),
-    vec4(  edgeLength/2+edgeLength, -edgeLength/2+edgeLength, -edgeLength/2, 1.0 ),
+    vec4( -edgeLength/2+edgeLength+gap, -edgeLength/2+edgeLength+gap,  edgeLength/2, 1.0 ),
+    vec4( -edgeLength/2+edgeLength+gap,  edgeLength/2+edgeLength+gap,  edgeLength/2, 1.0 ),
+    vec4(  edgeLength/2+edgeLength+gap,  edgeLength/2+edgeLength+gap,  edgeLength/2, 1.0 ),
+    vec4(  edgeLength/2+edgeLength+gap, -edgeLength/2+edgeLength+gap,  edgeLength/2, 1.0 ),
+    vec4( -edgeLength/2+edgeLength+gap, -edgeLength/2+edgeLength+gap, -edgeLength/2, 1.0 ),
+    vec4( -edgeLength/2+edgeLength+gap,  edgeLength/2+edgeLength+gap, -edgeLength/2, 1.0 ),
+    vec4(  edgeLength/2+edgeLength+gap,  edgeLength/2+edgeLength+gap, -edgeLength/2, 1.0 ),
+    vec4(  edgeLength/2+edgeLength+gap, -edgeLength/2+edgeLength+gap, -edgeLength/2, 1.0 ),
     //25
-    vec4( -edgeLength/2-edgeLength, -edgeLength/2+edgeLength,  edgeLength/2-edgeLength, 1.0 ),
-    vec4( -edgeLength/2-edgeLength,  edgeLength/2+edgeLength,  edgeLength/2-edgeLength, 1.0 ),
-    vec4(  edgeLength/2-edgeLength,  edgeLength/2+edgeLength,  edgeLength/2-edgeLength, 1.0 ),
-    vec4(  edgeLength/2-edgeLength, -edgeLength/2+edgeLength,  edgeLength/2-edgeLength, 1.0 ),
-    vec4( -edgeLength/2-edgeLength, -edgeLength/2+edgeLength, -edgeLength/2-edgeLength, 1.0 ),
-    vec4( -edgeLength/2-edgeLength,  edgeLength/2+edgeLength, -edgeLength/2-edgeLength, 1.0 ),
-    vec4(  edgeLength/2-edgeLength,  edgeLength/2+edgeLength, -edgeLength/2-edgeLength, 1.0 ),
-    vec4(  edgeLength/2-edgeLength, -edgeLength/2+edgeLength, -edgeLength/2-edgeLength, 1.0 ),
+    vec4( -edgeLength/2-edgeLength-gap, -edgeLength/2+edgeLength+gap,  edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4( -edgeLength/2-edgeLength-gap,  edgeLength/2+edgeLength+gap,  edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4(  edgeLength/2-edgeLength-gap,  edgeLength/2+edgeLength+gap,  edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4(  edgeLength/2-edgeLength-gap, -edgeLength/2+edgeLength+gap,  edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4( -edgeLength/2-edgeLength-gap, -edgeLength/2+edgeLength+gap, -edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4( -edgeLength/2-edgeLength-gap,  edgeLength/2+edgeLength+gap, -edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4(  edgeLength/2-edgeLength-gap,  edgeLength/2+edgeLength+gap, -edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4(  edgeLength/2-edgeLength-gap, -edgeLength/2+edgeLength+gap, -edgeLength/2-edgeLength-gap, 1.0 ),
     //26
-    vec4( -edgeLength/2, -edgeLength/2+edgeLength,  edgeLength/2-edgeLength, 1.0 ),
-    vec4( -edgeLength/2,  edgeLength/2+edgeLength,  edgeLength/2-edgeLength, 1.0 ),
-    vec4(  edgeLength/2,  edgeLength/2+edgeLength,  edgeLength/2-edgeLength, 1.0 ),
-    vec4(  edgeLength/2, -edgeLength/2+edgeLength,  edgeLength/2-edgeLength, 1.0 ),
-    vec4( -edgeLength/2, -edgeLength/2+edgeLength, -edgeLength/2-edgeLength, 1.0 ),
-    vec4( -edgeLength/2,  edgeLength/2+edgeLength, -edgeLength/2-edgeLength, 1.0 ),
-    vec4(  edgeLength/2,  edgeLength/2+edgeLength, -edgeLength/2-edgeLength, 1.0 ),
-    vec4(  edgeLength/2, -edgeLength/2+edgeLength, -edgeLength/2-edgeLength, 1.0 ),
+    vec4( -edgeLength/2, -edgeLength/2+edgeLength+gap,  edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4( -edgeLength/2,  edgeLength/2+edgeLength+gap,  edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4(  edgeLength/2,  edgeLength/2+edgeLength+gap,  edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4(  edgeLength/2, -edgeLength/2+edgeLength+gap,  edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4( -edgeLength/2, -edgeLength/2+edgeLength+gap, -edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4( -edgeLength/2,  edgeLength/2+edgeLength+gap, -edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4(  edgeLength/2,  edgeLength/2+edgeLength+gap, -edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4(  edgeLength/2, -edgeLength/2+edgeLength+gap, -edgeLength/2-edgeLength-gap, 1.0 ),
     //27
-    vec4( -edgeLength/2+edgeLength, -edgeLength/2+edgeLength,  edgeLength/2-edgeLength, 1.0 ),
-    vec4( -edgeLength/2+edgeLength,  edgeLength/2+edgeLength,  edgeLength/2-edgeLength, 1.0 ),
-    vec4(  edgeLength/2+edgeLength,  edgeLength/2+edgeLength,  edgeLength/2-edgeLength, 1.0 ),
-    vec4(  edgeLength/2+edgeLength, -edgeLength/2+edgeLength,  edgeLength/2-edgeLength, 1.0 ),
-    vec4( -edgeLength/2+edgeLength, -edgeLength/2+edgeLength, -edgeLength/2-edgeLength, 1.0 ),
-    vec4( -edgeLength/2+edgeLength,  edgeLength/2+edgeLength, -edgeLength/2-edgeLength, 1.0 ),
-    vec4(  edgeLength/2+edgeLength,  edgeLength/2+edgeLength, -edgeLength/2-edgeLength, 1.0 ),
-    vec4(  edgeLength/2+edgeLength, -edgeLength/2+edgeLength, -edgeLength/2-edgeLength, 1.0 )
+    vec4( -edgeLength/2+edgeLength+gap, -edgeLength/2+edgeLength+gap,  edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4( -edgeLength/2+edgeLength+gap,  edgeLength/2+edgeLength+gap,  edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4(  edgeLength/2+edgeLength+gap,  edgeLength/2+edgeLength+gap,  edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4(  edgeLength/2+edgeLength+gap, -edgeLength/2+edgeLength+gap,  edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4( -edgeLength/2+edgeLength+gap, -edgeLength/2+edgeLength+gap, -edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4( -edgeLength/2+edgeLength+gap,  edgeLength/2+edgeLength+gap, -edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4(  edgeLength/2+edgeLength+gap,  edgeLength/2+edgeLength+gap, -edgeLength/2-edgeLength-gap, 1.0 ),
+    vec4(  edgeLength/2+edgeLength+gap, -edgeLength/2+edgeLength+gap, -edgeLength/2-edgeLength-gap, 1.0 )
 ];
 
 const black = [ 0.0, 0.0, 0.0, 1.0 ];
@@ -403,212 +404,212 @@ function createCubeColor() {
     rectangleDrawer(5, 4, 0, 1, magenta);
     //2
     i += 8;
-    rectangleDrawer(1+i, 0+i, 3+i, 2+i, green);
+    rectangleDrawer(1+i, i, 3+i, 2+i, green);
     rectangleDrawer(2+i, 3+i, 7+i, 6+i, black);
-    rectangleDrawer(3+i, 0+i, 4+i, 7+i, yellow);
+    rectangleDrawer(3+i, i, 4+i, 7+i, yellow);
     rectangleDrawer(6+i, 5+i, 1+i, 2+i, black);
     rectangleDrawer(4+i, 5+i, 6+i, 7+i, black);
-    rectangleDrawer(5+i, 4+i, 0+i, 1+i, black);
+    rectangleDrawer(5+i, 4+i, i, 1+i, black);
     //3
     i += 8;
-    rectangleDrawer(1+i, 0+i, 3+i, 2+i, green);
+    rectangleDrawer(1+i, i, 3+i, 2+i, green);
     rectangleDrawer(2+i, 3+i, 7+i, 6+i, red);
-    rectangleDrawer(3+i, 0+i, 4+i, 7+i, yellow);
+    rectangleDrawer(3+i, i, 4+i, 7+i, yellow);
     rectangleDrawer(6+i, 5+i, 1+i, 2+i, black);
     rectangleDrawer(4+i, 5+i, 6+i, 7+i, black);
-    rectangleDrawer(5+i, 4+i, 0+i, 1+i, black);
+    rectangleDrawer(5+i, 4+i, i, 1+i, black);
     //4
     i += 8;
-    rectangleDrawer(1+i, 0+i, 3+i, 2+i, black);
+    rectangleDrawer(1+i, i, 3+i, 2+i, black);
     rectangleDrawer(2+i, 3+i, 7+i, 6+i, black);
-    rectangleDrawer(3+i, 0+i, 4+i, 7+i, yellow);
+    rectangleDrawer(3+i, i, 4+i, 7+i, yellow);
     rectangleDrawer(6+i, 5+i, 1+i, 2+i, black);
     rectangleDrawer(4+i, 5+i, 6+i, 7+i, black);
-    rectangleDrawer(5+i, 4+i, 0+i, 1+i, magenta);
+    rectangleDrawer(5+i, 4+i, i, 1+i, magenta);
     //5
     i += 8;
-    rectangleDrawer(1+i, 0+i, 3+i, 2+i, black);
+    rectangleDrawer(1+i, i, 3+i, 2+i, black);
     rectangleDrawer(2+i, 3+i, 7+i, 6+i, black);
-    rectangleDrawer(3+i, 0+i, 4+i, 7+i, yellow);
+    rectangleDrawer(3+i, i, 4+i, 7+i, yellow);
     rectangleDrawer(6+i, 5+i, 1+i, 2+i, black);
     rectangleDrawer(4+i, 5+i, 6+i, 7+i, black);
-    rectangleDrawer(5+i, 4+i, 0+i, 1+i, black);
+    rectangleDrawer(5+i, 4+i, i, 1+i, black);
     //6
     i += 8;
-    rectangleDrawer(1+i, 0+i, 3+i, 2+i, black);
+    rectangleDrawer(1+i, i, 3+i, 2+i, black);
     rectangleDrawer(2+i, 3+i, 7+i, 6+i, red);
-    rectangleDrawer(3+i, 0+i, 4+i, 7+i, yellow);
+    rectangleDrawer(3+i, i, 4+i, 7+i, yellow);
     rectangleDrawer(6+i, 5+i, 1+i, 2+i, black);
     rectangleDrawer(4+i, 5+i, 6+i, 7+i, black);
-    rectangleDrawer(5+i, 4+i, 0+i, 1+i, black);
+    rectangleDrawer(5+i, 4+i, i, 1+i, black);
     //7
     i += 8;
-    rectangleDrawer(1+i, 0+i, 3+i, 2+i, black);
+    rectangleDrawer(1+i, i, 3+i, 2+i, black);
     rectangleDrawer(2+i, 3+i, 7+i, 6+i, black);
-    rectangleDrawer(3+i, 0+i, 4+i, 7+i, yellow);
+    rectangleDrawer(3+i, i, 4+i, 7+i, yellow);
     rectangleDrawer(6+i, 5+i, 1+i, 2+i, black);
     rectangleDrawer(4+i, 5+i, 6+i, 7+i, blue);
-    rectangleDrawer(5+i, 4+i, 0+i, 1+i, magenta);
+    rectangleDrawer(5+i, 4+i, i, 1+i, magenta);
     //8
     i += 8;
-    rectangleDrawer(1+i, 0+i, 3+i, 2+i, black);
+    rectangleDrawer(1+i, i, 3+i, 2+i, black);
     rectangleDrawer(2+i, 3+i, 7+i, 6+i, black);
-    rectangleDrawer(3+i, 0+i, 4+i, 7+i, yellow);
+    rectangleDrawer(3+i, i, 4+i, 7+i, yellow);
     rectangleDrawer(6+i, 5+i, 1+i, 2+i, black);
     rectangleDrawer(4+i, 5+i, 6+i, 7+i, blue);
-    rectangleDrawer(5+i, 4+i, 0+i, 1+i, black);
+    rectangleDrawer(5+i, 4+i, i, 1+i, black);
     //9
     i += 8;
-    rectangleDrawer(1+i, 0+i, 3+i, 2+i, black);
+    rectangleDrawer(1+i, i, 3+i, 2+i, black);
     rectangleDrawer(2+i, 3+i, 7+i, 6+i, red);
-    rectangleDrawer(3+i, 0+i, 4+i, 7+i, yellow);
+    rectangleDrawer(3+i, i, 4+i, 7+i, yellow);
     rectangleDrawer(6+i, 5+i, 1+i, 2+i, black);
     rectangleDrawer(4+i, 5+i, 6+i, 7+i, blue);
-    rectangleDrawer(5+i, 4+i, 0+i, 1+i, black);
+    rectangleDrawer(5+i, 4+i, i, 1+i, black);
     //10
     i += 8;
-    rectangleDrawer(1+i, 0+i, 3+i, 2+i, green);
+    rectangleDrawer(1+i, i, 3+i, 2+i, green);
     rectangleDrawer(2+i, 3+i, 7+i, 6+i, black);
-    rectangleDrawer(3+i, 0+i, 4+i, 7+i, black);
+    rectangleDrawer(3+i, i, 4+i, 7+i, black);
     rectangleDrawer(6+i, 5+i, 1+i, 2+i, black);
     rectangleDrawer(4+i, 5+i, 6+i, 7+i, black);
-    rectangleDrawer(5+i, 4+i, 0+i, 1+i, magenta);
+    rectangleDrawer(5+i, 4+i, i, 1+i, magenta);
     //11
     i += 8;
-    rectangleDrawer(1+i, 0+i, 3+i, 2+i, green);
+    rectangleDrawer(1+i, i, 3+i, 2+i, green);
     rectangleDrawer(2+i, 3+i, 7+i, 6+i, black);
-    rectangleDrawer(3+i, 0+i, 4+i, 7+i, black);
+    rectangleDrawer(3+i, i, 4+i, 7+i, black);
     rectangleDrawer(6+i, 5+i, 1+i, 2+i, black);
     rectangleDrawer(4+i, 5+i, 6+i, 7+i, black);
-    rectangleDrawer(5+i, 4+i, 0+i, 1+i, black);
+    rectangleDrawer(5+i, 4+i, i, 1+i, black);
     //12
     i += 8;
-    rectangleDrawer(1+i, 0+i, 3+i, 2+i, green);
+    rectangleDrawer(1+i, i, 3+i, 2+i, green);
     rectangleDrawer(2+i, 3+i, 7+i, 6+i, red);
-    rectangleDrawer(3+i, 0+i, 4+i, 7+i, black);
+    rectangleDrawer(3+i, i, 4+i, 7+i, black);
     rectangleDrawer(6+i, 5+i, 1+i, 2+i, black);
     rectangleDrawer(4+i, 5+i, 6+i, 7+i, black);
-    rectangleDrawer(5+i, 4+i, 0+i, 1+i, black);
+    rectangleDrawer(5+i, 4+i, i, 1+i, black);
     //13
     i += 8;
-    rectangleDrawer(1+i, 0+i, 3+i, 2+i, black);
+    rectangleDrawer(1+i, i, 3+i, 2+i, black);
     rectangleDrawer(2+i, 3+i, 7+i, 6+i, black);
-    rectangleDrawer(3+i, 0+i, 4+i, 7+i, black);
+    rectangleDrawer(3+i, i, 4+i, 7+i, black);
     rectangleDrawer(6+i, 5+i, 1+i, 2+i, black);
     rectangleDrawer(4+i, 5+i, 6+i, 7+i, black);
-    rectangleDrawer(5+i, 4+i, 0+i, 1+i, magenta);
+    rectangleDrawer(5+i, 4+i, i, 1+i, magenta);
     //14
     i += 8;
-    rectangleDrawer(1+i, 0+i, 3+i, 2+i, black);
+    rectangleDrawer(1+i, i, 3+i, 2+i, black);
     rectangleDrawer(2+i, 3+i, 7+i, 6+i, black);
-    rectangleDrawer(3+i, 0+i, 4+i, 7+i, black);
+    rectangleDrawer(3+i, i, 4+i, 7+i, black);
     rectangleDrawer(6+i, 5+i, 1+i, 2+i, black);
     rectangleDrawer(4+i, 5+i, 6+i, 7+i, black);
-    rectangleDrawer(5+i, 4+i, 0+i, 1+i, black);
+    rectangleDrawer(5+i, 4+i, i, 1+i, black);
     //15
     i += 8;
-    rectangleDrawer(1+i, 0+i, 3+i, 2+i, black);
+    rectangleDrawer(1+i, i, 3+i, 2+i, black);
     rectangleDrawer(2+i, 3+i, 7+i, 6+i, red);
-    rectangleDrawer(3+i, 0+i, 4+i, 7+i, black);
+    rectangleDrawer(3+i, i, 4+i, 7+i, black);
     rectangleDrawer(6+i, 5+i, 1+i, 2+i, black);
     rectangleDrawer(4+i, 5+i, 6+i, 7+i, black);
-    rectangleDrawer(5+i, 4+i, 0+i, 1+i, black);
+    rectangleDrawer(5+i, 4+i, i, 1+i, black);
     //16
     i += 8;
-    rectangleDrawer(1+i, 0+i, 3+i, 2+i, black);
+    rectangleDrawer(1+i, i, 3+i, 2+i, black);
     rectangleDrawer(2+i, 3+i, 7+i, 6+i, black);
-    rectangleDrawer(3+i, 0+i, 4+i, 7+i, black);
+    rectangleDrawer(3+i, i, 4+i, 7+i, black);
     rectangleDrawer(6+i, 5+i, 1+i, 2+i, black);
     rectangleDrawer(4+i, 5+i, 6+i, 7+i, blue);
-    rectangleDrawer(5+i, 4+i, 0+i, 1+i, magenta);
+    rectangleDrawer(5+i, 4+i, i, 1+i, magenta);
     //17
     i += 8;
-    rectangleDrawer(1+i, 0+i, 3+i, 2+i, black);
+    rectangleDrawer(1+i, i, 3+i, 2+i, black);
     rectangleDrawer(2+i, 3+i, 7+i, 6+i, black);
-    rectangleDrawer(3+i, 0+i, 4+i, 7+i, black);
+    rectangleDrawer(3+i, i, 4+i, 7+i, black);
     rectangleDrawer(6+i, 5+i, 1+i, 2+i, black);
     rectangleDrawer(4+i, 5+i, 6+i, 7+i, blue);
-    rectangleDrawer(5+i, 4+i, 0+i, 1+i, black);
+    rectangleDrawer(5+i, 4+i, i, 1+i, black);
     //18
     i += 8;
-    rectangleDrawer(1+i, 0+i, 3+i, 2+i, black);
+    rectangleDrawer(1+i, i, 3+i, 2+i, black);
     rectangleDrawer(2+i, 3+i, 7+i, 6+i, red);
-    rectangleDrawer(3+i, 0+i, 4+i, 7+i, black);
+    rectangleDrawer(3+i, i, 4+i, 7+i, black);
     rectangleDrawer(6+i, 5+i, 1+i, 2+i, black);
     rectangleDrawer(4+i, 5+i, 6+i, 7+i, blue);
-    rectangleDrawer(5+i, 4+i, 0+i, 1+i, black);
+    rectangleDrawer(5+i, 4+i, i, 1+i, black);
     //19
     i += 8;
-    rectangleDrawer(1+i, 0+i, 3+i, 2+i, green);
+    rectangleDrawer(1+i, i, 3+i, 2+i, green);
     rectangleDrawer(2+i, 3+i, 7+i, 6+i, black);
-    rectangleDrawer(3+i, 0+i, 4+i, 7+i, black);
+    rectangleDrawer(3+i, i, 4+i, 7+i, black);
     rectangleDrawer(6+i, 5+i, 1+i, 2+i, white);
     rectangleDrawer(4+i, 5+i, 6+i, 7+i, black);
-    rectangleDrawer(5+i, 4+i, 0+i, 1+i, magenta);
+    rectangleDrawer(5+i, 4+i, i, 1+i, magenta);
     //20
     i += 8;
-    rectangleDrawer(1+i, 0+i, 3+i, 2+i, green);
+    rectangleDrawer(1+i, i, 3+i, 2+i, green);
     rectangleDrawer(2+i, 3+i, 7+i, 6+i, black);
-    rectangleDrawer(3+i, 0+i, 4+i, 7+i, black);
+    rectangleDrawer(3+i, i, 4+i, 7+i, black);
     rectangleDrawer(6+i, 5+i, 1+i, 2+i, white);
     rectangleDrawer(4+i, 5+i, 6+i, 7+i, black);
-    rectangleDrawer(5+i, 4+i, 0+i, 1+i, black);
+    rectangleDrawer(5+i, 4+i, i, 1+i, black);
     //21
     i += 8;
-    rectangleDrawer(1+i, 0+i, 3+i, 2+i, green);
+    rectangleDrawer(1+i, i, 3+i, 2+i, green);
     rectangleDrawer(2+i, 3+i, 7+i, 6+i, red);
-    rectangleDrawer(3+i, 0+i, 4+i, 7+i, black);
+    rectangleDrawer(3+i, i, 4+i, 7+i, black);
     rectangleDrawer(6+i, 5+i, 1+i, 2+i, white);
     rectangleDrawer(4+i, 5+i, 6+i, 7+i, black);
-    rectangleDrawer(5+i, 4+i, 0+i, 1+i, black);
+    rectangleDrawer(5+i, 4+i, i, 1+i, black);
     //22
     i += 8;
-    rectangleDrawer(1+i, 0+i, 3+i, 2+i, black);
+    rectangleDrawer(1+i, i, 3+i, 2+i, black);
     rectangleDrawer(2+i, 3+i, 7+i, 6+i, black);
-    rectangleDrawer(3+i, 0+i, 4+i, 7+i, black);
+    rectangleDrawer(3+i, i, 4+i, 7+i, black);
     rectangleDrawer(6+i, 5+i, 1+i, 2+i, white);
     rectangleDrawer(4+i, 5+i, 6+i, 7+i, black);
-    rectangleDrawer(5+i, 4+i, 0+i, 1+i, magenta);
+    rectangleDrawer(5+i, 4+i, i, 1+i, magenta);
     //23
     i += 8;
-    rectangleDrawer(1+i, 0+i, 3+i, 2+i, black);
+    rectangleDrawer(1+i, i, 3+i, 2+i, black);
     rectangleDrawer(2+i, 3+i, 7+i, 6+i, black);
-    rectangleDrawer(3+i, 0+i, 4+i, 7+i, black);
+    rectangleDrawer(3+i, i, 4+i, 7+i, black);
     rectangleDrawer(6+i, 5+i, 1+i, 2+i, white);
     rectangleDrawer(4+i, 5+i, 6+i, 7+i, black);
-    rectangleDrawer(5+i, 4+i, 0+i, 1+i, black);
+    rectangleDrawer(5+i, 4+i, i, 1+i, black);
     //24
     i += 8;
-    rectangleDrawer(1+i, 0+i, 3+i, 2+i, black);
+    rectangleDrawer(1+i, i, 3+i, 2+i, black);
     rectangleDrawer(2+i, 3+i, 7+i, 6+i, red);
-    rectangleDrawer(3+i, 0+i, 4+i, 7+i, black);
+    rectangleDrawer(3+i, i, 4+i, 7+i, black);
     rectangleDrawer(6+i, 5+i, 1+i, 2+i, white);
     rectangleDrawer(4+i, 5+i, 6+i, 7+i, black);
-    rectangleDrawer(5+i, 4+i, 0+i, 1+i, black);
+    rectangleDrawer(5+i, 4+i, i, 1+i, black);
     //25
     i += 8;
-    rectangleDrawer(1+i, 0+i, 3+i, 2+i, black);
+    rectangleDrawer(1+i, i, 3+i, 2+i, black);
     rectangleDrawer(2+i, 3+i, 7+i, 6+i, black);
-    rectangleDrawer(3+i, 0+i, 4+i, 7+i, black);
+    rectangleDrawer(3+i, i, 4+i, 7+i, black);
     rectangleDrawer(6+i, 5+i, 1+i, 2+i, white);
     rectangleDrawer(4+i, 5+i, 6+i, 7+i, blue);
-    rectangleDrawer(5+i, 4+i, 0+i, 1+i, magenta);
+    rectangleDrawer(5+i, 4+i, i, 1+i, magenta);
     //26
     i += 8;
-    rectangleDrawer(1+i, 0+i, 3+i, 2+i, black);
+    rectangleDrawer(1+i, i, 3+i, 2+i, black);
     rectangleDrawer(2+i, 3+i, 7+i, 6+i, black);
-    rectangleDrawer(3+i, 0+i, 4+i, 7+i, black);
+    rectangleDrawer(3+i, i, 4+i, 7+i, black);
     rectangleDrawer(6+i, 5+i, 1+i, 2+i, white);
     rectangleDrawer(4+i, 5+i, 6+i, 7+i, blue);
-    rectangleDrawer(5+i, 4+i, 0+i, 1+i, black);
+    rectangleDrawer(5+i, 4+i, i, 1+i, black);
     //27
     i += 8;
-    rectangleDrawer(1+i, 0+i, 3+i, 2+i, black);
+    rectangleDrawer(1+i, i, 3+i, 2+i, black);
     rectangleDrawer(2+i, 3+i, 7+i, 6+i, red);
-    rectangleDrawer(3+i, 0+i, 4+i, 7+i, black);
+    rectangleDrawer(3+i, i, 4+i, 7+i, black);
     rectangleDrawer(6+i, 5+i, 1+i, 2+i, white);
     rectangleDrawer(4+i, 5+i, 6+i, 7+i, blue);
-    rectangleDrawer(5+i, 4+i, 0+i, 1+i, black);
+    rectangleDrawer(5+i, 4+i, i, 1+i, black);
 }
 
 function render()

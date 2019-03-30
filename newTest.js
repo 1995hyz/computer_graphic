@@ -8,10 +8,6 @@ var NumVertices  = 27 * 36;
 var points = [];
 var colors = [];
 
-var colors2 = [];
-
-var points2 = [];
-
 var xAxis = 0;
 var yAxis = 1;
 var zAxis = 2;
@@ -22,11 +18,6 @@ var theta = [ 0, 0, 0 ];
 var thetaLoc;
 var modelViewMatrixLoc;
 var ctm;
-var R;
-var ctm2;
-
-var angle = 0;
-var test = vec2();
 
 const edgeLength = 0.2;
 const gap = 0.01;
@@ -338,56 +329,16 @@ window.onload = function init()
     };
 
     render();
-}
+};
 
 function colorCube()
 {
-    /*for(var i=0; i<9; i++) {
-        var offset = i * 8;
-        quad(1+offset, 0+offset, 3+offset, 2+offset);
-        quad(2+offset, 3+offset, 7+offset, 6+offset);
-        quad(3+offset, 0+offset, 4+offset, 7+offset);
-        quad(6+offset, 5+offset, 1+offset, 2+offset);
-        quad(4+offset, 5+offset, 6+offset, 7+offset);
-        quad(5+offset, 4+offset, 0+offset, 1+offset);
-    }*/
     createCubeColor();
 }
 
-function quad(a, b, c, d)
-{
-    const vertexColors = [
-        black,
-        red,
-        yellow,
-        green,
-        blue,
-        magenta,
-        cyan,
-        white
-    ];
-
-    // We need to parition the quad into two triangles in order for
-    // WebGL to be able to render it.  In this case, we create two
-    // triangles from the quad indices
-
-    //vertex color assigned by the index of the vertex
-
-    var indices = [ a, b, c, a, c, d ];
-
-    for ( var i = 0; i < indices.length; ++i ) {
-        points.push( vertices[indices[i]] );
-        //colors.push( vertexColors[indices[i]] );
-
-        // for solid colored faces use
-        colors.push(vertexColors[a%8]);
-
-    }
-}
-
 function rectangleDrawer(a, b, c, d, color) {
-    var indices = [a, b, c, a, c, d];
-    for( var i = 0; i < 6; i++) {
+    let indices = [a, b, c, a, c, d];
+    for( let i = 0; i < 6; i++) {
         points.push(vertices[indices[i]]);
         colors.push((color));
     }
@@ -395,7 +346,7 @@ function rectangleDrawer(a, b, c, d, color) {
 
 function createCubeColor() {
     //1
-    var i = 0;
+    let i = 0;
     rectangleDrawer(1, 0, 3, 2, green);
     rectangleDrawer(2, 3, 7, 6, black);
     rectangleDrawer(3, 0, 4, 7, yellow);

@@ -20,7 +20,6 @@ var modelViewMatrixLoc;
 var ctm;
 
 var ctm2;
-var angle = 0;
 
 const edgeLength = 0.2;
 const gap = 0.01;
@@ -326,17 +325,16 @@ window.onload = function init()
     //event listeners for buttons
 
     document.getElementById( "left1" ).onclick = function () {
-        axis = xAxis;
-    };
+        flag = 1;
+        leftOne();
+    }
     document.getElementById( "left2" ).onclick = function () {
         axis = yAxis;
     };
     document.getElementById( "left3" ).onclick = function () {
         axis = zAxis;
     };
-    document.getElementById("test" ).onclick = function () {
-
-    }
+    //document.getElementById("test" ).onclick = leftOne;
 
     render();
 };
@@ -590,7 +588,27 @@ function keyDownHandler(event) {
         default:
             console.log("Unknown Key Pressed");
     }
-    console.log(theta);
+    //console.log(theta);
+}
+
+var flag = 0;
+var counter = 0;
+const times = 180;
+const angle = 360 / times;
+
+function leftOne() {
+    counter += 1;
+    if (counter === times) {
+        flag = 0;
+        counter = 0;
+    }
+    var transMatrix = rotateX(angle);
+    for( let i = 0; i < 27;i+=3) {
+        for( let j =0; j<36; j++) {
+            points[i*36+j] = mult(transMatrix, points[i*36+j]);
+        }
+    }
+    gl.bufferData( gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW );
 }
 
 function render()
@@ -599,7 +617,6 @@ function render()
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     //theta[axis] += 2.0;
-    //angle += 1;
     ctm = mat4();
     ctm = mult(ctm, rotateX(theta[xAxis]));
     ctm = mult(ctm, rotateY(theta[yAxis]));
@@ -611,6 +628,10 @@ function render()
     gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(ctm));
 
     //console.log(points);
+
+    if(flag) {
+        leftOne();
+    }
 
     gl.drawArrays( gl.TRIANGLES, 0, NumVertices );
 

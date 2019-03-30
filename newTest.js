@@ -3,7 +3,7 @@
 var canvas;
 var gl;
 
-var NumVertices  = 21 * 36;
+var NumVertices  = 27 * 36;
 
 var points = [];
 var colors = [];
@@ -218,7 +218,61 @@ var vertices = [
     vec4( -edgeLength/2+edgeLength, -edgeLength/2+edgeLength, -edgeLength/2+edgeLength, 1.0 ),
     vec4( -edgeLength/2+edgeLength,  edgeLength/2+edgeLength, -edgeLength/2+edgeLength, 1.0 ),
     vec4(  edgeLength/2+edgeLength,  edgeLength/2+edgeLength, -edgeLength/2+edgeLength, 1.0 ),
-    vec4(  edgeLength/2+edgeLength, -edgeLength/2+edgeLength, -edgeLength/2+edgeLength, 1.0 )
+    vec4(  edgeLength/2+edgeLength, -edgeLength/2+edgeLength, -edgeLength/2+edgeLength, 1.0 ),
+    //22
+    vec4( -edgeLength/2-edgeLength, -edgeLength/2+edgeLength,  edgeLength/2, 1.0 ),
+    vec4( -edgeLength/2-edgeLength,  edgeLength/2+edgeLength,  edgeLength/2, 1.0 ),
+    vec4(  edgeLength/2-edgeLength,  edgeLength/2+edgeLength,  edgeLength/2, 1.0 ),
+    vec4(  edgeLength/2-edgeLength, -edgeLength/2+edgeLength,  edgeLength/2, 1.0 ),
+    vec4( -edgeLength/2-edgeLength, -edgeLength/2+edgeLength, -edgeLength/2, 1.0 ),
+    vec4( -edgeLength/2-edgeLength,  edgeLength/2+edgeLength, -edgeLength/2, 1.0 ),
+    vec4(  edgeLength/2-edgeLength,  edgeLength/2+edgeLength, -edgeLength/2, 1.0 ),
+    vec4(  edgeLength/2-edgeLength, -edgeLength/2+edgeLength, -edgeLength/2, 1.0 ),
+    //23
+    vec4( -edgeLength/2, -edgeLength/2+edgeLength,  edgeLength/2, 1.0 ),
+    vec4( -edgeLength/2,  edgeLength/2+edgeLength,  edgeLength/2, 1.0 ),
+    vec4(  edgeLength/2,  edgeLength/2+edgeLength,  edgeLength/2, 1.0 ),
+    vec4(  edgeLength/2, -edgeLength/2+edgeLength,  edgeLength/2, 1.0 ),
+    vec4( -edgeLength/2, -edgeLength/2+edgeLength, -edgeLength/2, 1.0 ),
+    vec4( -edgeLength/2,  edgeLength/2+edgeLength, -edgeLength/2, 1.0 ),
+    vec4(  edgeLength/2,  edgeLength/2+edgeLength, -edgeLength/2, 1.0 ),
+    vec4(  edgeLength/2, -edgeLength/2+edgeLength, -edgeLength/2, 1.0 ),
+    //24
+    vec4( -edgeLength/2+edgeLength, -edgeLength/2+edgeLength,  edgeLength/2, 1.0 ),
+    vec4( -edgeLength/2+edgeLength,  edgeLength/2+edgeLength,  edgeLength/2, 1.0 ),
+    vec4(  edgeLength/2+edgeLength,  edgeLength/2+edgeLength,  edgeLength/2, 1.0 ),
+    vec4(  edgeLength/2+edgeLength, -edgeLength/2+edgeLength,  edgeLength/2, 1.0 ),
+    vec4( -edgeLength/2+edgeLength, -edgeLength/2+edgeLength, -edgeLength/2, 1.0 ),
+    vec4( -edgeLength/2+edgeLength,  edgeLength/2+edgeLength, -edgeLength/2, 1.0 ),
+    vec4(  edgeLength/2+edgeLength,  edgeLength/2+edgeLength, -edgeLength/2, 1.0 ),
+    vec4(  edgeLength/2+edgeLength, -edgeLength/2+edgeLength, -edgeLength/2, 1.0 ),
+    //25
+    vec4( -edgeLength/2-edgeLength, -edgeLength/2+edgeLength,  edgeLength/2-edgeLength, 1.0 ),
+    vec4( -edgeLength/2-edgeLength,  edgeLength/2+edgeLength,  edgeLength/2-edgeLength, 1.0 ),
+    vec4(  edgeLength/2-edgeLength,  edgeLength/2+edgeLength,  edgeLength/2-edgeLength, 1.0 ),
+    vec4(  edgeLength/2-edgeLength, -edgeLength/2+edgeLength,  edgeLength/2-edgeLength, 1.0 ),
+    vec4( -edgeLength/2-edgeLength, -edgeLength/2+edgeLength, -edgeLength/2-edgeLength, 1.0 ),
+    vec4( -edgeLength/2-edgeLength,  edgeLength/2+edgeLength, -edgeLength/2-edgeLength, 1.0 ),
+    vec4(  edgeLength/2-edgeLength,  edgeLength/2+edgeLength, -edgeLength/2-edgeLength, 1.0 ),
+    vec4(  edgeLength/2-edgeLength, -edgeLength/2+edgeLength, -edgeLength/2-edgeLength, 1.0 ),
+    //26
+    vec4( -edgeLength/2, -edgeLength/2+edgeLength,  edgeLength/2-edgeLength, 1.0 ),
+    vec4( -edgeLength/2,  edgeLength/2+edgeLength,  edgeLength/2-edgeLength, 1.0 ),
+    vec4(  edgeLength/2,  edgeLength/2+edgeLength,  edgeLength/2-edgeLength, 1.0 ),
+    vec4(  edgeLength/2, -edgeLength/2+edgeLength,  edgeLength/2-edgeLength, 1.0 ),
+    vec4( -edgeLength/2, -edgeLength/2+edgeLength, -edgeLength/2-edgeLength, 1.0 ),
+    vec4( -edgeLength/2,  edgeLength/2+edgeLength, -edgeLength/2-edgeLength, 1.0 ),
+    vec4(  edgeLength/2,  edgeLength/2+edgeLength, -edgeLength/2-edgeLength, 1.0 ),
+    vec4(  edgeLength/2, -edgeLength/2+edgeLength, -edgeLength/2-edgeLength, 1.0 ),
+    //27
+    vec4( -edgeLength/2+edgeLength, -edgeLength/2+edgeLength,  edgeLength/2-edgeLength, 1.0 ),
+    vec4( -edgeLength/2+edgeLength,  edgeLength/2+edgeLength,  edgeLength/2-edgeLength, 1.0 ),
+    vec4(  edgeLength/2+edgeLength,  edgeLength/2+edgeLength,  edgeLength/2-edgeLength, 1.0 ),
+    vec4(  edgeLength/2+edgeLength, -edgeLength/2+edgeLength,  edgeLength/2-edgeLength, 1.0 ),
+    vec4( -edgeLength/2+edgeLength, -edgeLength/2+edgeLength, -edgeLength/2-edgeLength, 1.0 ),
+    vec4( -edgeLength/2+edgeLength,  edgeLength/2+edgeLength, -edgeLength/2-edgeLength, 1.0 ),
+    vec4(  edgeLength/2+edgeLength,  edgeLength/2+edgeLength, -edgeLength/2-edgeLength, 1.0 ),
+    vec4(  edgeLength/2+edgeLength, -edgeLength/2+edgeLength, -edgeLength/2-edgeLength, 1.0 )
 ];
 
 const black = [ 0.0, 0.0, 0.0, 1.0 ];
@@ -228,7 +282,7 @@ const green = [ 0.0, 1.0, 0.0, 1.0+edgeLength ];
 const blue = [ 0.0, 0.0, 1.0, 1.0 ];
 const magenta = [ 1.0, 0.0, 1.0, 1.0 ];
 const cyan = [ 0.0, 1.0, 1.0, 1.0 ];
-const white = [ 1.0, 1.0, 1.0, 1.0 ];
+const white = [ 0.85, 0.85, 0.85, 1.0 ];
 
 window.onload = function init()
 {
@@ -506,6 +560,54 @@ function createCubeColor() {
     rectangleDrawer(3+i, 0+i, 4+i, 7+i, black);
     rectangleDrawer(6+i, 5+i, 1+i, 2+i, white);
     rectangleDrawer(4+i, 5+i, 6+i, 7+i, black);
+    rectangleDrawer(5+i, 4+i, 0+i, 1+i, black);
+    //22
+    i += 8;
+    rectangleDrawer(1+i, 0+i, 3+i, 2+i, black);
+    rectangleDrawer(2+i, 3+i, 7+i, 6+i, black);
+    rectangleDrawer(3+i, 0+i, 4+i, 7+i, black);
+    rectangleDrawer(6+i, 5+i, 1+i, 2+i, white);
+    rectangleDrawer(4+i, 5+i, 6+i, 7+i, black);
+    rectangleDrawer(5+i, 4+i, 0+i, 1+i, magenta);
+    //23
+    i += 8;
+    rectangleDrawer(1+i, 0+i, 3+i, 2+i, black);
+    rectangleDrawer(2+i, 3+i, 7+i, 6+i, black);
+    rectangleDrawer(3+i, 0+i, 4+i, 7+i, black);
+    rectangleDrawer(6+i, 5+i, 1+i, 2+i, white);
+    rectangleDrawer(4+i, 5+i, 6+i, 7+i, black);
+    rectangleDrawer(5+i, 4+i, 0+i, 1+i, black);
+    //24
+    i += 8;
+    rectangleDrawer(1+i, 0+i, 3+i, 2+i, black);
+    rectangleDrawer(2+i, 3+i, 7+i, 6+i, red);
+    rectangleDrawer(3+i, 0+i, 4+i, 7+i, black);
+    rectangleDrawer(6+i, 5+i, 1+i, 2+i, white);
+    rectangleDrawer(4+i, 5+i, 6+i, 7+i, black);
+    rectangleDrawer(5+i, 4+i, 0+i, 1+i, black);
+    //25
+    i += 8;
+    rectangleDrawer(1+i, 0+i, 3+i, 2+i, black);
+    rectangleDrawer(2+i, 3+i, 7+i, 6+i, black);
+    rectangleDrawer(3+i, 0+i, 4+i, 7+i, black);
+    rectangleDrawer(6+i, 5+i, 1+i, 2+i, white);
+    rectangleDrawer(4+i, 5+i, 6+i, 7+i, blue);
+    rectangleDrawer(5+i, 4+i, 0+i, 1+i, magenta);
+    //26
+    i += 8;
+    rectangleDrawer(1+i, 0+i, 3+i, 2+i, black);
+    rectangleDrawer(2+i, 3+i, 7+i, 6+i, black);
+    rectangleDrawer(3+i, 0+i, 4+i, 7+i, black);
+    rectangleDrawer(6+i, 5+i, 1+i, 2+i, white);
+    rectangleDrawer(4+i, 5+i, 6+i, 7+i, blue);
+    rectangleDrawer(5+i, 4+i, 0+i, 1+i, black);
+    //27
+    i += 8;
+    rectangleDrawer(1+i, 0+i, 3+i, 2+i, black);
+    rectangleDrawer(2+i, 3+i, 7+i, 6+i, red);
+    rectangleDrawer(3+i, 0+i, 4+i, 7+i, black);
+    rectangleDrawer(6+i, 5+i, 1+i, 2+i, white);
+    rectangleDrawer(4+i, 5+i, 6+i, 7+i, blue);
     rectangleDrawer(5+i, 4+i, 0+i, 1+i, black);
 }
 

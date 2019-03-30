@@ -19,6 +19,9 @@ var thetaLoc;
 var modelViewMatrixLoc;
 var ctm;
 
+var ctm2;
+var angle = 0;
+
 const edgeLength = 0.2;
 const gap = 0.01;
 var vertices = [
@@ -267,6 +270,8 @@ var vertices = [
     vec4(  edgeLength/2+edgeLength+gap, -edgeLength/2+edgeLength+gap, -edgeLength/2-edgeLength-gap, 1.0 )
 ];
 
+var leftCenter = vec4(-edgeLength, 0, 0, 1);
+
 const black = [ 0.0, 0.0, 0.0, 1.0 ];
 const red = [ 1.0, 0.0, 0.0, 1.0 ];
 const yellow = [ 1.0, 1.0, 0.0, 1.0 ];
@@ -284,6 +289,8 @@ window.onload = function init()
     if ( !gl ) { alert( "WebGL isn't available" ); }
 
     colorCube();
+
+    document.addEventListener("keydown", keyDownHandler, false);
 
     gl.viewport( 0, 0, canvas.width, canvas.height );
     gl.clearColor( 1.0, 1.0, 1.0, 1.0 );
@@ -318,15 +325,18 @@ window.onload = function init()
     modelViewMatrixLoc = gl.getUniformLocation(program, "modelViewMatrix");
     //event listeners for buttons
 
-    document.getElementById( "xButton" ).onclick = function () {
+    document.getElementById( "left1" ).onclick = function () {
         axis = xAxis;
     };
-    document.getElementById( "yButton" ).onclick = function () {
+    document.getElementById( "left2" ).onclick = function () {
         axis = yAxis;
     };
-    document.getElementById( "zButton" ).onclick = function () {
+    document.getElementById( "left3" ).onclick = function () {
         axis = zAxis;
     };
+    document.getElementById("test" ).onclick = function () {
+
+    }
 
     render();
 };
@@ -563,21 +573,44 @@ function createCubeColor() {
     rectangleDrawer(5+i, 4+i, i, 1+i, black);
 }
 
+function keyDownHandler(event) {
+    switch (event.key) {
+        case "ArrowUp":
+            theta[xAxis] = (theta[xAxis] - 2.0) %  360;
+            break;
+        case "ArrowDown":
+            theta[xAxis] = (theta[xAxis] + 2.0) %  360;
+            break;
+        case "ArrowLeft":
+            theta[zAxis] = (theta[zAxis] + 2.0) %  360;
+            break;
+        case "ArrowRight":
+            theta[zAxis] = (theta[zAxis] - 2.0) %  360;
+            break;
+        default:
+            console.log("Unknown Key Pressed");
+    }
+    console.log(theta);
+}
+
 function render()
 {
 
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    theta[axis] += 2.0;
+    //theta[axis] += 2.0;
     //angle += 1;
     ctm = mat4();
     ctm = mult(ctm, rotateX(theta[xAxis]));
     ctm = mult(ctm, rotateY(theta[yAxis]));
     ctm = mult(ctm, rotateZ(theta[zAxis]));
 
+    //ctm2 = mat4();
+    //ctm2 = mult(ctm, rotate(angle))
+
     gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(ctm));
 
-    console.log(points);
+    //console.log(points);
 
     gl.drawArrays( gl.TRIANGLES, 0, NumVertices );
 

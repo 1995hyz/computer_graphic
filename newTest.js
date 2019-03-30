@@ -334,7 +334,7 @@ window.onload = function init()
     document.getElementById( "left3" ).onclick = function () {
         axis = zAxis;
     };
-    //document.getElementById("test" ).onclick = leftOne;
+    document.getElementById("test" ).onclick = getPlaneLocation;
 
     render();
 };
@@ -574,16 +574,22 @@ function createCubeColor() {
 function keyDownHandler(event) {
     switch (event.key) {
         case "ArrowUp":
-            theta[xAxis] = (theta[xAxis] - 2.0) %  360;
+            theta[xAxis] = (theta[xAxis] - 2.0) % 360;
             break;
         case "ArrowDown":
-            theta[xAxis] = (theta[xAxis] + 2.0) %  360;
+            theta[xAxis] = (theta[xAxis] + 2.0) % 360;
             break;
         case "ArrowLeft":
-            theta[zAxis] = (theta[zAxis] + 2.0) %  360;
+            theta[zAxis] = (theta[zAxis] + 2.0) % 360;
             break;
         case "ArrowRight":
-            theta[zAxis] = (theta[zAxis] - 2.0) %  360;
+            theta[zAxis] = (theta[zAxis] - 2.0) % 360;
+            break;
+        case ",":
+            theta[yAxis] = (theta[yAxis] - 2.0) % 360;
+            break;
+        case ".":
+            theta[yAxis] = (theta[yAxis] + 2.0) % 360;
             break;
         default:
             console.log("Unknown Key Pressed");
@@ -595,6 +601,46 @@ var flag = 0;
 var counter = 0;
 const times = 180;
 const angle = 360 / times;
+var faceIndex = {
+    1: [0, 1, 2, 9, 10, 11, 18, 19, 20],
+    2: [3, 4, 5, 12, 13, 14, 21, 22, 23],
+    3: [6, 7, 8, 15, 16, 17, 24, 25, 26],
+    4: [0, 3, 6, 9, 12, 15, 18, 21, 24],
+    5: [1, 4, 7, 10, 13, 16, 19, 22, 25],
+    6: [2, 5, 8, 11, 14, 17, 20, 23, 26],
+    7: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+    8: [9, 10, 11, 12, 13, 14, 15, 16, 17],
+    9: [18, 19, 20, 21, 22, 23, 24, 25, 26]
+};
+var faceAngle = {
+    1: [0, 0, 0],
+    3: [180, 180, 0],
+    4: [0, 90, 0],
+    6: [0, 270, 0],
+    7: [270, 0, 0],
+    9: [90, 0, 0]
+};
+var faceVec = {
+    1: [0, 0, 1, 1],
+    3: [0, 0, -1, 1],
+    4: [-1, 0, 0, 1],
+    6: [1, 0, 0, 1],
+    7: [0, -1, 0, 1],
+    9: [0, 1, 0, 1]
+};
+
+function getFrontFace() {
+    let zProjection = 0;
+    let faceKey = 1;
+    for(let key in faceVec) {
+        let temp = mult(ctm, faceVec[key]);
+        if(temp[2] > zProjection) {
+            zProjection = temp[2];
+            faceKey = key;
+        }
+    }
+    return faceKey;
+}
 
 function leftOne() {
     counter += 1;
@@ -611,6 +657,10 @@ function leftOne() {
     gl.bufferData( gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW );
 }
 
+function getPlaneLocation() {
+    console.log(getFrontFace());
+}
+
 function render()
 {
 
@@ -621,9 +671,6 @@ function render()
     ctm = mult(ctm, rotateX(theta[xAxis]));
     ctm = mult(ctm, rotateY(theta[yAxis]));
     ctm = mult(ctm, rotateZ(theta[zAxis]));
-
-    //ctm2 = mat4();
-    //ctm2 = mult(ctm, rotate(angle))
 
     gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(ctm));
 

@@ -22,6 +22,8 @@ var ctm;
 var tempPoints = [];
 
 var faceFlag = 1;
+var userRotateDirection = -1;
+var rotateDirection = -1;
 
 const edgeLength = 0.2;
 const gap = 0.01;
@@ -345,7 +347,31 @@ window.onload = function init()
         tempPoints = Object.assign([], points);
         rotatePlane(faceFlag)
     };
+    document.getElementById("front").onclick = function () {
+        flag = 1;
+        faceFlag = getFrontFace();
+        setRotateDirection("front", faceFlag);
+        tempPoints = Object.assign([], points);
+        console.log(rotateDirection);
+        rotatePlane(faceFlag);
+    };
+    document.getElementById("middleFB").onclick = function () {
+        flag = 1;
+        faceFlag = getFrontFace();
+        setRotateDirection("front", faceFlag);
+        tempPoints = Object.assign([], points);
+        console.log(rotateDirection);
+        rotatePlane(faceFlag);
+    };
     document.getElementById("test" ).onclick = getPlaneLocation;
+
+    document.getElementById("clockwise").onclick = function () {
+        userRotateDirection = clockWise;
+        //rotateDirection = clockWise;
+    };
+    document.getElementById("counterclockwise").onclick = function () {
+        userRotateDirection = counterClockWise;
+    };
 
     render();
 };
@@ -605,20 +631,21 @@ function keyDownHandler(event) {
         default:
             console.log("Unknown Key Pressed");
     }
-    //console.log(theta);
 }
 
 var flag = 0;
 var counter = 0;
 const times = 45;
 const angle = 90 / times;
+const clockWise = -1;
+const counterClockWise = 1;
 var faceIndex = {
     1: [0, 1, 2, 11, 20, 19, 18, 9, 10],
     2: [3, 4, 5, 14, 23, 22, 21, 12, 13],
     3: [6, 7, 8, 17, 26, 25, 24, 15, 16],
-    4: [6, 3, 0, 9, 18, 21, 24, 15, 12],
-    5: [7, 4, 1, 10, 19, 12, 25, 16, 13],
-    6: [8, 5, 2, 11, 20, 13, 26, 17, 14],
+    4: [0, 3, 6, 15, 24, 21, 18, 9, 12],
+    5: [1, 4, 7, 16, 25, 22, 19, 10, 13],
+    6: [2, 5, 8, 17, 26, 23, 20, 11, 14],
     7: [0, 1, 2, 5, 8, 7, 6, 3, 4],
     8: [9, 10, 11, 14, 17, 16, 15, 12, 13],
     9: [18, 19, 20, 23, 26, 25, 24, 21, 22]
@@ -647,28 +674,89 @@ function getFrontFace() {
         let temp = mult(ctm, faceVec[key]);
         if(temp[2] > zProjection) {
             zProjection = temp[2];
-            faceKey = key;
+            faceKey = Number(key);
         }
     }
     return faceKey;
 }
 
+function setRotateDirection(face, faceKey) {
+    switch (face) {
+        case "front": {
+            switch (faceKey) {
+                case 1:
+                case 6:
+                case 9:
+                    rotateDirection = userRotateDirection * (-1);
+                    break;
+                case 3:
+                case 4:
+                case 7:
+                    rotateDirection = userRotateDirection;
+                    break;
+                default:
+                    console.log("Unknown Face-key");
+            }
+            break;
+        }
+        default:
+            console.log("Unknown Face");
+    }
+}
+
 function rotatePlane(faceKey) {
     counter += 1;
-    let iMax = 0;
-    let iIncre = 0;
     let transMatrix = mat4();
     switch (faceKey) {
         case 1: {
+            if(rotateDirection === clockWise) {
+                transMatrix = rotateZ(angle);
+            }
+            else {
+                transMatrix = rotateZCounterClock(angle);
+            }
+            break;
+        }
+        case 2: {
             transMatrix = rotateZ(angle);
+            break;
+        }
+        case 3: {
+            if(rotateDirection === clockWise) {
+                transMatrix = rotateZ(angle);
+            }
+            else {
+                transMatrix = rotateZCounterClock(angle);
+            }
             break;
         }
         case 4: {
             transMatrix = rotateX(angle);
             break;
         }
+        case 5: {
+            transMatrix = rotateX(angle);
+            break;
+        }
+        case 6: {
+            transMatrix = rotateX(angle);
+            break;
+        }
         case 7: {
             transMatrix = rotateY(angle);
+            break;
+        }
+        case 8: {
+            transMatrix = rotateY(angle);
+            break;
+        }
+        case 9: {
+            if(rotateDirection === clockWise) {
+                transMatrix = rotateY(angle);
+            }
+            else {
+                transMatrix = rotateYCounterClock(angle);
+            }
             break;
         }
     }
@@ -689,7 +777,7 @@ function rotatePlane(faceKey) {
     if (counter === times) {
         flag = 0;
         counter = 0;
-        replaceFaceIndex(faceKey);
+        replaceFaceIndex(faceKey, rotateDirection);
         //points = Object.assign([], tempPoints);
         //gl.bufferData( gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW );
     }
@@ -697,11 +785,9 @@ function rotatePlane(faceKey) {
 
 function getPlaneLocation() {
     changeFaceColor(getFrontFace());
-    //console.log(getFrontFace());
 }
 
 function changeFaceColor(faceKey) {
-    //console.log(colors);
     for(let i = 0; i < 9; i++) {
         let cubeIndex = faceVec[faceKey][i];
         for( let j = 0; j < 36; j++) {
@@ -717,16 +803,30 @@ function changeFaceColor(faceKey) {
     gl.enableVertexAttribArray( vColor );
 }
 
-function replaceFaceIndex(faceKey) {
+function replaceFaceIndex(faceKey, direction) {
     let tempface = Object.assign( [], faceIndex[faceKey]);
-    replaceCubeIndex(faceIndex[faceKey][0], 50);
-    replaceCubeIndex(faceIndex[faceKey][1], 51);
-    for(let i = 3; i < 8; i+=2) {
-        replaceCubeIndex(faceIndex[faceKey][i], tempface[i-2]);
-        replaceCubeIndex(faceIndex[faceKey][i-1], tempface[i-3]);
+    if(direction === counterClockWise) {
+        replaceCubeIndex(faceIndex[faceKey][0], 50);
+        replaceCubeIndex(faceIndex[faceKey][1], 51);
+        for (let i = 3; i < 8; i += 2) {
+            replaceCubeIndex(faceIndex[faceKey][i], tempface[i - 2]);
+            replaceCubeIndex(faceIndex[faceKey][i - 1], tempface[i - 3]);
+        }
+        replaceCubeIndex(50, tempface[6]);
+        replaceCubeIndex(51, tempface[7]);
+        //console.log(faceIndex);
     }
-    replaceCubeIndex(50, tempface[6]);
-    replaceCubeIndex(51, tempface[7]);
+    else {
+        replaceCubeIndex(faceIndex[faceKey][6], 50);
+        replaceCubeIndex(faceIndex[faceKey][7], 51);
+        for (let i = 5; i > 0; i -= 2) {
+            replaceCubeIndex(faceIndex[faceKey][i], tempface[i + 2]);
+            replaceCubeIndex(faceIndex[faceKey][i - 1], tempface[i + 1]);
+        }
+        replaceCubeIndex(50, tempface[0]);
+        replaceCubeIndex(51, tempface[1]);
+        //console.log(faceIndex);
+    }
 }
 
 function replaceCubeIndex(oldIndex, newIndex) {
@@ -737,6 +837,19 @@ function replaceCubeIndex(oldIndex, newIndex) {
             }
         }
     }
+}
+
+function getMiddleFace(faceKey) {
+    let tempFace = 1;
+    switch (faceKey) {
+        case 1:
+        case 3: tempFace = 2; break;
+        case 4:
+        case 6: tempFace = 5; break;
+        case 7:
+        case 9: tempFace = 8; break;
+    }
+    return Number(tempFace);
 }
 
 function render()

@@ -619,9 +619,9 @@ var faceIndex = {
     4: [6, 3, 0, 9, 18, 21, 24, 15, 12],
     5: [7, 4, 1, 10, 19, 12, 25, 16, 13],
     6: [8, 5, 2, 11, 20, 13, 26, 17, 14],
-    7: [0, 1, 2, 5, 8, 6, 7, 3, 4],
-    8: [9, 10, 11, 14, 17, 15, 16, 12, 13],
-    9: [18, 19, 20, 23, 26, 24, 25, 21, 22]
+    7: [0, 1, 2, 5, 8, 7, 6, 3, 4],
+    8: [9, 10, 11, 14, 17, 16, 15, 12, 13],
+    9: [18, 19, 20, 23, 26, 25, 24, 21, 22]
 };
 var faceAngle = {
     1: [0, 0, 0],
@@ -689,9 +689,7 @@ function rotatePlane(faceKey) {
     if (counter === times) {
         flag = 0;
         counter = 0;
-        console.log(faceIndex);
         replaceFaceIndex(faceKey);
-        console.log(faceIndex);
         //points = Object.assign([], tempPoints);
         //gl.bufferData( gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW );
     }
@@ -723,7 +721,6 @@ function replaceFaceIndex(faceKey) {
     let tempface = Object.assign( [], faceIndex[faceKey]);
     replaceCubeIndex(faceIndex[faceKey][0], 50);
     replaceCubeIndex(faceIndex[faceKey][1], 51);
-    console.log(faceIndex);
     for(let i = 3; i < 8; i+=2) {
         replaceCubeIndex(faceIndex[faceKey][i], tempface[i-2]);
         replaceCubeIndex(faceIndex[faceKey][i-1], tempface[i-3]);

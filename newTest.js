@@ -273,8 +273,6 @@ var vertices = [
     vec4(  edgeLength/2+edgeLength+gap, -edgeLength/2+edgeLength+gap, -edgeLength/2-edgeLength-gap, 1.0 )
 ];
 
-var leftCenter = vec4(-edgeLength, 0, 0, 1);
-
 const black = [ 0.0, 0.0, 0.0, 1.0 ];
 const red = [ 1.0, 0.0, 0.0, 1.0 ];
 const yellow = [ 1.0, 1.0, 0.0, 1.0 ];
@@ -352,7 +350,6 @@ window.onload = function init()
         faceFlag = getFrontFace();
         setRotateDirection("front", faceFlag);
         tempPoints = Object.assign([], points);
-        console.log(rotateDirection);
         rotatePlane(faceFlag);
     };
     document.getElementById("middleFB").onclick = function () {
@@ -360,8 +357,28 @@ window.onload = function init()
         faceFlag = getFrontFace();
         setRotateDirection("front", faceFlag);
         tempPoints = Object.assign([], points);
-        console.log(rotateDirection);
+        faceFlag = getMiddleFace(faceFlag);
         rotatePlane(faceFlag);
+    };
+    document.getElementById("back").onclick = function () {
+        flag = 1;
+        faceFlag = getBackFace();
+        setRotateDirection("back", faceFlag);
+        tempPoints = Object.assign([], points);
+        rotatePlane(faceFlag);
+    };
+    document.getElementById("left").onclick = function() {
+        /*flag = 1;
+        faceFlag = getBackFace();
+        setRotateDirection("back", faceFlag);
+        tempPoints = Object.assign([], points);
+        rotatePlane(faceFlag);*/
+    };
+    document.getElementById("middleLR").onclick = function() {
+
+    };
+    document.getElementById("right").onclick = function() {
+
     };
     document.getElementById("test" ).onclick = getPlaneLocation;
 
@@ -680,6 +697,26 @@ function getFrontFace() {
     return faceKey;
 }
 
+function getBackFace() {
+    let frontFace = getFrontFace();
+    let backFace = 0;
+    switch (frontFace) {
+        case 1: backFace = 3; break;
+        case 3: backFace = 1; break;
+        case 4: backFace = 6; break;
+        case 6: backFace = 4; break;
+        case 7: backFace = 9; break;
+        case 9: backFace = 7; break;
+    }
+    return Number(backFace);
+}
+
+function getLeftFace() {
+    let frontFace = getFrontFace();
+    let leftFace = 0;
+
+}
+
 function setRotateDirection(face, faceKey) {
     switch (face) {
         case "front": {
@@ -708,26 +745,15 @@ function rotatePlane(faceKey) {
     counter += 1;
     let transMatrix = mat4();
     switch (faceKey) {
-        case 1: {
-            if(rotateDirection === clockWise) {
-                transMatrix = rotateZ(angle);
-            }
-            else {
-                transMatrix = rotateZCounterClock(angle);
-            }
-            break;
-        }
-        case 2: {
-            transMatrix = rotateZ(angle);
-            break;
-        }
+        case 1:
+        case 2:
         case 3: {
-            if(rotateDirection === clockWise) {
+            //if(rotateDirection === clockWise) {
                 transMatrix = rotateZ(angle);
-            }
-            else {
-                transMatrix = rotateZCounterClock(angle);
-            }
+            //}
+            //else {
+            //    transMatrix = rotateZCounterClock(angle);
+            //}
             break;
         }
         case 4: {
@@ -751,12 +777,12 @@ function rotatePlane(faceKey) {
             break;
         }
         case 9: {
-            if(rotateDirection === clockWise) {
+            //if(rotateDirection === clockWise) {
                 transMatrix = rotateY(angle);
-            }
-            else {
-                transMatrix = rotateYCounterClock(angle);
-            }
+            //}
+            //else {
+            //    transMatrix = rotateYCounterClock(angle);
+            //}
             break;
         }
     }

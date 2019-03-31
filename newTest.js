@@ -327,19 +327,19 @@ window.onload = function init()
     modelViewMatrixLoc = gl.getUniformLocation(program, "modelViewMatrix");
     //event listeners for buttons
 
-    document.getElementById( "left1" ).onclick = function () {
+    document.getElementById( "bottom" ).onclick = function () {
         flag = 1;
         faceFlag = 7;
         tempPoints = Object.assign([], points);
         rotatePlane(faceFlag);
     };
-    document.getElementById( "left2" ).onclick = function () {
+    document.getElementById( "middleBT" ).onclick = function () {
         flag = 1;
         faceFlag = 1;
         tempPoints = Object.assign([], points);
         rotatePlane(faceFlag);
     };
-    document.getElementById( "left3" ).onclick = function () {
+    document.getElementById( "top" ).onclick = function () {
         flag = 1;
         faceFlag = 4;
         tempPoints = Object.assign([], points);

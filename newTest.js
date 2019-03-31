@@ -19,7 +19,9 @@ var thetaLoc;
 var modelViewMatrixLoc;
 var ctm;
 
-var ctm2;
+var tempPoints = [];
+
+var faceFlag = 1;
 
 const edgeLength = 0.2;
 const gap = 0.01;
@@ -274,11 +276,13 @@ var leftCenter = vec4(-edgeLength, 0, 0, 1);
 const black = [ 0.0, 0.0, 0.0, 1.0 ];
 const red = [ 1.0, 0.0, 0.0, 1.0 ];
 const yellow = [ 1.0, 1.0, 0.0, 1.0 ];
-const green = [ 0.0, 1.0, 0.0, 1.0+edgeLength ];
+const green = [ 0.0, 1.0, 0.0, 1.0 ];
 const blue = [ 0.0, 0.0, 1.0, 1.0 ];
 const magenta = [ 1.0, 0.0, 1.0, 1.0 ];
 const cyan = [ 0.0, 1.0, 1.0, 1.0 ];
 const white = [ 0.85, 0.85, 0.85, 1.0 ];
+
+var program;
 
 window.onload = function init()
 {
@@ -299,12 +303,12 @@ window.onload = function init()
     //
     //  Load shaders and initialize attribute buffers
     //
-    var program = initShaders( gl, "vertex-shader", "fragment-shader" );
+    program = initShaders( gl, "vertex-shader", "fragment-shader" );
     gl.useProgram( program );
 
     var cBuffer = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, cBuffer );
-    gl.bufferData( gl.ARRAY_BUFFER, flatten(colors), gl.STATIC_DRAW );
+    gl.bufferData( gl.ARRAY_BUFFER, flatten(colors), gl.DYNAMIC_DRAW );
 
     var vColor = gl.getAttribLocation( program, "vColor" );
     gl.vertexAttribPointer( vColor, 4, gl.FLOAT, false, 0, 0 );
@@ -313,7 +317,6 @@ window.onload = function init()
     var vBuffer = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, vBuffer );
     gl.bufferData( gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW );
-
 
     var vPosition = gl.getAttribLocation( program, "vPosition" );
     gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0, 0 );
@@ -326,13 +329,21 @@ window.onload = function init()
 
     document.getElementById( "left1" ).onclick = function () {
         flag = 1;
-        leftOne();
-    }
+        faceFlag = 7;
+        tempPoints = Object.assign([], points);
+        rotatePlane(faceFlag);
+    };
     document.getElementById( "left2" ).onclick = function () {
-        axis = yAxis;
+        flag = 1;
+        faceFlag = 1;
+        tempPoints = Object.assign([], points);
+        rotatePlane(faceFlag);
     };
     document.getElementById( "left3" ).onclick = function () {
-        axis = zAxis;
+        flag = 1;
+        faceFlag = 4;
+        tempPoints = Object.assign([], points);
+        rotatePlane(faceFlag)
     };
     document.getElementById("test" ).onclick = getPlaneLocation;
 
@@ -599,18 +610,18 @@ function keyDownHandler(event) {
 
 var flag = 0;
 var counter = 0;
-const times = 180;
-const angle = 360 / times;
+const times = 45;
+const angle = 90 / times;
 var faceIndex = {
-    1: [0, 1, 2, 9, 10, 11, 18, 19, 20],
-    2: [3, 4, 5, 12, 13, 14, 21, 22, 23],
-    3: [6, 7, 8, 15, 16, 17, 24, 25, 26],
-    4: [0, 3, 6, 9, 12, 15, 18, 21, 24],
-    5: [1, 4, 7, 10, 13, 16, 19, 22, 25],
-    6: [2, 5, 8, 11, 14, 17, 20, 23, 26],
-    7: [0, 1, 2, 3, 4, 5, 6, 7, 8],
-    8: [9, 10, 11, 12, 13, 14, 15, 16, 17],
-    9: [18, 19, 20, 21, 22, 23, 24, 25, 26]
+    1: [0, 1, 2, 11, 20, 19, 18, 9, 10],
+    2: [3, 4, 5, 14, 23, 22, 21, 12, 13],
+    3: [6, 7, 8, 17, 26, 25, 24, 15, 16],
+    4: [6, 3, 0, 9, 18, 21, 24, 15, 12],
+    5: [7, 4, 1, 10, 19, 12, 25, 16, 13],
+    6: [8, 5, 2, 11, 20, 13, 26, 17, 14],
+    7: [0, 1, 2, 5, 8, 6, 7, 3, 4],
+    8: [9, 10, 11, 14, 17, 15, 16, 12, 13],
+    9: [18, 19, 20, 23, 26, 24, 25, 21, 22]
 };
 var faceAngle = {
     1: [0, 0, 0],
@@ -642,23 +653,93 @@ function getFrontFace() {
     return faceKey;
 }
 
-function leftOne() {
+function rotatePlane(faceKey) {
     counter += 1;
+    let iMax = 0;
+    let iIncre = 0;
+    let transMatrix = mat4();
+    switch (faceKey) {
+        case 1: {
+            transMatrix = rotateZ(angle);
+            break;
+        }
+        case 4: {
+            transMatrix = rotateX(angle);
+            break;
+        }
+        case 7: {
+            transMatrix = rotateY(angle);
+            break;
+        }
+    }
+    for (let i = 0; i < faceIndex[faceKey].length; i++) {
+        for (let j = 0; j < 36; j++) {
+            points[faceIndex[faceKey][i]*36 + j] = mult(transMatrix, points[faceIndex[faceKey][i]*36+j]);
+        }
+    }
+    /*var vBuffer = gl.createBuffer();
+    gl.bindBuffer( gl.ARRAY_BUFFER, vBuffer );
+    gl.bufferData( gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW );
+
+    var vPosition = gl.getAttribLocation( program, "vPosition" );
+    gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0, 0 );
+    gl.enableVertexAttribArray( vPosition );*/
+
+    gl.bufferData( gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW );
     if (counter === times) {
         flag = 0;
         counter = 0;
+        console.log(faceIndex);
+        replaceFaceIndex(faceKey);
+        console.log(faceIndex);
+        //points = Object.assign([], tempPoints);
+        //gl.bufferData( gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW );
     }
-    var transMatrix = rotateX(angle);
-    for( let i = 0; i < 27;i+=3) {
-        for( let j =0; j<36; j++) {
-            points[i*36+j] = mult(transMatrix, points[i*36+j]);
-        }
-    }
-    gl.bufferData( gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW );
 }
 
 function getPlaneLocation() {
-    console.log(getFrontFace());
+    changeFaceColor(getFrontFace());
+    //console.log(getFrontFace());
+}
+
+function changeFaceColor(faceKey) {
+    //console.log(colors);
+    for(let i = 0; i < 9; i++) {
+        let cubeIndex = faceVec[faceKey][i];
+        for( let j = 0; j < 36; j++) {
+            colors[cubeIndex*36+j] = cyan;
+        }
+    }
+    var cBuffer = gl.createBuffer();
+    gl.bindBuffer( gl.ARRAY_BUFFER, cBuffer );
+    gl.bufferData( gl.ARRAY_BUFFER, flatten(colors), gl.DYNAMIC_DRAW );
+
+    var vColor = gl.getAttribLocation( program, "vColor" );
+    gl.vertexAttribPointer( vColor, 4, gl.FLOAT, false, 0, 0 );
+    gl.enableVertexAttribArray( vColor );
+}
+
+function replaceFaceIndex(faceKey) {
+    let tempface = Object.assign( [], faceIndex[faceKey]);
+    replaceCubeIndex(faceIndex[faceKey][0], 50);
+    replaceCubeIndex(faceIndex[faceKey][1], 51);
+    console.log(faceIndex);
+    for(let i = 3; i < 8; i+=2) {
+        replaceCubeIndex(faceIndex[faceKey][i], tempface[i-2]);
+        replaceCubeIndex(faceIndex[faceKey][i-1], tempface[i-3]);
+    }
+    replaceCubeIndex(50, tempface[6]);
+    replaceCubeIndex(51, tempface[7]);
+}
+
+function replaceCubeIndex(oldIndex, newIndex) {
+    for( let key in faceIndex) {
+        for( let i = 0; i<9; i++ ) {
+            if (faceIndex[key][i] === oldIndex){
+                faceIndex[key][i] = newIndex;
+            }
+        }
+    }
 }
 
 function render()
@@ -674,10 +755,8 @@ function render()
 
     gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(ctm));
 
-    //console.log(points);
-
     if(flag) {
-        leftOne();
+        rotatePlane(faceFlag);
     }
 
     gl.drawArrays( gl.TRIANGLES, 0, NumVertices );

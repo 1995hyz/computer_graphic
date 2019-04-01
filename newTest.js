@@ -17,6 +17,7 @@ var theta = [ 0, 0, 0 ];
 
 var thetaLoc;
 var modelViewMatrixLoc;
+var rotateDirectionLoc;
 var ctm;
 
 var tempPoints = [];
@@ -273,6 +274,8 @@ var vertices = [
     vec4(  edgeLength/2+edgeLength+gap, -edgeLength/2+edgeLength+gap, -edgeLength/2-edgeLength-gap, 1.0 )
 ];
 
+var thetaArray = [];
+
 const black = [ 0.0, 0.0, 0.0, 1.0 ];
 const red = [ 1.0, 0.0, 0.0, 1.0 ];
 const yellow = [ 1.0, 1.0, 0.0, 1.0 ];
@@ -292,6 +295,9 @@ window.onload = function init()
     if ( !gl ) { alert( "WebGL isn't available" ); }
 
     colorCube();
+    for(let i = 0; i < NumVertices; i++) {
+        thetaArray.push([0.0, 0.0, 0.0]);
+    }
 
     document.addEventListener("keydown", keyDownHandler, false);
 
@@ -322,7 +328,17 @@ window.onload = function init()
     gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0, 0 );
     gl.enableVertexAttribArray( vPosition );
 
+    var tBuffer = gl.createBuffer();
+    gl.bindBuffer( gl.ARRAY_BUFFER, tBuffer );
+    gl.bufferData( gl.ARRAY_BUFFER, flatten(thetaArray), gl.STATIC_DRAW );
+
+
+    var vTheta = gl.getAttribLocation( program, "vTheta" );
+    gl.vertexAttribPointer( vTheta, 3, gl.FLOAT, false, 0, 0 );
+    gl.enableVertexAttribArray( vTheta );
+
     thetaLoc = gl.getUniformLocation(program, "theta");
+    rotateDirectionLoc = gl.getUniformLocation(program, "rotateDirection");
 
     modelViewMatrixLoc = gl.getUniformLocation(program, "modelViewMatrix");
     //event listeners for buttons
@@ -330,6 +346,7 @@ window.onload = function init()
     document.getElementById( "bottom" ).onclick = function () {
         flag = 1;
         faceFlag = 7;
+        setRotateDirection("front", faceFlag);
         tempPoints = Object.assign([], points);
         rotatePlane(faceFlag);
     };
@@ -368,11 +385,11 @@ window.onload = function init()
         rotatePlane(faceFlag);
     };
     document.getElementById("left").onclick = function() {
-        /*flag = 1;
-        faceFlag = getBackFace();
+        flag = 1;
+        faceFlag = 4;
         setRotateDirection("back", faceFlag);
         tempPoints = Object.assign([], points);
-        rotatePlane(faceFlag);*/
+        rotatePlane(faceFlag);
     };
     document.getElementById("middleLR").onclick = function() {
 
@@ -654,8 +671,8 @@ var flag = 0;
 var counter = 0;
 const times = 45;
 const angle = 90 / times;
-const clockWise = -1;
-const counterClockWise = 1;
+const clockWise = 1;
+const counterClockWise = -1;
 var faceIndex = {
     1: [0, 1, 2, 11, 20, 19, 18, 9, 10],
     2: [3, 4, 5, 14, 23, 22, 21, 12, 13],
@@ -743,52 +760,61 @@ function setRotateDirection(face, faceKey) {
 
 function rotatePlane(faceKey) {
     counter += 1;
+    let rotateAxis = xAxis;
     let transMatrix = mat4();
     switch (faceKey) {
         case 1:
         case 2:
         case 3: {
             //if(rotateDirection === clockWise) {
-                transMatrix = rotateZ(angle);
+            //    transMatrix = rotateZ(angle);
             //}
             //else {
             //    transMatrix = rotateZCounterClock(angle);
             //}
+            rotateAxis = zAxis;
             break;
         }
         case 4: {
-            transMatrix = rotateX(angle);
+            //transMatrix = rotateX(angle);
+            rotateAxis = xAxis;
             break;
         }
         case 5: {
-            transMatrix = rotateX(angle);
+            //transMatrix = rotateX(angle);
+            rotateAxis = xAxis;
             break;
         }
         case 6: {
-            transMatrix = rotateX(angle);
+            //transMatrix = rotateX(angle);
+            rotateAxis = xAxis;
             break;
         }
         case 7: {
-            transMatrix = rotateY(angle);
+            //transMatrix = rotateY(angle);
+            rotateAxis = yAxis;
             break;
         }
         case 8: {
-            transMatrix = rotateY(angle);
+            //transMatrix = rotateY(angle);
+            rotateAxis = yAxis;
             break;
         }
         case 9: {
             //if(rotateDirection === clockWise) {
-                transMatrix = rotateY(angle);
+            //    transMatrix = rotateY(angle);
             //}
             //else {
             //    transMatrix = rotateYCounterClock(angle);
             //}
+            rotateAxis = yAxis;
             break;
         }
     }
     for (let i = 0; i < faceIndex[faceKey].length; i++) {
         for (let j = 0; j < 36; j++) {
-            points[faceIndex[faceKey][i]*36 + j] = mult(transMatrix, points[faceIndex[faceKey][i]*36+j]);
+            //points[faceIndex[faceKey][i]*36 + j] = mult(transMatrix, points[faceIndex[faceKey][i]*36+j]);
+            thetaArray[faceIndex[faceKey][i]*36+j][rotateAxis] += angle*rotateDirection;
         }
     }
     /*var vBuffer = gl.createBuffer();
@@ -799,10 +825,14 @@ function rotatePlane(faceKey) {
     gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0, 0 );
     gl.enableVertexAttribArray( vPosition );*/
 
-    gl.bufferData( gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW );
+    //gl.bufferData( gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW );
+    gl.bufferData( gl.ARRAY_BUFFER, flatten(thetaArray), gl.STATIC_DRAW );
     if (counter === times) {
         flag = 0;
         counter = 0;
+        console.log(faceKey);
+        console.log(faceIndex);
+        console.log(thetaArray);
         replaceFaceIndex(faceKey, rotateDirection);
         //points = Object.assign([], tempPoints);
         //gl.bufferData( gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW );
@@ -831,7 +861,7 @@ function changeFaceColor(faceKey) {
 
 function replaceFaceIndex(faceKey, direction) {
     let tempface = Object.assign( [], faceIndex[faceKey]);
-    if(direction === counterClockWise) {
+    if(direction === clockWise) {
         replaceCubeIndex(faceIndex[faceKey][0], 50);
         replaceCubeIndex(faceIndex[faceKey][1], 51);
         for (let i = 3; i < 8; i += 2) {
@@ -890,6 +920,7 @@ function render()
     ctm = mult(ctm, rotateZ(theta[zAxis]));
 
     gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(ctm));
+    gl.uniform1i(rotateDirectionLoc, rotateDirection);
 
     if(flag) {
         rotatePlane(faceFlag);

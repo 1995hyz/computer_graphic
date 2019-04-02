@@ -387,7 +387,7 @@ window.onload = function init()
     document.getElementById("left").onclick = function() {
         flag = 1;
         faceFlag = 4;
-        setRotateDirection("back", faceFlag);
+        setRotateDirection("left", faceFlag);
         tempPoints = Object.assign([], points);
         rotatePlane(faceFlag);
     };
@@ -753,6 +753,23 @@ function setRotateDirection(face, faceKey) {
             }
             break;
         }
+        case "left": {
+            switch (faceKey) {
+                case 1:
+                case 6:
+                case 9:
+                    rotateDirection = userRotateDirection * (-1);
+                    break;
+                case 3:
+                case 4:
+                case 7:
+                    rotateDirection = userRotateDirection;
+                    break;
+                default:
+                    console.log("Unknown Face-key");
+            }
+            break;
+        }
         default:
             console.log("Unknown Face");
     }
@@ -766,66 +783,27 @@ function rotatePlane(faceKey) {
         case 1:
         case 2:
         case 3: {
-            //if(rotateDirection === clockWise) {
-            //    transMatrix = rotateZ(angle);
-            //}
-            //else {
-            //    transMatrix = rotateZCounterClock(angle);
-            //}
             rotateAxis = zAxis;
             break;
         }
-        case 4: {
-            //transMatrix = rotateX(angle);
-            rotateAxis = xAxis;
-            break;
-        }
-        case 5: {
-            //transMatrix = rotateX(angle);
-            rotateAxis = xAxis;
-            break;
-        }
+        case 4:
+        case 5:
         case 6: {
-            //transMatrix = rotateX(angle);
             rotateAxis = xAxis;
             break;
         }
-        case 7: {
-            //transMatrix = rotateY(angle);
-            rotateAxis = yAxis;
-            break;
-        }
-        case 8: {
-            //transMatrix = rotateY(angle);
-            rotateAxis = yAxis;
-            break;
-        }
+        case 7:
+        case 8:
         case 9: {
-            //if(rotateDirection === clockWise) {
-            //    transMatrix = rotateY(angle);
-            //}
-            //else {
-            //    transMatrix = rotateYCounterClock(angle);
-            //}
             rotateAxis = yAxis;
             break;
         }
     }
     for (let i = 0; i < faceIndex[faceKey].length; i++) {
         for (let j = 0; j < 36; j++) {
-            //points[faceIndex[faceKey][i]*36 + j] = mult(transMatrix, points[faceIndex[faceKey][i]*36+j]);
             thetaArray[faceIndex[faceKey][i]*36+j][rotateAxis] += angle*rotateDirection;
         }
     }
-    /*var vBuffer = gl.createBuffer();
-    gl.bindBuffer( gl.ARRAY_BUFFER, vBuffer );
-    gl.bufferData( gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW );
-
-    var vPosition = gl.getAttribLocation( program, "vPosition" );
-    gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0, 0 );
-    gl.enableVertexAttribArray( vPosition );*/
-
-    //gl.bufferData( gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW );
     gl.bufferData( gl.ARRAY_BUFFER, flatten(thetaArray), gl.STATIC_DRAW );
     if (counter === times) {
         flag = 0;
@@ -975,7 +953,13 @@ function rotatePoints(faceKey) {
             break;
         }
         case 4: {
-            transMatrix = rotateX(90);
+            if(rotateDirection === counterClockWise) {
+                transMatrix = rotateX(-90);
+            }
+            else {
+                transMatrix = rotateX(90);
+            }
+            //transMatrix = rotateY(-90);
             break;
         }
         case 5: {

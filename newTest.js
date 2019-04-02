@@ -833,9 +833,29 @@ function rotatePlane(faceKey) {
         console.log(faceKey);
         console.log(faceIndex);
         console.log(thetaArray);
+        transMatrix = rotatePoints(faceKey);
         replaceFaceIndex(faceKey, rotateDirection);
-        //points = Object.assign([], tempPoints);
-        //gl.bufferData( gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW );
+        for (let i = 0; i < faceIndex[faceKey].length; i++) {
+            for (let j = 0; j < 36; j++) {
+                points[faceIndex[faceKey][i]*36 + j] = mult(transMatrix, points[faceIndex[faceKey][i]*36+j]);
+            }
+        }
+        var vBuffer = gl.createBuffer();
+        gl.bindBuffer( gl.ARRAY_BUFFER, vBuffer );
+        gl.bufferData( gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW );
+        var vPosition = gl.getAttribLocation( program, "vPosition" );
+        gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0, 0 );
+        gl.enableVertexAttribArray( vPosition );
+
+        for(let i = 0; i < NumVertices; i++) {
+            thetaArray[i] = [0.0, 0.0, 0.0];
+        }
+        var tBuffer = gl.createBuffer();
+        gl.bindBuffer( gl.ARRAY_BUFFER, tBuffer );
+        gl.bufferData( gl.ARRAY_BUFFER, flatten(thetaArray), gl.STATIC_DRAW );
+        var vTheta = gl.getAttribLocation( program, "vTheta" );
+        gl.vertexAttribPointer( vTheta, 3, gl.FLOAT, false, 0, 0 );
+        gl.enableVertexAttribArray( vTheta );
     }
 }
 
@@ -927,6 +947,67 @@ function render()
     }
 
     gl.drawArrays( gl.TRIANGLES, 0, NumVertices );
-
+    /*drawFace(1);
+    drawFace(2);
+    drawFace(3);*/
     requestAnimFrame( render );
+}
+
+function drawFace(faceKey) {
+    let i;
+    for( i in faceIndex[faceKey] ) {
+        gl.drawArrays(gl.TRIANGLES, i * 36, 36);
+    }
+}
+
+function rotatePoints(faceKey) {
+    let transMatrix = mat4();
+    switch (faceKey) {
+        case 1:
+        case 2:
+        case 3: {
+            if(rotateDirection === clockWise) {
+                transMatrix = rotateZ(90);
+            }
+            else {
+                transMatrix = rotateZCounterClock(90);
+            }
+            break;
+        }
+        case 4: {
+            transMatrix = rotateX(90);
+            break;
+        }
+        case 5: {
+            transMatrix = rotateX(90);
+            break;
+        }
+        case 6: {
+            transMatrix = rotateX(90);
+            break;
+        }
+        case 7: {
+            if(rotateDirection === clockWise) {
+                transMatrix = rotateY(90);
+            }
+            else {
+                transMatrix = rotateYCounterClock(90);
+            }
+            break;
+        }
+        case 8: {
+            transMatrix = rotateY(90);
+            break;
+        }
+        case 9: {
+            if(rotateDirection === clockWise) {
+                transMatrix = rotateY(90);
+            }
+            else {
+                transMatrix = rotateYCounterClock(90);
+            }
+            break;
+        }
+    }
+    return transMatrix;
 }

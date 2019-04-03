@@ -410,7 +410,7 @@ window.onload = function init()
         tempPoints = Object.assign([], points);
         rotatePlane(faceFlag);
     };
-    document.getElementById("test" ).onclick = getPlaneLocation;
+    document.getElementById("test" ).onclick = saveCubeStatus;
 
     document.getElementById("clockwise").onclick = function () {
         userRotateDirection = clockWise;
@@ -418,7 +418,8 @@ window.onload = function init()
     document.getElementById("counterclockwise").onclick = function () {
         userRotateDirection = counterClockWise;
     };
-
+    document.getElementById("saveCube" ).onclick = saveCubeStatus;
+    document.getElementById("loadCube" ).onclick = loadCubeStatus;
     render();
 };
 
@@ -1067,4 +1068,31 @@ function checkSolution() {
         }
     }
     return false;
+}
+
+function saveCubeStatus() {
+    let pointsStatus = JSON.stringify([points, faceIndex]);
+    document.getElementById("cubeState").value = btoa(pointsStatus);
+}
+
+function loadCubeStatus() {
+    let pointsStatus = atob(document.getElementById("cubeState").value);
+    let bundle = JSON.parse(pointsStatus);
+    points = Object.assign([], bundle[0]);
+    faceIndex = Object.assign([], bundle[1]);
+    var vBuffer = gl.createBuffer();
+    gl.bindBuffer( gl.ARRAY_BUFFER, vBuffer );
+    gl.bufferData( gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW );
+    var vPosition = gl.getAttribLocation( program, "vPosition" );
+    gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0, 0 );
+    gl.enableVertexAttribArray( vPosition );
+    for(let i = 0; i < NumVertices; i++) {
+        thetaArray[i] = [0.0, 0.0, 0.0];
+    }
+    var tBuffer = gl.createBuffer();
+    gl.bindBuffer( gl.ARRAY_BUFFER, tBuffer );
+    gl.bufferData( gl.ARRAY_BUFFER, flatten(thetaArray), gl.STATIC_DRAW );
+    var vTheta = gl.getAttribLocation( program, "vTheta" );
+    gl.vertexAttribPointer( vTheta, 3, gl.FLOAT, false, 0, 0 );
+    gl.enableVertexAttribArray( vTheta );
 }

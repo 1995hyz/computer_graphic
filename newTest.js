@@ -341,6 +341,7 @@ window.onload = function init()
     rotateDirectionLoc = gl.getUniformLocation(program, "rotateDirection");
 
     modelViewMatrixLoc = gl.getUniformLocation(program, "modelViewMatrix");
+
     //event listeners for buttons
 
     document.getElementById( "bottom" ).onclick = function () {
@@ -352,8 +353,9 @@ window.onload = function init()
     };
     document.getElementById( "middleBT" ).onclick = function () {
         flag = 1;
-        faceFlag = 1;
+        faceFlag = getTopFace();
         setRotateDirection("front", faceFlag);
+        faceFlag = getMiddleFace(faceFlag);
         tempPoints = Object.assign([], points);
         rotatePlane(faceFlag);
     };
@@ -394,7 +396,12 @@ window.onload = function init()
         rotatePlane(faceFlag);
     };
     document.getElementById("middleLR").onclick = function() {
-
+        flag = 1;
+        faceFlag = getLeftFace();
+        setRotateDirection("front", faceFlag);
+        tempPoints = Object.assign([], points);
+        faceFlag = getMiddleFace(faceFlag);
+        rotatePlane(faceFlag);
     };
     document.getElementById("right").onclick = function() {
         flag = 1;
@@ -689,6 +696,17 @@ var faceIndex = {
     8: [9, 10, 11, 14, 17, 16, 15, 12, 13],
     9: [18, 19, 20, 23, 26, 25, 24, 21, 22]
 };
+var faceIndexSolve = {
+    1: [0, 1, 2, 11, 20, 19, 18, 9, 10],
+    2: [3, 4, 5, 14, 23, 22, 21, 12, 13],
+    3: [6, 7, 8, 17, 26, 25, 24, 15, 16],
+    4: [0, 3, 6, 15, 24, 21, 18, 9, 12],
+    5: [1, 4, 7, 16, 25, 22, 19, 10, 13],
+    6: [2, 5, 8, 17, 26, 23, 20, 11, 14],
+    7: [0, 1, 2, 5, 8, 7, 6, 3, 4],
+    8: [9, 10, 11, 14, 17, 16, 15, 12, 13],
+    9: [18, 19, 20, 23, 26, 25, 24, 21, 22]
+};
 var faceAngle = {
     1: [0, 0, 0],
     3: [180, 180, 0],
@@ -882,6 +900,13 @@ function rotatePlane(faceKey) {
         var vTheta = gl.getAttribLocation( program, "vTheta" );
         gl.vertexAttribPointer( vTheta, 3, gl.FLOAT, false, 0, 0 );
         gl.enableVertexAttribArray( vTheta );
+
+        if(checkSolution()){
+            document.getElementById("cubeResult").innerHTML = "The Cube is in the solved state !";
+        }
+        else {
+            document.getElementById("cubeResult").innerHTML = "The Cube is not solved !";
+        }
     }
 }
 
@@ -916,7 +941,6 @@ function replaceFaceIndex(faceKey, direction) {
         }
         replaceCubeIndex(50, tempface[6]);
         replaceCubeIndex(51, tempface[7]);
-        //console.log(faceIndex);
     }
     else {
         replaceCubeIndex(faceIndex[faceKey][6], 50);
@@ -927,7 +951,6 @@ function replaceFaceIndex(faceKey, direction) {
         }
         replaceCubeIndex(50, tempface[0]);
         replaceCubeIndex(51, tempface[1]);
-        console.log(faceIndex);
     }
 }
 
@@ -986,11 +1009,13 @@ function rotatePoints(faceKey) {
                 transMatrix = rotateZ(90);
             }
             else {
-                transMatrix = rotateZCounterClock(90);
+                transMatrix = rotateZ(-90);
             }
             break;
         }
-        case 4: {
+        case 4:
+        case 5:
+        case 6: {
             if (rotateDirection === clockWise) {
                 transMatrix = rotateX(90);
             }
@@ -999,36 +1024,28 @@ function rotatePoints(faceKey) {
             }
             break;
         }
-        case 5: {
-            transMatrix = rotateX(90);
-            break;
-        }
-        case 6: {
-            transMatrix = rotateX(90);
-            break;
-        }
-        case 7: {
-            if(rotateDirection === clockWise) {
-                transMatrix = rotateY(90);
-            }
-            else {
-                transMatrix = rotateYCounterClock(90);
-            }
-            break;
-        }
-        case 8: {
-            transMatrix = rotateY(90);
-            break;
-        }
+        case 7:
+        case 8:
         case 9: {
             if(rotateDirection === clockWise) {
                 transMatrix = rotateY(90);
             }
             else {
-                transMatrix = rotateYCounterClock(90);
+                transMatrix = rotateY(-90);
             }
             break;
         }
     }
     return transMatrix;
+}
+
+function checkSolution() {
+    for(let key in faceIndex) {
+        for(let i = 0; i < 9; i++) {
+            if (! faceIndexSolve[key].includes(faceIndex[key][i])) {
+                return false;
+            }
+        }
+    }
+    return true;
 }

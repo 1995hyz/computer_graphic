@@ -347,7 +347,7 @@ window.onload = function init()
     document.getElementById( "bottom" ).onclick = function () {
         flag = 1;
         faceFlag = getBottomFace();
-        setRotateDirection("front", faceFlag);
+        setRotateDirection("back", faceFlag);
         tempPoints = Object.assign([], points);
         rotatePlane(faceFlag);
     };
@@ -384,7 +384,7 @@ window.onload = function init()
     document.getElementById("back").onclick = function () {
         flag = 1;
         faceFlag = getBackFace();
-        setRotateDirection("front", faceFlag);
+        setRotateDirection("back", faceFlag);
         tempPoints = Object.assign([], points);
         rotatePlane(faceFlag);
     };
@@ -406,7 +406,7 @@ window.onload = function init()
     document.getElementById("right").onclick = function() {
         flag = 1;
         faceFlag = getRightFace();
-        setRotateDirection("front", faceFlag);
+        setRotateDirection("back", faceFlag);
         tempPoints = Object.assign([], points);
         rotatePlane(faceFlag);
     };
@@ -823,6 +823,23 @@ function setRotateDirection(face, faceKey) {
             }
             break;
         }
+        case "back": {
+            switch (faceKey) {
+                case 1:
+                case 6:
+                case 9:
+                    rotateDirection = userRotateDirection;
+                    break;
+                case 3:
+                case 4:
+                case 7:
+                    rotateDirection = userRotateDirection * (-1);
+                    break;
+                default:
+                    console.log("Unknown Face-key");
+            }
+            break;
+        }
         default:
             console.log("Unknown Face");
     }
@@ -875,9 +892,6 @@ function rotatePlane(faceKey) {
     if (counter === times) {
         flag = 0;
         counter = 0;
-        console.log(faceKey);
-        console.log(faceIndex);
-        console.log(thetaArray);
         transMatrix = rotatePoints(faceKey);
         replaceFaceIndex(faceKey, rotateDirection);
         for (let i = 0; i < faceIndex[faceKey].length; i++) {
@@ -1041,11 +1055,16 @@ function rotatePoints(faceKey) {
 
 function checkSolution() {
     for(let key in faceIndex) {
-        for(let i = 0; i < 9; i++) {
-            if (! faceIndexSolve[key].includes(faceIndex[key][i])) {
-                return false;
+        for(let key2 in faceIndexSolve) {
+            if (faceIndex[key][8] === faceIndexSolve[key2][8]) {
+                for(let i = 0; i < 8; i++) {
+                    if (!faceIndexSolve[key2].includes(faceIndex[key][i])) {
+                        return false;
+                    }
+                }
+                return true;
             }
         }
     }
-    return true;
+    return false;
 }

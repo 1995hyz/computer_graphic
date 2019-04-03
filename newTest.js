@@ -345,7 +345,7 @@ window.onload = function init()
 
     document.getElementById( "bottom" ).onclick = function () {
         flag = 1;
-        faceFlag = 7;
+        faceFlag = getBottomFace();
         setRotateDirection("front", faceFlag);
         tempPoints = Object.assign([], points);
         rotatePlane(faceFlag);
@@ -353,12 +353,14 @@ window.onload = function init()
     document.getElementById( "middleBT" ).onclick = function () {
         flag = 1;
         faceFlag = 1;
+        setRotateDirection("front", faceFlag);
         tempPoints = Object.assign([], points);
         rotatePlane(faceFlag);
     };
     document.getElementById( "top" ).onclick = function () {
         flag = 1;
-        faceFlag = 4;
+        faceFlag = getTopFace();
+        setRotateDirection("front", faceFlag);
         tempPoints = Object.assign([], points);
         rotatePlane(faceFlag)
     };
@@ -380,14 +382,14 @@ window.onload = function init()
     document.getElementById("back").onclick = function () {
         flag = 1;
         faceFlag = getBackFace();
-        setRotateDirection("back", faceFlag);
+        setRotateDirection("front", faceFlag);
         tempPoints = Object.assign([], points);
         rotatePlane(faceFlag);
     };
     document.getElementById("left").onclick = function() {
         flag = 1;
-        faceFlag = 4;
-        setRotateDirection("back", faceFlag);
+        faceFlag = getLeftFace();
+        setRotateDirection("front", faceFlag);
         tempPoints = Object.assign([], points);
         rotatePlane(faceFlag);
     };
@@ -395,13 +397,16 @@ window.onload = function init()
 
     };
     document.getElementById("right").onclick = function() {
-
+        flag = 1;
+        faceFlag = getRightFace();
+        setRotateDirection("front", faceFlag);
+        tempPoints = Object.assign([], points);
+        rotatePlane(faceFlag);
     };
     document.getElementById("test" ).onclick = getPlaneLocation;
 
     document.getElementById("clockwise").onclick = function () {
         userRotateDirection = clockWise;
-        //rotateDirection = clockWise;
     };
     document.getElementById("counterclockwise").onclick = function () {
         userRotateDirection = counterClockWise;
@@ -729,9 +734,56 @@ function getBackFace() {
 }
 
 function getLeftFace() {
-    let frontFace = getFrontFace();
-    let leftFace = 0;
+    let xProjection = 0;
+    let faceKey = 1;
+    for(let key in faceVec) {
+        let temp = mult(ctm, faceVec[key]);
+        if(temp[0] < xProjection) {
+            xProjection = temp[0];
+            faceKey = Number(key);
+        }
+    }
+    return faceKey;
+}
 
+function getRightFace() {
+    let leftFace = getLeftFace();
+    let rightFace = 0;
+    switch (leftFace) {
+        case 1: rightFace = 3; break;
+        case 3: rightFace = 1; break;
+        case 4: rightFace = 6; break;
+        case 6: rightFace = 4; break;
+        case 7: rightFace = 9; break;
+        case 9: rightFace = 7; break;
+    }
+    return Number(rightFace);
+}
+function getTopFace() {
+    let yProjection = 0;
+    let faceKey = 1;
+    for(let key in faceVec) {
+        let temp = mult(ctm, faceVec[key]);
+        if(temp[1] > yProjection) {
+            yProjection = temp[1];
+            faceKey = Number(key);
+        }
+    }
+    return faceKey;
+}
+
+function getBottomFace() {
+    let topFace = getTopFace();
+    let bottomFace = 0;
+    switch (topFace) {
+        case 1: bottomFace = 3; break;
+        case 3: bottomFace = 1; break;
+        case 4: bottomFace = 6; break;
+        case 6: bottomFace = 4; break;
+        case 7: bottomFace = 9; break;
+        case 9: bottomFace = 7; break;
+    }
+    return Number(bottomFace);
 }
 
 function setRotateDirection(face, faceKey) {
@@ -766,47 +818,30 @@ function rotatePlane(faceKey) {
         case 1:
         case 2:
         case 3: {
-            //if(rotateDirection === clockWise) {
-            //    transMatrix = rotateZ(angle);
-            //}
-            //else {
-            //    transMatrix = rotateZCounterClock(angle);
-            //}
             rotateAxis = zAxis;
             break;
         }
         case 4: {
-            //transMatrix = rotateX(angle);
             rotateAxis = xAxis;
             break;
         }
         case 5: {
-            //transMatrix = rotateX(angle);
             rotateAxis = xAxis;
             break;
         }
         case 6: {
-            //transMatrix = rotateX(angle);
             rotateAxis = xAxis;
             break;
         }
         case 7: {
-            //transMatrix = rotateY(angle);
             rotateAxis = yAxis;
             break;
         }
         case 8: {
-            //transMatrix = rotateY(angle);
             rotateAxis = yAxis;
             break;
         }
         case 9: {
-            //if(rotateDirection === clockWise) {
-            //    transMatrix = rotateY(angle);
-            //}
-            //else {
-            //    transMatrix = rotateYCounterClock(angle);
-            //}
             rotateAxis = yAxis;
             break;
         }
@@ -817,15 +852,7 @@ function rotatePlane(faceKey) {
             thetaArray[faceIndex[faceKey][i]*36+j][rotateAxis] += angle*rotateDirection;
         }
     }
-    /*var vBuffer = gl.createBuffer();
-    gl.bindBuffer( gl.ARRAY_BUFFER, vBuffer );
-    gl.bufferData( gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW );
 
-    var vPosition = gl.getAttribLocation( program, "vPosition" );
-    gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0, 0 );
-    gl.enableVertexAttribArray( vPosition );*/
-
-    //gl.bufferData( gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW );
     gl.bufferData( gl.ARRAY_BUFFER, flatten(thetaArray), gl.STATIC_DRAW );
     if (counter === times) {
         flag = 0;
@@ -846,7 +873,6 @@ function rotatePlane(faceKey) {
         var vPosition = gl.getAttribLocation( program, "vPosition" );
         gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0, 0 );
         gl.enableVertexAttribArray( vPosition );
-
         for(let i = 0; i < NumVertices; i++) {
             thetaArray[i] = [0.0, 0.0, 0.0];
         }
@@ -901,7 +927,7 @@ function replaceFaceIndex(faceKey, direction) {
         }
         replaceCubeIndex(50, tempface[0]);
         replaceCubeIndex(51, tempface[1]);
-        //console.log(faceIndex);
+        console.log(faceIndex);
     }
 }
 
@@ -947,17 +973,7 @@ function render()
     }
 
     gl.drawArrays( gl.TRIANGLES, 0, NumVertices );
-    /*drawFace(1);
-    drawFace(2);
-    drawFace(3);*/
     requestAnimFrame( render );
-}
-
-function drawFace(faceKey) {
-    let i;
-    for( i in faceIndex[faceKey] ) {
-        gl.drawArrays(gl.TRIANGLES, i * 36, 36);
-    }
 }
 
 function rotatePoints(faceKey) {
@@ -975,7 +991,12 @@ function rotatePoints(faceKey) {
             break;
         }
         case 4: {
-            transMatrix = rotateX(90);
+            if (rotateDirection === clockWise) {
+                transMatrix = rotateX(90);
+            }
+            else {
+                transMatrix = rotateX(-90);
+            }
             break;
         }
         case 5: {

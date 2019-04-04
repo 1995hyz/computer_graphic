@@ -3,3 +3,30 @@ button {
     width: 120px;
     margin: 10px;
 }
+#cubeResult {
+    font-size: larger;
+    font-weight: bold;
+}
+#dataBox {
+    padding-top: 90px;
+}
+#descriptionBox {
+    padding-top: 70px;
+    padding-left: 100px;
+}
+
+.inline {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.inline-rotate {
+    display: inline-block;
+    vertical-align: top;
+}
+
+#rotateStart {
+    padding: 5px 10px;
+    width: 70px;
+    margin: 10px;
+}

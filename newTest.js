@@ -12,7 +12,6 @@ var xAxis = 0;
 var yAxis = 1;
 var zAxis = 2;
 
-var axis = 0;
 var theta = [ 0, 0, 0 ];
 
 var thetaLoc;
@@ -281,8 +280,7 @@ const red = [ 1.0, 0.0, 0.0, 1.0 ];
 const yellow = [ 1.0, 1.0, 0.0, 1.0 ];
 const green = [ 0.0, 1.0, 0.0, 1.0 ];
 const blue = [ 0.0, 0.0, 1.0, 1.0 ];
-const magenta = [ 1.0, 0.0, 1.0, 1.0 ];
-const cyan = [ 0.0, 1.0, 1.0, 1.0 ];
+const magenta = [ 1.0, 0.5, 0.0, 1.0 ];
 const white = [ 0.85, 0.85, 0.85, 1.0 ];
 
 var program;
@@ -410,7 +408,6 @@ window.onload = function init()
         tempPoints = Object.assign([], points);
         rotatePlane(faceFlag);
     };
-    document.getElementById("test" ).onclick = saveCubeStatus;
 
     document.getElementById("clockwise").onclick = function () {
         userRotateDirection = clockWise;
@@ -420,6 +417,7 @@ window.onload = function init()
     };
     document.getElementById("saveCube" ).onclick = saveCubeStatus;
     document.getElementById("loadCube" ).onclick = loadCubeStatus;
+    document.getElementById("rotateStart");
     render();
 };
 
@@ -708,14 +706,6 @@ var faceIndexSolve = {
     8: [9, 10, 11, 14, 17, 16, 15, 12, 13],
     9: [18, 19, 20, 23, 26, 25, 24, 21, 22]
 };
-var faceAngle = {
-    1: [0, 0, 0],
-    3: [180, 180, 0],
-    4: [0, 90, 0],
-    6: [0, 270, 0],
-    7: [270, 0, 0],
-    9: [90, 0, 0]
-};
 var faceVec = {
     1: [0, 0, 1, 1],
     3: [0, 0, -1, 1],
@@ -884,7 +874,6 @@ function rotatePlane(faceKey) {
     }
     for (let i = 0; i < faceIndex[faceKey].length; i++) {
         for (let j = 0; j < 36; j++) {
-            //points[faceIndex[faceKey][i]*36 + j] = mult(transMatrix, points[faceIndex[faceKey][i]*36+j]);
             thetaArray[faceIndex[faceKey][i]*36+j][rotateAxis] += angle*rotateDirection;
         }
     }
@@ -923,26 +912,6 @@ function rotatePlane(faceKey) {
             document.getElementById("cubeResult").innerHTML = "The Cube is not solved !";
         }
     }
-}
-
-function getPlaneLocation() {
-    changeFaceColor(getFrontFace());
-}
-
-function changeFaceColor(faceKey) {
-    for(let i = 0; i < 9; i++) {
-        let cubeIndex = faceVec[faceKey][i];
-        for( let j = 0; j < 36; j++) {
-            colors[cubeIndex*36+j] = cyan;
-        }
-    }
-    var cBuffer = gl.createBuffer();
-    gl.bindBuffer( gl.ARRAY_BUFFER, cBuffer );
-    gl.bufferData( gl.ARRAY_BUFFER, flatten(colors), gl.DYNAMIC_DRAW );
-
-    var vColor = gl.getAttribLocation( program, "vColor" );
-    gl.vertexAttribPointer( vColor, 4, gl.FLOAT, false, 0, 0 );
-    gl.enableVertexAttribArray( vColor );
 }
 
 function replaceFaceIndex(faceKey, direction) {

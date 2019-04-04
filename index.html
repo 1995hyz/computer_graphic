@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/html">
+<br xmlns="http://www.w3.org/1999/html">
 
 <script id="vertex-shader" type="x-shader/x-vertex">
 
@@ -17,22 +17,10 @@ void main()
 {
     // Compute the sines and cosines of theta for each of
     //   the three axes in one computation.
-    /*vec3 angles = radians( theta );*/
     vec3 angles = radians(vTheta);
     vec3 c = cos( angles );
     vec3 s = sin( angles );
-    /*mat4 rx = mat4(0.0,  0.0,  0.0, 0.0,
-		    0.0,  0.0,  0.0, 0.0,
-		    0.0,  0.0,  0.0, 0.0,
-		    0.0,  0.0,  0.0, 1.0);
-	mat4 ry = mat4(0.0,  0.0,  0.0, 0.0,
-		    0.0,  0.0,  0.0, 0.0,
-		    0.0,  0.0,  0.0, 0.0,
-		    0.0,  0.0,  0.0, 1.0);
-    mat4 rz = mat4(0.0,  0.0,  0.0, 0.0,
-		    0.0,  0.0,  0.0, 0.0,
-		    0.0,  0.0,  0.0, 0.0,
-		    0.0,  0.0,  0.0, 1.0);*/
+
     // ******************************
     mat4 rx = mat4( 1.0,  0.0,  0.0, 0.0,
 		    0.0,  c.x,  s.x, 0.0,
@@ -46,42 +34,15 @@ void main()
 		    -s.z,  c.z, 0.0, 0.0,
 		    0.0,  0.0, 1.0, 0.0,
 		    0.0,  0.0, 0.0, 1.0 );
+
+    mat4 scaling = mat4( 1.6, 0.0, 0.0, 0.0,
+            0.0, 1.6, 0.0, 0.0,
+            0.0, 0.0, 1.6, 0.0,
+            0.0, 0.0, 0.0, 1.0);
     // ******************************
-    // Remeber: thse matrices are column-major
-    /*if (rotateDirection == 1) {
-        rx = mat4( 1.0,  0.0,  0.0, 0.0,
-		    0.0,  c.x,  s.x, 0.0,
-		    0.0, -s.x,  c.x, 0.0,
-		    0.0,  0.0,  0.0, 1.0 );
-        ry = mat4( c.y, 0.0, -s.y, 0.0,
-		    0.0, 1.0,  0.0, 0.0,
-		    s.y, 0.0,  c.y, 0.0,
-		    0.0, 0.0,  0.0, 1.0 );
-        rz = mat4( c.z, -s.z, 0.0, 0.0,
-		    s.z,  c.z, 0.0, 0.0,
-		    0.0,  0.0, 1.0, 0.0,
-		    0.0,  0.0, 0.0, 1.0 );
-    }
-    else {
-        rx = mat4( 1.0,  0.0,  0.0, 0.0,
-		    0.0,  c.x,  -s.x, 0.0,
-		    0.0, s.x,  c.x, 0.0,
-		    0.0,  0.0,  0.0, 1.0 );
-
-        ry = mat4( c.y, 0.0, s.y, 0.0,
-		    0.0, 1.0,  0.0, 0.0,
-		    -s.y, 0.0,  c.y, 0.0,
-		    0.0, 0.0,  0.0, 1.0 );
-
-        rz = mat4( c.z, s.z, 0.0, 0.0,
-		    -s.z,  c.z, 0.0, 0.0,
-		    0.0,  0.0, 1.0, 0.0,
-		    0.0,  0.0, 0.0, 1.0 );
-    }*/
 
     fColor = vColor;
-    //gl_Position = modelViewMatrix * vPosition;//rz * ry * rx * vPosition;
-    gl_Position = modelViewMatrix * rz * ry * rx * vPosition;
+    gl_Position = scaling * modelViewMatrix * rz * ry * rx * vPosition;
     gl_Position.z = -gl_Position.z;
 }
 </script>
@@ -102,7 +63,6 @@ main()
 <script type="text/javascript" src="./webgl-utils.js"></script>
 <script type="text/javascript" src="./initShaders.js"></script>
 <script type="text/javascript" src="./MV.js"></script>
-<script type="text/javascript" src="./MVCounterClock.js"></script>
 <script type="text/javascript" src="./newTest.js"></script>
 
 <head>
@@ -110,39 +70,45 @@ main()
     <link rel="stylesheet" href="styles.css">
 </head>
 
-<body>
 <br>
-<canvas id="gl-canvas" width="512" height="512">
+<div class="inline">
+<canvas id="gl-canvas" width="400" height="400">
 Oops ... your browser doesn't support the HTML5 canvas element
 </canvas>
+</div>
+
+<div class="inline" id="dataBox">
+    <label for="cubeState">Copy/Paste Your Cube Status Here:</label>
+    <br/>
+    <textarea id="cubeState" rows="10" cols="40"></textarea>
+    <br/>
+    <button id="saveCube">Save Cube</button>
+    <button id="loadCube">Load Cube</button>
+</div>
+
+<div class="inline-rotate" id="descriptionBox">
+    <br/>
+    <p id="cubeResult">The Cube is in the solved state !</p>
+    <br/>
+    <label for="rotateTimes">Rotate # Times:</label>
+    <textarea id="rotateTimes" rows="1" cols="2"></textarea>
+    <button id="rotateStart">Go</button>
+</div>
 
 <br/>
 <button id="top">Top</button>
-<button id="middleBT">Middle of B&T</button>
-<button id="bottom">Bottom</button>
-<button id="test">Save</button>
-
-<br/>
 <button id="left">Left</button>
-<button id="middleLR">Middle of L&R</button>
-<button id="right">Right</button>
-<button id="clockwise">Clock-Wise</button>
-
-<br/>
 <button id="front">Front</button>
+<button id="middleBT">Middle of B&T</button>
 <button id="middleFB">Middle of F&B</button>
+<button id="middleLR">Middle of L&R</button>
+
+<br/>
+<button id="bottom">Bottom</button>
+<button id="right">Right</button>
 <button id="back">Back</button>
-<button id="counterclockwise">Counter-Clock-Wise</button>
-
-<br/>
-<p id="cubeResult">The Cube is in the solved state !</p>
-
-<br/>
-<button id="saveCube">Save Cube</button>
-<button id="loadCube">Load Cube</button>
-
-<label for="cubeState">Please Paste Your Saved Cube Status Here:</label>
-<textarea id="cubeState" rows="10" cols="40"></textarea>
+<button id="clockwise">Clock-Wise</button>
+<button id="counterclockwise">Counter-Clock</button>
 
 </body>
 </html>

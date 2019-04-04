@@ -13,6 +13,7 @@ var yAxis = 1;
 var zAxis = 2;
 
 var theta = [ 0, 0, 0 ];
+var randomCounter = 0;
 
 var thetaLoc;
 var modelViewMatrixLoc;
@@ -343,70 +344,31 @@ window.onload = function init()
     //event listeners for buttons
 
     document.getElementById( "bottom" ).onclick = function () {
-        flag = 1;
-        faceFlag = getBottomFace();
-        setRotateDirection("back", faceFlag);
-        tempPoints = Object.assign([], points);
-        rotatePlane(faceFlag);
+        clickFace("bottom");
     };
     document.getElementById( "middleBT" ).onclick = function () {
-        flag = 1;
-        faceFlag = getTopFace();
-        setRotateDirection("front", faceFlag);
-        faceFlag = getMiddleFace(faceFlag);
-        tempPoints = Object.assign([], points);
-        rotatePlane(faceFlag);
+        clickMiddleFace("top");
     };
     document.getElementById( "top" ).onclick = function () {
-        flag = 1;
-        faceFlag = getTopFace();
-        setRotateDirection("front", faceFlag);
-        tempPoints = Object.assign([], points);
-        rotatePlane(faceFlag)
+        clickFace("top");
     };
     document.getElementById("front").onclick = function () {
-        flag = 1;
-        faceFlag = getFrontFace();
-        setRotateDirection("front", faceFlag);
-        tempPoints = Object.assign([], points);
-        rotatePlane(faceFlag);
+        clickFace("front");
     };
     document.getElementById("middleFB").onclick = function () {
-        flag = 1;
-        faceFlag = getFrontFace();
-        setRotateDirection("front", faceFlag);
-        tempPoints = Object.assign([], points);
-        faceFlag = getMiddleFace(faceFlag);
-        rotatePlane(faceFlag);
+        clickMiddleFace("front");
     };
     document.getElementById("back").onclick = function () {
-        flag = 1;
-        faceFlag = getBackFace();
-        setRotateDirection("back", faceFlag);
-        tempPoints = Object.assign([], points);
-        rotatePlane(faceFlag);
+        clickFace("back");
     };
     document.getElementById("left").onclick = function() {
-        flag = 1;
-        faceFlag = getLeftFace();
-        setRotateDirection("front", faceFlag);
-        tempPoints = Object.assign([], points);
-        rotatePlane(faceFlag);
+        clickFace("left");
     };
     document.getElementById("middleLR").onclick = function() {
-        flag = 1;
-        faceFlag = getLeftFace();
-        setRotateDirection("front", faceFlag);
-        tempPoints = Object.assign([], points);
-        faceFlag = getMiddleFace(faceFlag);
-        rotatePlane(faceFlag);
+        clickMiddleFace("left");
     };
     document.getElementById("right").onclick = function() {
-        flag = 1;
-        faceFlag = getRightFace();
-        setRotateDirection("back", faceFlag);
-        tempPoints = Object.assign([], points);
-        rotatePlane(faceFlag);
+        clickFace("right");
     };
 
     document.getElementById("clockwise").onclick = function () {
@@ -417,7 +379,9 @@ window.onload = function init()
     };
     document.getElementById("saveCube" ).onclick = saveCubeStatus;
     document.getElementById("loadCube" ).onclick = loadCubeStatus;
-    document.getElementById("rotateStart");
+    document.getElementById("rotateStart").onclick = function () {
+        randomCounter = document.getElementById("rotateTimes").value;
+    };
     render();
 };
 
@@ -978,6 +942,11 @@ function render()
     if(flag) {
         rotatePlane(faceFlag);
     }
+    else if(randomCounter !== 0) {
+        faceFlag =  Math.floor(Math.random() * 9) + 1;
+        flag = 1;
+        randomCounter = randomCounter - 1;
+    }
 
     gl.drawArrays( gl.TRIANGLES, 0, NumVertices );
     requestAnimFrame( render );
@@ -1064,4 +1033,96 @@ function loadCubeStatus() {
     var vTheta = gl.getAttribLocation( program, "vTheta" );
     gl.vertexAttribPointer( vTheta, 3, gl.FLOAT, false, 0, 0 );
     gl.enableVertexAttribArray( vTheta );
+}
+
+function clickFace(face) {
+    flag = 1;
+    switch (face) {
+        case "bottom":
+            faceFlag = getBottomFace();
+            setRotateDirection("back", faceFlag);
+            break;
+        case "top":
+            faceFlag = getTopFace();
+            setRotateDirection("front", faceFlag);
+            break;
+        case "left":
+            faceFlag = getLeftFace();
+            setRotateDirection("front", faceFlag);
+            break;
+        case "right":
+            faceFlag = getRightFace();
+            setRotateDirection("back", faceFlag);
+            break;
+        case "front":
+            faceFlag = getFrontFace();
+            setRotateDirection("front", faceFlag);
+            break;
+        case "back":
+            faceFlag = getBackFace();
+            setRotateDirection("back", faceFlag);
+            break;
+        default:
+            console.log("Unknown Face Get Called")
+    }
+    tempPoints = Object.assign([], points);
+    rotatePlane(faceFlag);
+}
+
+function clickMiddleFace(face) {
+    flag = 1;
+    switch (face) {
+        case "top":
+            faceFlag = getTopFace();
+            break;
+        case "front":
+            faceFlag = getFrontFace();
+            break;
+        case "left":
+            faceFlag = getLeftFace();
+            break;
+        default:
+            console.log("Unknown Middle Face Get Called");
+    }
+    setRotateDirection("front", faceFlag);
+    tempPoints = Object.assign([], points);
+    faceFlag = getMiddleFace(faceFlag);
+    rotatePlane(faceFlag);
+}
+
+function randRotation(times) {
+    for(let i = 0; i < times; i++) {
+        let j = Math.floor(Math.random() * 9);
+        switch (j) {
+            case 0:
+                clickFace("front");
+                break;
+            case 1:
+                clickFace("back");
+                break;
+            case 2:
+                clickFace("top");
+                break;
+            case 3:
+                clickFace("bottom");
+                break;
+            case 4:
+                clickFace("left");
+                break;
+            case 5:
+                clickFace("right");
+                break;
+            case 6:
+                clickMiddleFace("front");
+                break;
+            case 7:
+                clickMiddleFace("top");
+                break;
+            case 8:
+                clickMiddleFace("left");
+                break;
+            default:
+                console.log("Invalid Random Number Generated");
+        }
+    }
 }

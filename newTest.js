@@ -344,30 +344,39 @@ window.onload = function init()
     //event listeners for buttons
 
     document.getElementById( "bottom" ).onclick = function () {
+        disableAllButtons();
         clickFace("bottom");
     };
     document.getElementById( "middleBT" ).onclick = function () {
+        disableAllButtons();
         clickMiddleFace("top");
     };
     document.getElementById( "top" ).onclick = function () {
+        disableAllButtons();
         clickFace("top");
     };
     document.getElementById("front").onclick = function () {
+        disableAllButtons();
         clickFace("front");
     };
     document.getElementById("middleFB").onclick = function () {
+        disableAllButtons();
         clickMiddleFace("front");
     };
     document.getElementById("back").onclick = function () {
+        disableAllButtons();
         clickFace("back");
     };
     document.getElementById("left").onclick = function() {
+        disableAllButtons();
         clickFace("left");
     };
     document.getElementById("middleLR").onclick = function() {
+        disableAllButtons();
         clickMiddleFace("left");
     };
     document.getElementById("right").onclick = function() {
+        disableAllButtons();
         clickFace("right");
     };
 
@@ -380,6 +389,7 @@ window.onload = function init()
     document.getElementById("saveCube" ).onclick = saveCubeStatus;
     document.getElementById("loadCube" ).onclick = loadCubeStatus;
     document.getElementById("rotateStart").onclick = function () {
+        disableAllButtons();
         randomCounter = document.getElementById("rotateTimes").value;
     };
     render();
@@ -759,6 +769,19 @@ function getBottomFace() {
     return Number(bottomFace);
 }
 
+function getMiddleFace(faceKey) {
+    let tempFace = 1;
+    switch (faceKey) {
+        case 1:
+        case 3: tempFace = 2; break;
+        case 4:
+        case 6: tempFace = 5; break;
+        case 7:
+        case 9: tempFace = 8; break;
+    }
+    return Number(tempFace);
+}
+
 function setRotateDirection(face, faceKey) {
     switch (face) {
         case "front": {
@@ -875,6 +898,7 @@ function rotatePlane(faceKey) {
         else {
             document.getElementById("cubeResult").innerHTML = "The Cube is not solved !";
         }
+        enableAllButtons();
     }
 }
 
@@ -912,25 +936,11 @@ function replaceCubeIndex(oldIndex, newIndex) {
     }
 }
 
-function getMiddleFace(faceKey) {
-    let tempFace = 1;
-    switch (faceKey) {
-        case 1:
-        case 3: tempFace = 2; break;
-        case 4:
-        case 6: tempFace = 5; break;
-        case 7:
-        case 9: tempFace = 8; break;
-    }
-    return Number(tempFace);
-}
-
 function render()
 {
 
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    //theta[axis] += 2.0;
     ctm = mat4();
     ctm = mult(ctm, rotateX(theta[xAxis]));
     ctm = mult(ctm, rotateY(theta[yAxis]));
@@ -1090,39 +1100,16 @@ function clickMiddleFace(face) {
     rotatePlane(faceFlag);
 }
 
-function randRotation(times) {
-    for(let i = 0; i < times; i++) {
-        let j = Math.floor(Math.random() * 9);
-        switch (j) {
-            case 0:
-                clickFace("front");
-                break;
-            case 1:
-                clickFace("back");
-                break;
-            case 2:
-                clickFace("top");
-                break;
-            case 3:
-                clickFace("bottom");
-                break;
-            case 4:
-                clickFace("left");
-                break;
-            case 5:
-                clickFace("right");
-                break;
-            case 6:
-                clickMiddleFace("front");
-                break;
-            case 7:
-                clickMiddleFace("top");
-                break;
-            case 8:
-                clickMiddleFace("left");
-                break;
-            default:
-                console.log("Invalid Random Number Generated");
-        }
+function disableAllButtons() {
+    let buttons = document.getElementsByTagName("button");
+    for (let i = 0; i<buttons.length; i++) {
+        buttons[i].disabled = true;
+    }
+}
+
+function enableAllButtons() {
+    let buttons = document.getElementsByTagName("button");
+    for (let i = 0; i<buttons.length; i++) {
+        buttons[i].disabled = false;
     }
 }

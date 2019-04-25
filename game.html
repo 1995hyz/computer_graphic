@@ -9,11 +9,15 @@
 
 attribute vec4 vPosition;
 attribute vec4 vColor;
+uniform mat4 u_matrix;
+uniform mat4 trans_matrix;
+uniform mat4 perspective_matrix;
 varying vec4 fColor;
 
 void main()
 {
-    gl_Position = vPosition;
+    gl_Position = trans_matrix * u_matrix * vPosition;//perspective_matrix * trans_matrix * u_matrix * vPosition;
+    gl_Position.z = -gl_Position.z;
     fColor = vColor;
 }
 </script>

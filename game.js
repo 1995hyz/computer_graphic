@@ -5,47 +5,47 @@ var gl;
 const block_length = 200;
 const block_width = 160;
 const block_height = 40;
-const gap = 20;
+const gap = 30;
 var program;
 var points = [];
 var colors = [];
 var NumVertices = 36*4;
 var vertices = [
-    vec4( -block_length/2, -block_height/2,  block_width/2, 1.0 ),
-    vec4( -block_length/2,  block_height/2,  block_width/2, 1.0 ),
-    vec4(  block_length/2,  block_height/2,  block_width/2, 1.0 ),
-    vec4(  block_length/2, -block_height/2,  block_width/2, 1.0 ),
-    vec4( -block_length/2, -block_height/2, -block_width/2, 1.0 ),
-    vec4( -block_length/2,  block_height/2, -block_width/2, 1.0 ),
-    vec4(  block_length/2,  block_height/2, -block_width/2, 1.0 ),
-    vec4(  block_length/2, -block_height/2, -block_width/2, 1.0 ),
+    vec4( -gap/2-block_length-(block_length+gap),    -block_height/2,    block_width/2, 1.0 ),
+    vec4( -gap/2-block_length-(block_length+gap),    block_height/2,     block_width/2, 1.0 ),
+    vec4( -gap/2-(block_length+gap),                 block_height/2,     block_width/2, 1.0 ),
+    vec4( -gap/2-(block_length+gap),                 -block_height/2,    block_width/2, 1.0 ),
+    vec4( -gap/2-block_length-(block_length+gap),    -block_height/2,    -block_width/2, 1.0 ),
+    vec4( -gap/2-block_length-(block_length+gap),    block_height/2,     -block_width/2, 1.0 ),
+    vec4( -gap/2-(block_length+gap),                 block_height/2,     -block_width/2, 1.0 ),
+    vec4( -gap/2-(block_length+gap),                 -block_height/2,    -block_width/2, 1.0 ),
 
-    vec4( -block_length/2+block_length+gap, -block_height/2,  block_width/2, 1.0 ),
-    vec4( -block_length/2+block_length+gap,  block_height/2,  block_width/2, 1.0 ),
-    vec4(  block_length/2+block_length+gap,  block_height/2,  block_width/2, 1.0 ),
-    vec4(  block_length/2+block_length+gap, -block_height/2,  block_width/2, 1.0 ),
-    vec4( -block_length/2+block_length+gap, -block_height/2, -block_width/2, 1.0 ),
-    vec4( -block_length/2+block_length+gap,  block_height/2, -block_width/2, 1.0 ),
-    vec4(  block_length/2+block_length+gap,  block_height/2, -block_width/2, 1.0 ),
-    vec4(  block_length/2+block_length+gap, -block_height/2, -block_width/2, 1.0 ),
+    vec4( -gap/2-block_length,   -block_height/2,    block_width/2, 1.0 ),
+    vec4( -gap/2-block_length,   block_height/2,     block_width/2, 1.0 ),
+    vec4( -gap/2,                block_height/2,     block_width/2, 1.0 ),
+    vec4( -gap/2,                -block_height/2,    block_width/2, 1.0 ),
+    vec4( -gap/2-block_length,   -block_height/2,    -block_width/2, 1.0 ),
+    vec4( -gap/2-block_length,   block_height/2,     -block_width/2, 1.0 ),
+    vec4( -gap/2,                block_height/2,     -block_width/2, 1.0 ),
+    vec4( -gap/2,                -block_height/2,    -block_width/2, 1.0 ),
 
-    vec4( -block_length/2+(block_length+gap)*2, -block_height/2,  block_width/2, 1.0 ),
-    vec4( -block_length/2+(block_length+gap)*2,  block_height/2,  block_width/2, 1.0 ),
-    vec4(  block_length/2+(block_length+gap)*2,  block_height/2,  block_width/2, 1.0 ),
-    vec4(  block_length/2+(block_length+gap)*2, -block_height/2,  block_width/2, 1.0 ),
-    vec4( -block_length/2+(block_length+gap)*2, -block_height/2, -block_width/2, 1.0 ),
-    vec4( -block_length/2+(block_length+gap)*2,  block_height/2, -block_width/2, 1.0 ),
-    vec4(  block_length/2+(block_length+gap)*2,  block_height/2, -block_width/2, 1.0 ),
-    vec4(  block_length/2+(block_length+gap)*2, -block_height/2, -block_width/2, 1.0 ),
+    vec4(  gap/2,               -block_height/2,    block_width/2, 1.0 ),
+    vec4(  gap/2,               block_height/2,     block_width/2, 1.0 ),
+    vec4(  gap/2+block_length,  block_height/2,     block_width/2, 1.0 ),
+    vec4(  gap/2+block_length,  -block_height/2,    block_width/2, 1.0 ),
+    vec4(  gap/2,               -block_height/2,    -block_width/2, 1.0 ),
+    vec4(  gap/2,               block_height/2,     -block_width/2, 1.0 ),
+    vec4(  gap/2+block_length,  block_height/2,     -block_width/2, 1.0 ),
+    vec4(  gap/2+block_length,  -block_height/2,    -block_width/2, 1.0 ),
 
-    vec4( -block_length/2+(block_length+gap)*3, -block_height/2,  block_width/2, 1.0 ),
-    vec4( -block_length/2+(block_length+gap)*3,  block_height/2,  block_width/2, 1.0 ),
-    vec4(  block_length/2+(block_length+gap)*3,  block_height/2,  block_width/2, 1.0 ),
-    vec4(  block_length/2+(block_length+gap)*3, -block_height/2,  block_width/2, 1.0 ),
-    vec4( -block_length/2+(block_length+gap)*3, -block_height/2, -block_width/2, 1.0 ),
-    vec4( -block_length/2+(block_length+gap)*3,  block_height/2, -block_width/2, 1.0 ),
-    vec4(  block_length/2+(block_length+gap)*3,  block_height/2, -block_width/2, 1.0 ),
-    vec4(  block_length/2+(block_length+gap)*3, -block_height/2, -block_width/2, 1.0 )
+    vec4(  gap/2+(block_length+gap),               -block_height/2,    block_width/2, 1.0 ),
+    vec4(  gap/2+(block_length+gap),               block_height/2,     block_width/2, 1.0 ),
+    vec4(  gap/2+block_length+(block_length+gap),  block_height/2,     block_width/2, 1.0 ),
+    vec4(  gap/2+block_length+(block_length+gap),  -block_height/2,    block_width/2, 1.0 ),
+    vec4(  gap/2+(block_length+gap),               -block_height/2,    -block_width/2, 1.0 ),
+    vec4(  gap/2+(block_length+gap),               block_height/2,     -block_width/2, 1.0 ),
+    vec4(  gap/2+block_length+(block_length+gap),  block_height/2,     -block_width/2, 1.0 ),
+    vec4(  gap/2+block_length+(block_length+gap),  -block_height/2,    -block_width/2, 1.0 )
 ];
 
 var uViewMatrixLoc;
@@ -53,7 +53,7 @@ var uViewMatrix;
 var theta = [20, 0, 0];
 var cubeTranslateLoc;
 var cubeTranslate;
-const x_init = 0;
+const x_init = 1.3;
 const y_init = -2;
 const z_init = -50;
 var x_trans, y_trans, z_trans;
@@ -129,7 +129,7 @@ window.onload = function init() {
 
     let aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
     perspectiveMatrix = mat4();
-    perspectiveMatrix = perspective(45, aspect, 3, 100);
+    perspectiveMatrix = perspective(40, aspect, 1, 100);
 
     orthoMatrix = ortho(left, right, bottom, 0, near, far);
 

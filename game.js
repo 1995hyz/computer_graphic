@@ -2,23 +2,23 @@
 
 var canvas;
 var gl;
-var block_length = 1;
-var block_width = 1;
-var block_height = 1;
+var block_length = 200;
+var block_width = 80;
+var block_height = 80;
 var gap = 0.1;
 var program;
 var points = [];
 var colors = [];
 var NumVertices = 36;
 var vertices = [
-    vec4( -block_length/2-block_length-gap, -block_height/2-block_height-gap,  block_width/2+block_width+gap, 1.0 ),
-    vec4( -block_length/2-block_length-gap,  block_height/2-block_height-gap,  block_width/2+block_width+gap, 1.0 ),
-    vec4(  block_length/2-block_length-gap,  block_height/2-block_height-gap,  block_width/2+block_width+gap, 1.0 ),
-    vec4(  block_length/2-block_length-gap, -block_height/2-block_height-gap,  block_width/2+block_width+gap, 1.0 ),
-    vec4( -block_length/2-block_length-gap, -block_height/2-block_height-gap, -block_width/2+block_width+gap, 1.0 ),
-    vec4( -block_length/2-block_length-gap,  block_height/2-block_height-gap, -block_width/2+block_width+gap, 1.0 ),
-    vec4(  block_length/2-block_length-gap,  block_height/2-block_height-gap, -block_width/2+block_width+gap, 1.0 ),
-    vec4(  block_length/2-block_length-gap, -block_height/2-block_height-gap, -block_width/2+block_width+gap, 1.0 )
+    vec4( -block_length/2, -block_height/2,  block_width/2, 1.0 ),
+    vec4( -block_length/2,  block_height/2,  block_width/2, 1.0 ),
+    vec4(  block_length/2,  block_height/2,  block_width/2, 1.0 ),
+    vec4(  block_length/2, -block_height/2,  block_width/2, 1.0 ),
+    vec4( -block_length/2, -block_height/2, -block_width/2, 1.0 ),
+    vec4( -block_length/2,  block_height/2, -block_width/2, 1.0 ),
+    vec4(  block_length/2,  block_height/2, -block_width/2, 1.0 ),
+    vec4(  block_length/2, -block_height/2, -block_width/2, 1.0 )
 ];
 var uViewMatrixLoc;
 var uViewMatrix;
@@ -28,6 +28,22 @@ var cubeTranslate;
 var x_trans, y_trans, z_trans;
 var perspectiveLoc;
 var perspectiveMatrix;
+var orthoMatrixLoc;
+var orthoMatrix;
+
+var eye;
+var radius = 5.0;
+const at = vec3(0.0, 2.0, 0.0);
+const up = vec3(0.0, 1.0, 0.0);
+eye = vec3(radius*Math.sin(0)*Math.cos(0),
+    radius*Math.sin(0)*Math.sin(0), radius*Math.cos(0));
+
+var left = 0;
+var right;
+var bottom;
+var top;
+var near = 400;
+var far = -400;
 
 const black = [ 0.0, 0.0, 0.0, 1.0 ];
 const red = [ 1.0, 0.0, 0.0, 1.0 ];
@@ -51,6 +67,9 @@ window.onload = function init() {
 
     init_block();
 
+    var right = gl.canvas.clientWidth;
+    var bottom = gl.canvas.clientHeight;
+
     var cBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, cBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, flatten(colors), gl.STATIC_DRAW);
@@ -68,14 +87,17 @@ window.onload = function init() {
     uViewMatrixLoc = gl.getUniformLocation(program, "u_matrix");
     cubeTranslateLoc = gl.getUniformLocation(program, "trans_matrix");
     perspectiveLoc = gl.getUniformLocation(program, "perspective_matrix");
+    orthoMatrixLoc = gl.getUniformLocation(program, "ortho_matrix");
 
     let aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
     perspectiveMatrix = mat4();
-    perspectiveMatrix = perspective(45, aspect, 0.3, 3.0);
+    perspectiveMatrix = perspective(45, aspect, 0.3, 10);
 
-    x_trans = 1;
-    y_trans = 1;
-    z_trans = 0;
+    orthoMatrix = ortho(left, right, bottom, 0, near, far);
+
+    x_trans = 0.5;
+    y_trans = -0.5;
+    z_trans = -10;
 
     render();
 };
@@ -110,13 +132,15 @@ function render()
     uViewMatrix = mult(uViewMatrix, rotateX(theta[0]));
     uViewMatrix = mult(uViewMatrix, rotateY(theta[1]));
     uViewMatrix = mult(uViewMatrix, rotateZ(theta[2]));
+    //uViewMatrix = lookAt(eye, at, up);
 
-    y_trans = y_trans - 0.005;
+    z_trans = z_trans + 0.01;
     cubeTranslate = slide(x_trans, y_trans, z_trans);
 
     gl.uniformMatrix4fv(uViewMatrixLoc, false, flatten(uViewMatrix));
     gl.uniformMatrix4fv(cubeTranslateLoc, false, flatten(cubeTranslate));
     gl.uniformMatrix4fv(perspectiveLoc, false, flatten(perspectiveMatrix));
+    gl.uniformMatrix4fv(orthoMatrixLoc, false, flatten(orthoMatrix));
     gl.drawArrays( gl.TRIANGLES, 0, NumVertices );
     requestAnimFrame( render );
 }

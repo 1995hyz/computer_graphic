@@ -3,8 +3,8 @@
 var canvas;
 var gl;
 var block_length = 200;
-var block_width = 80;
-var block_height = 80;
+var block_width = 160;
+var block_height = 40;
 var gap = 0.1;
 var program;
 var points = [];
@@ -22,7 +22,7 @@ var vertices = [
 ];
 var uViewMatrixLoc;
 var uViewMatrix;
-var theta = [20, 10, 0];
+var theta = [20, 0, 0];
 var cubeTranslateLoc;
 var cubeTranslate;
 var x_trans, y_trans, z_trans;
@@ -91,13 +91,15 @@ window.onload = function init() {
 
     let aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
     perspectiveMatrix = mat4();
-    perspectiveMatrix = perspective(45, aspect, 0.3, 10);
+    perspectiveMatrix = perspective(45, aspect, 3, 100);
 
     orthoMatrix = ortho(left, right, bottom, 0, near, far);
 
     x_trans = 0.5;
-    y_trans = -0.5;
-    z_trans = -10;
+    y_trans = -2;
+    z_trans = -50;
+
+    document.addEventListener("keydown", keyDownHandler, false);
 
     render();
 };
@@ -123,6 +125,31 @@ function slide(x, y, z) {
     return translate(x, y, z);
 }
 
+function keyDownHandler(event) {
+    switch (event.key) {
+        case "ArrowUp":
+            theta[0] = (theta[0] - 2.0) % 360;
+            break;
+        case "ArrowDown":
+            theta[0] = (theta[0] + 2.0) % 360;
+            break;
+        case "ArrowLeft":
+            theta[2] = (theta[2] + 2.0) % 360;
+            break;
+        case "ArrowRight":
+            theta[2] = (theta[2] - 2.0) % 360;
+            break;
+        case ",":
+            theta[1] = (theta[1] - 2.0) % 360;
+            break;
+        case ".":
+            theta[1] = (theta[1] + 2.0) % 360;
+            break;
+        default:
+            console.log("Unknown Key Pressed");
+    }
+}
+
 function render()
 {
 
@@ -134,7 +161,12 @@ function render()
     uViewMatrix = mult(uViewMatrix, rotateZ(theta[2]));
     //uViewMatrix = lookAt(eye, at, up);
 
-    z_trans = z_trans + 0.01;
+    if(z_trans > -10 ) {
+        z_trans = z_trans + 0.1;
+    }
+    else {
+        z_trans = z_trans + 0.2;
+    }
     cubeTranslate = slide(x_trans, y_trans, z_trans);
 
     gl.uniformMatrix4fv(uViewMatrixLoc, false, flatten(uViewMatrix));

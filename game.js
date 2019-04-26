@@ -2,10 +2,10 @@
 
 var canvas;
 var gl;
-var block_length = 200;
-var block_width = 160;
-var block_height = 40;
-var gap = 20;
+const block_length = 200;
+const block_width = 160;
+const block_height = 40;
+const gap = 20;
 var program;
 var points = [];
 var colors = [];
@@ -53,12 +53,17 @@ var uViewMatrix;
 var theta = [20, 0, 0];
 var cubeTranslateLoc;
 var cubeTranslate;
+const x_init = 0;
+const y_init = -2;
+const z_init = -50;
 var x_trans, y_trans, z_trans;
 var cubeTransIndex = [
-    vec3(x_trans, y_trans, z_trans),
-    vec3(x_trans, y_trans, z_trans),
-    vec3(x_trans, y_trans, z_trans)
+    vec3(x_init, y_init, z_init),
+    vec3(x_init, y_init, z_init),
+    vec3(x_init, y_init, z_init),
+    vec3(x_init, y_init, z_init)
 ];
+const dropSequence = [0, 1, 2, 3];
 var perspectiveLoc;
 var perspectiveMatrix;
 var orthoMatrixLoc;
@@ -100,20 +105,20 @@ window.onload = function init() {
 
     init_block();
 
-    var right = gl.canvas.clientWidth;
-    var bottom = gl.canvas.clientHeight;
+    right = gl.canvas.clientWidth;
+    bottom = gl.canvas.clientHeight;
 
-    var cBuffer = gl.createBuffer();
+    let cBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, cBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, flatten(colors), gl.STATIC_DRAW);
-    var vColor = gl.getAttribLocation( program, "vColor" );
+    let vColor = gl.getAttribLocation( program, "vColor" );
     gl.vertexAttribPointer( vColor, 4, gl.FLOAT, false, 0, 0 );
     gl.enableVertexAttribArray( vColor );
 
-    var vBuffer = gl.createBuffer();
+    let vBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, vBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW);
-    var vPosition = gl.getAttribLocation( program, "vPosition" );
+    let vPosition = gl.getAttribLocation( program, "vPosition" );
     gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0, 0 );
     gl.enableVertexAttribArray( vPosition );
 
@@ -208,7 +213,12 @@ function keyDownHandler(event) {
     }
 }
 
-var cubeIndex = 0;
+function initCubePos(index) {
+    cubeTransIndex[index] = vec3(x_init, y_init, z_init);
+}
+
+var dropCounter = 0;
+var indexCounter = 0;
 function render()
 {
 
@@ -218,29 +228,35 @@ function render()
     uViewMatrix = mult(uViewMatrix, rotateX(theta[0]));
     uViewMatrix = mult(uViewMatrix, rotateY(theta[1]));
     uViewMatrix = mult(uViewMatrix, rotateZ(theta[2]));
-    //uViewMatrix = lookAt(eye, at, up);
 
-    if(z_trans > -10 ) {
-        z_trans = z_trans + 0.1;
+    for(let k = 0; k<4; k++) {
+        if (cubeTransIndex[k][2] > -10) {
+            cubeTransIndex[k][2] += 0.1;
+        } else {
+            cubeTransIndex[k][2] += 0.2;
+        }
     }
-    else {
-        z_trans = z_trans + 0.2;
-    }
-    cubeTranslate = slide(x_trans, y_trans, z_trans);
+
+    //cubeTranslate = slide(x_trans, y_trans, z_trans);
+    //cubeTranslate = slide(cubeTransIndex[1][0], cubeTransIndex[1][1], cubeTransIndex[1][2]);
 
     gl.uniformMatrix4fv(uViewMatrixLoc, false, flatten(uViewMatrix));
-    gl.uniformMatrix4fv(cubeTranslateLoc, false, flatten(cubeTranslate));
+    //gl.uniformMatrix4fv(cubeTranslateLoc, false, flatten(cubeTranslate));
     gl.uniformMatrix4fv(perspectiveLoc, false, flatten(perspectiveMatrix));
     gl.uniformMatrix4fv(orthoMatrixLoc, false, flatten(orthoMatrix));
 
-    //NumVertices = 36;
-    /*for(let i=0; i<3; i++) {
-        cubeTranslate = slide(cubeTransIndex[i]);
+    for(let i=0; i<4; i++) {
+        cubeTranslate = slide(cubeTransIndex[i][0], cubeTransIndex[i][1], cubeTransIndex[i][2]);
         gl.uniformMatrix4fv(cubeTranslateLoc, false, flatten(cubeTranslate));
-        gl.drawArrays(gl.TRIANGLES, i*36, NumVertices);
-    }*/
-    gl.drawArrays(gl.TRIANGLES, 0, NumVertices);
-    cubeIndex = (cubeIndex + 1) % 3;
+        gl.drawArrays(gl.TRIANGLES, i*36, 36);
+    }
+
+    dropCounter = dropCounter + 1;
+    if(dropCounter === 180) {
+        dropCounter = 0;
+        indexCounter = (indexCounter + 1) % 4;
+        initCubePos(dropSequence[indexCounter]);
+    }
 
     requestAnimFrame( render );
 }

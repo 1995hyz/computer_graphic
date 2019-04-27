@@ -208,6 +208,9 @@ function keyDownHandler(event) {
         case ".":
             theta[1] = (theta[1] + 2.0) % 360;
             break;
+        case "s":
+            playSound();
+            break;
         default:
             console.log("Unknown Key Pressed");
     }
@@ -259,4 +262,9 @@ function render()
     }
 
     requestAnimFrame( render );
+}
+
+function playSound() {
+    let audio = new Audio('./samples/C1vH.wav');
+    audio.play();
 }

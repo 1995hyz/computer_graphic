@@ -9,17 +9,20 @@
 
 attribute vec4 vPosition;
 attribute vec4 vColor;
+attribute vec2 atexcoord;
 uniform mat4 u_matrix;
 uniform mat4 trans_matrix;
 uniform mat4 perspective_matrix;
 uniform mat4 ortho_matrix;
 varying vec4 fColor;
+varying vec2 vtexcoord;
 
 void main()
 {
     gl_Position = perspective_matrix * trans_matrix * u_matrix * ortho_matrix * vPosition;//perspective_matrix * trans_matrix * u_matrix * vPosition;
     //gl_Position.z = -gl_Position.z;
     fColor = vColor;
+    vtexcoord = atexcoord;
 }
 </script>
 
@@ -28,11 +31,15 @@ void main()
 precision mediump float;
 
 varying vec4 fColor;
+varying vec2 vtexcoord;
+uniform sampler2D utexture;
 
 void
 main()
 {
-    gl_FragColor = fColor;
+    //gl_FragColor = fColor;
+    //gl_FragColor = fColor * texture2D(utexture, vtexcoord);
+    gl_FragColor = texture2D(utexture, vtexcoord);
 }
 </script>
 

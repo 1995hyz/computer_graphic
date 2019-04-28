@@ -9,6 +9,7 @@ const gap = 30;
 var program;
 var points = [];
 var colors = [];
+var textures = [];
 var NumVertices = 36*4;
 var vertices = [
     vec4( -gap/2-block_length-(block_length+gap),    -block_height/2,    block_width/2, 1.0 ),
@@ -46,6 +47,13 @@ var vertices = [
     vec4(  gap/2+(block_length+gap),               block_height/2,     -block_width/2, 1.0 ),
     vec4(  gap/2+block_length+(block_length+gap),  block_height/2,     -block_width/2, 1.0 ),
     vec4(  gap/2+block_length+(block_length+gap),  -block_height/2,    -block_width/2, 1.0 )
+];
+
+var texCoord = [
+    vec2(0.0, 0.0),
+    vec2(0.0, 1.0),
+    vec2(1.0, 1.0),
+    vec2(1.0, 0.0)
 ];
 
 var uViewMatrixLoc;
@@ -115,6 +123,16 @@ window.onload = function init() {
     gl.vertexAttribPointer( vColor, 4, gl.FLOAT, false, 0, 0 );
     gl.enableVertexAttribArray( vColor );
 
+    loadImage();
+
+    let tBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, tBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, flatten(textures), gl.STATIC_DRAW);
+
+    let texcoordLoc = gl.getAttribLocation(program, "atexcoord");
+    gl.vertexAttribPointer(texcoordLoc, 2, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray(texcoordLoc);
+
     let vBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, vBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW);
@@ -182,6 +200,28 @@ function rectangleDrawer(a, b, c, d, color) {
         points.push(vertices[indices[i]]);
         colors.push((color));
     }
+    textures.push(texCoord[0]);
+    textures.push(texCoord[1]);
+    textures.push(texCoord[2]);
+    textures.push(texCoord[0]);
+    textures.push(texCoord[2]);
+    textures.push(texCoord[3]);
+}
+
+function loadImage() {
+    let texture = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, texture);
+    // Fill the texture with a 1x1 blue pixel.
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE,
+        new Uint8Array([0, 0, 255, 255]));
+    var image1 = new Image();
+    image1.src = "./textures/f-texture.png";
+    image1.addEventListener('load', function () {
+        gl.bindTexture(gl.TEXTURE_2D, texture);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image1);
+        gl.generateMipmap(gl.TEXTURE_2D);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
+    });
 }
 
 function slide(x, y, z) {

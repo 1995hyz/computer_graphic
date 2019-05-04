@@ -107,7 +107,7 @@ vec3(x_init, y_init, z_init),
 vec3(x_init, y_init, z_init),
 vec3(x_init, y_init, z_init)
 ];
-const dropSequence = [0, 1, 2, 3];
+const dropSequence = [0, -1, -1, 1, 2, 3];
 var perspectiveLoc;
 var perspectiveMatrix;
 var orthoMatrixLoc;
@@ -430,17 +430,41 @@ function render()
     gl.drawArrays(gl.TRIANGLES, 4*36, 6*numLanePanels);
 
     dropCounter = dropCounter + 1;
-    if(dropCounter === 180) {
-        dropCounter = 0;
-        indexCounter = (indexCounter + 1) % 4;
-        if(dropSequence[indexCounter] !== -1) {
-            initCubePos(dropSequence[indexCounter]);
-        }
-        else {
+    if(indexCounter < dropSequence.length) {
+        if (dropCounter === 180) {
+            dropCounter = 0;
+            indexCounter = (indexCounter + 1);// % 4;
+            if (dropSequence[indexCounter] !== -1) {
+                initCubePos(dropSequence[indexCounter]);
+            } else {
 
+            }
         }
     }
     requestAnimFrame( render );
+}
+
+function hitCube(keyStroke) {
+    let cubeIndex = 0;
+    switch (keyStroke) {
+        case 's':
+            cubeIndex = 0;
+            break;
+        case 'd':
+            cubeIndex = 1;
+            break;
+        case 'j':
+            cubeIndex = 2;
+            break;
+        case 'k':
+            cubeIndex = 3;
+            break;
+        default:
+            console.log("Error: Unknown Key Stroke.");
+    }
+    if (0 > cubeIndex[cubeIndex][2] > -5) {
+        initCubePos(cubeIndex);
+    }
 }
 
 function playSound() {

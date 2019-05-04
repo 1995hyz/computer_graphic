@@ -12,7 +12,7 @@ var colors = [];
 var normals = [];
 var textures = [];
 var NumVertices = 36*4;
-var numLanePanels = 2;
+var numLanePanels = 4;
 const z_near = 1;
 const z_far = 100;
 var vertices = [
@@ -54,29 +54,25 @@ var vertices = [
 ];
 
 var verticesLane = [
-    /*vec4( -gap/2-block_length,      -block_height/2,    -block_width/2, 1.0 ),
-    vec4( -gap/2,                   -block_height/2,    -block_width/2, 1.0 ),
-    vec4( -gap/2,                   -block_height/2,    block_width/2, 1.0 ),
-    vec4( -gap/2-block_length,      -block_height/2,    block_width/2, 1.0 ),
+    vec4( -gap/2-300,      -block_height/2+block_height*30,    -z_far*60,       1.0 ),
+    vec4( -gap/2+70,       -block_height/2+block_height*30,    -z_far*60,       1.0 ),
+    vec4( -gap/2+300,      -block_height/2-block_height*30,    block_width*100, 1.0 ),
+    vec4( -gap/2-1600,     -block_height/2-block_height*30,    block_width*100, 1.0 ),
 
-    vec4( -gap/2-block_length,      -block_height/2,    -block_width/2-block_width, 1.0 ),
-    vec4( -gap/2,                   -block_height/2,    -block_width/2-block_width, 1.0 ),
-    vec4( -gap/2,                   -block_height/2,    block_width/2-block_width, 1.0 ),
-    vec4( -gap/2-block_length,      -block_height/2,    block_width/2-block_width, 1.0 ),
+    vec4(-gap/2-600,      -block_height/2+block_height*30,    -z_far*60, 1.0 ),
+    vec4(-gap/2-300,      -block_height/2+block_height*30,    -z_far*60, 1.0 ),
+    vec4(-gap/2-1600,     -block_height/2-block_height*30,    block_width*100,  1.0),
+    vec4(-gap/2-3300,     -block_height/2-block_height*30,    block_width*100,  1.0),
 
-    vec4( -gap/2-block_length,      -block_height/2,    -block_width/2-block_width*2, 1.0 ),
-    vec4( -gap/2,                   -block_height/2,    -block_width/2-block_width*2, 1.0 ),
-    vec4( -gap/2,                   -block_height/2,    block_width/2-block_width*2, 1.0 ),
-    vec4( -gap/2-block_length,      -block_height/2,    block_width/2-block_width*2, 1.0 )*/
-    vec4( -gap/2-block_length,      -block_height/2+block_height*30,    -z_far*60, 1.0 ),
-    vec4( -gap/2,                   -block_height/2+block_height*30,    -z_far*60, 1.0 ),
-    vec4( -gap/2+100,      -block_height/2-block_height*30,    block_width*100, 1.0 ),
-    vec4( -gap/2-1400,      -block_height/2-block_height*30,    block_width*100, 1.0 ),
+    vec4( -gap/2+70,      -block_height/2+block_height*30,    -z_far*60,       1.0 ),
+    vec4( -gap/2+440,     -block_height/2+block_height*30,    -z_far*60,       1.0 ),
+    vec4( -gap/2+2100,    -block_height/2-block_height*30,    block_width*100, 1.0 ),
+    vec4( -gap/2+300,     -block_height/2-block_height*30,    block_width*100, 1.0 ),
 
-    vec4(-gap/2-block_length*2,      -block_height/2+block_height*30,    -z_far*60, 1.0 ),
-    vec4(-gap/2-block_length,      -block_height/2+block_height*30,    -z_far*60, 1.0 ),
-    vec4(-gap/2-1400,      -block_height/2-block_height*30,    block_width*100, 1.0),
-    vec4(-gap/2-2900,      -block_height/2-block_height*30,    block_width*100, 1.0)
+    vec4( -gap/2+440,     -block_height/2+block_height*30,    -z_far*60,       1.0 ),
+    vec4( -gap/2+810,     -block_height/2+block_height*30,    -z_far*60,       1.0 ),
+    vec4( -gap/2+3900,    -block_height/2-block_height*30,    block_width*100, 1.0 ),
+    vec4( -gap/2+2100,    -block_height/2-block_height*30,    block_width*100, 1.0 ),
 ];
 
 var texCoord = [
@@ -93,7 +89,7 @@ var lightSpecular = vec4( 1.0, 1.0, 1.0, 1.0 );
 var materialAmbient = vec4( 1.0, 1.0, 1.0, 1.0 );
 var materialDiffuse = vec4( 1.0, 0.8, 0.0, 1.0);
 var materialSpecular = vec4( 1.0, 0.8, 0.0, 1.0 );
-var materialShininess = 10.0;
+var materialShininess = 20.0;
 var ambientColor, diffuseColor, specularColor;
 
 var uViewMatrixLoc;
@@ -152,7 +148,7 @@ window.onload = function init() {
     program = initShaders(gl, "vertex-shader", "fragment-shader");
     gl.useProgram(program);
 
-    initLanePos(numLanePanels);
+    //initLanePos(numLanePanels);
     init_block();
 
     right = gl.canvas.clientWidth;
@@ -266,6 +262,10 @@ function init_block(){
     laneDrawer(1, 0, 3, 2, green);
     let j = 1;
     laneDrawer(1+j*4, 0+j*4, 3+j*4, 2+j*4, red);
+    j = 2;
+    laneDrawer(1+j*4, 0+j*4, 3+j*4, 2+j*4, red);
+    j = 3;
+    laneDrawer(1+j*4, 0+j*4, 3+j*4, 2+j*4, green);
 }
 
 function rectangleDrawer(a, b, c, d, color) {

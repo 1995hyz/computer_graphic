@@ -10,7 +10,7 @@
 attribute vec4 vPosition;
 attribute vec4 vColor;
 attribute vec2 atexcoord;
-attribute vec4 normalvec;
+attribute vec3 vNormal;
 
 uniform mat4 u_matrix;
 uniform mat4 trans_matrix;
@@ -25,14 +25,15 @@ uniform vec4 ambientProduct, diffuseProduct, specularProduct;
 
 void main()
 {
-    gl_Position = perspective_matrix * trans_matrix * u_matrix * ortho_matrix * vPosition;//perspective_matrix * trans_matrix * u_matrix * vPosition;
+    gl_Position = perspective_matrix * trans_matrix * u_matrix * ortho_matrix * vPosition;
+    //perspective_matrix * trans_matrix * u_matrix * vPosition;
     //gl_Position.z = -gl_Position.z;
     fColor = vColor;
     vtexcoord = atexcoord;
 
-    vec3 temp = normalvec.xyz;
 
-    /*vec3 pos = -(perspective_matrix * trans_matrix * u_matrix * ortho_matrix * vPosition).xyz;
+
+    vec3 pos = -(perspective_matrix * trans_matrix * u_matrix * ortho_matrix * vPosition).xyz;
     //fixed light postion
 
     vec3 light = lightPosition.xyz;
@@ -59,8 +60,10 @@ void main()
     if( dot(L, N) < 0.0 ) {
 	    specular = vec4(0.0, 0.0, 0.0, 1.0);
     }
-    fColor = ambient + diffuse +specular;
-    fColor.a = 1.0;*/
+    fColor.x *= ambient.x + diffuse.x + specular.x;
+    fColor.y *= ambient.y + diffuse.y + specular.y;
+    fColor.z *= ambient.z + diffuse.z + specular.z;
+    fColor.a = 1.0;
 }
 </script>
 

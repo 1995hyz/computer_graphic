@@ -12,7 +12,7 @@ var colors = [];
 var normals = [];
 var textures = [];
 var NumVertices = 36*4;
-var numLanePanels = 1;
+var numLanePanels = 2;
 const z_near = 1;
 const z_far = 100;
 var vertices = [
@@ -70,8 +70,13 @@ var verticesLane = [
     vec4( -gap/2-block_length,      -block_height/2,    block_width/2-block_width*2, 1.0 )*/
     vec4( -gap/2-block_length,      -block_height/2+block_height*30,    -z_far*60, 1.0 ),
     vec4( -gap/2,                   -block_height/2+block_height*30,    -z_far*60, 1.0 ),
-    vec4( -gap/2+300,      -block_height/2-block_height*30,    block_width*100, 1.0 ),
-    vec4( -gap/2-1400,      -block_height/2-block_height*30,    block_width*100, 1.0 )
+    vec4( -gap/2+100,      -block_height/2-block_height*30,    block_width*100, 1.0 ),
+    vec4( -gap/2-1400,      -block_height/2-block_height*30,    block_width*100, 1.0 ),
+
+    vec4(-gap/2-block_length*2,      -block_height/2+block_height*30,    -z_far*60, 1.0 ),
+    vec4(-gap/2-block_length,      -block_height/2+block_height*30,    -z_far*60, 1.0 ),
+    vec4(-gap/2-1400,      -block_height/2-block_height*30,    block_width*100, 1.0),
+    vec4(-gap/2-2900,      -block_height/2-block_height*30,    block_width*100, 1.0)
 ];
 
 var texCoord = [
@@ -80,6 +85,16 @@ vec2(0.0, 1.0),
 vec2(1.0, 1.0),
 vec2(1.0, 0.0)
 ];
+
+var lightPosition = vec4(1.0, 1.0, 1.0, 1.0);
+var lightAmbient = vec4(0.2, 0.2, 0.2, 1.0 );
+var lightDiffuse = vec4( 1.0, 1.0, 1.0, 1.0 );
+var lightSpecular = vec4( 1.0, 1.0, 1.0, 1.0 );
+var materialAmbient = vec4( 1.0, 0.0, 1.0, 1.0 );
+var materialDiffuse = vec4( 1.0, 0.8, 0.0, 1.0);
+var materialSpecular = vec4( 1.0, 0.8, 0.0, 1.0 );
+var materialShininess = 100.0;
+var ambientColor, diffuseColor, specularColor;
 
 var uViewMatrixLoc;
 var uViewMatrix;
@@ -122,6 +137,7 @@ const yellow = [ 1.0, 1.0, 0.0, 1.0 ];
 const green = [ 0.0, 1.0, 0.0, 1.0 ];
 const blue = [ 0.0, 0.0, 1.0, 1.0 ];
 const magenta = [ 1.0, 0.5, 0.0, 1.0 ];
+const white = [1.0, 1.0, 1.0, 1.0 ];
 
 window.onload = function init() {
     canvas = document.getElementById( "gl-canvas" );
@@ -142,6 +158,7 @@ window.onload = function init() {
     right = gl.canvas.clientWidth;
     bottom = gl.canvas.clientHeight;
 
+    // Binding Color Buffer
     let cBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, cBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, flatten(colors), gl.STATIC_DRAW);
@@ -151,14 +168,23 @@ window.onload = function init() {
 
     loadImage();
 
+    // Binding Texture Buffer
     let tBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, tBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, flatten(textures), gl.STATIC_DRAW);
-
     let texcoordLoc = gl.getAttribLocation(program, "atexcoord");
     gl.vertexAttribPointer(texcoordLoc, 2, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(texcoordLoc);
 
+    // Binding Normal Buffer
+    let nBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, nBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, flatten(normals), gl.STATIC_DRAW);
+    let v_normal = gl.getAttribLocation( program, "normalvec" );
+    gl.vertexAttribPointer( v_normal, 4, gl.FLOAT, false, 0, 0 );
+    gl.enableVertexAttribArray( v_normal );
+
+    // Binding Vertex-Coordinate Buffer
     let vBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, vBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW);
@@ -166,6 +192,7 @@ window.onload = function init() {
     gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0, 0 );
     gl.enableVertexAttribArray( vPosition );
 
+    // Perspective Matrix and Orthogonal-Projection Matrix Setup
     uViewMatrixLoc = gl.getUniformLocation(program, "u_matrix");
     cubeTranslateLoc = gl.getUniformLocation(program, "trans_matrix");
     perspectiveLoc = gl.getUniformLocation(program, "perspective_matrix");
@@ -181,6 +208,22 @@ window.onload = function init() {
     y_trans = -2;
     z_trans = -50;
 
+    // Lighting Setup
+    var ambientProduct = mult(lightAmbient, materialAmbient);
+    var diffuseProduct = mult(lightDiffuse, materialDiffuse);
+    var specularProduct = mult(lightSpecular, materialSpecular);
+    gl.uniform4fv(gl.getUniformLocation(program, "ambientProduct"),
+        flatten(ambientProduct));
+    gl.uniform4fv(gl.getUniformLocation(program, "diffuseProduct"),
+        flatten(diffuseProduct) );
+    gl.uniform4fv(gl.getUniformLocation(program, "specularProduct"),
+        flatten(specularProduct) );
+    gl.uniform4fv(gl.getUniformLocation(program, "lightPosition"),
+        flatten(lightPosition) );
+    gl.uniform1f(gl.getUniformLocation(program,
+        "shininess"),materialShininess);
+
+    // Keyboard Setup
     document.addEventListener("keydown", keyDownHandler, false);
 
     render();
@@ -188,42 +231,41 @@ window.onload = function init() {
 
 function init_block(){
     let i;
-    rectangleDrawer(1, 0, 3, 2, green);
-    rectangleDrawer(2, 3, 7, 6, red);
-    rectangleDrawer(3, 0, 4, 7, blue);
-    rectangleDrawer(6, 5, 1, 2, yellow);
-    rectangleDrawer(4, 5, 6, 7, black);
-    rectangleDrawer(5, 4, 0, 1, magenta);
+    rectangleDrawer(1, 0, 3, 2, white);
+    rectangleDrawer(2, 3, 7, 6, white);
+    rectangleDrawer(3, 0, 4, 7, white);
+    rectangleDrawer(6, 5, 1, 2, white);
+    rectangleDrawer(4, 5, 6, 7, white);
+    rectangleDrawer(5, 4, 0, 1, white);
 
     i = 1;
-    rectangleDrawer(1+i*8, 0+i*8, 3+i*8, 2+i*8, green);
-    rectangleDrawer(2+i*8, 3+i*8, 7+i*8, 6+i*8, red);
-    rectangleDrawer(3+i*8, 0+i*8, 4+i*8, 7+i*8, blue);
-    rectangleDrawer(6+i*8, 5+i*8, 1+i*8, 2+i*8, yellow);
-    rectangleDrawer(4+i*8, 5+i*8, 6+i*8, 7+i*8, black);
-    rectangleDrawer(5+i*8, 4+i*8, 0+i*8, 1+i*8, magenta);
+    rectangleDrawer(1+i*8, 0+i*8, 3+i*8, 2+i*8, white);
+    rectangleDrawer(2+i*8, 3+i*8, 7+i*8, 6+i*8, white);
+    rectangleDrawer(3+i*8, 0+i*8, 4+i*8, 7+i*8, white);
+    rectangleDrawer(6+i*8, 5+i*8, 1+i*8, 2+i*8, white);
+    rectangleDrawer(4+i*8, 5+i*8, 6+i*8, 7+i*8, white);
+    rectangleDrawer(5+i*8, 4+i*8, 0+i*8, 1+i*8, white);
 
     i = 2;
-    rectangleDrawer(1+i*8, 0+i*8, 3+i*8, 2+i*8, green);
-    rectangleDrawer(2+i*8, 3+i*8, 7+i*8, 6+i*8, red);
-    rectangleDrawer(3+i*8, 0+i*8, 4+i*8, 7+i*8, blue);
-    rectangleDrawer(6+i*8, 5+i*8, 1+i*8, 2+i*8, yellow);
-    rectangleDrawer(4+i*8, 5+i*8, 6+i*8, 7+i*8, black);
-    rectangleDrawer(5+i*8, 4+i*8, 0+i*8, 1+i*8, magenta);
+    rectangleDrawer(1+i*8, 0+i*8, 3+i*8, 2+i*8, white);
+    rectangleDrawer(2+i*8, 3+i*8, 7+i*8, 6+i*8, white);
+    rectangleDrawer(3+i*8, 0+i*8, 4+i*8, 7+i*8, white);
+    rectangleDrawer(6+i*8, 5+i*8, 1+i*8, 2+i*8, white);
+    rectangleDrawer(4+i*8, 5+i*8, 6+i*8, 7+i*8, white);
+    rectangleDrawer(5+i*8, 4+i*8, 0+i*8, 1+i*8, white);
 
     i = 3;
-    rectangleDrawer(1+i*8, 0+i*8, 3+i*8, 2+i*8, green);
-    rectangleDrawer(2+i*8, 3+i*8, 7+i*8, 6+i*8, red);
-    rectangleDrawer(3+i*8, 0+i*8, 4+i*8, 7+i*8, blue);
-    rectangleDrawer(6+i*8, 5+i*8, 1+i*8, 2+i*8, yellow);
-    rectangleDrawer(4+i*8, 5+i*8, 6+i*8, 7+i*8, black);
-    rectangleDrawer(5+i*8, 4+i*8, 0+i*8, 1+i*8, magenta);
+    rectangleDrawer(1+i*8, 0+i*8, 3+i*8, 2+i*8, white);
+    rectangleDrawer(2+i*8, 3+i*8, 7+i*8, 6+i*8, white);
+    rectangleDrawer(3+i*8, 0+i*8, 4+i*8, 7+i*8, white);
+    rectangleDrawer(6+i*8, 5+i*8, 1+i*8, 2+i*8, white);
+    rectangleDrawer(4+i*8, 5+i*8, 6+i*8, 7+i*8, white);
+    rectangleDrawer(5+i*8, 4+i*8, 0+i*8, 1+i*8, white);
 
-/*for(let j=0; j<numLanePanels; j++) {
-    laneDrawer(1+j*4, j*4, 3+j*4, 2+j*4, green);
-}*/
-textureDrawer(3, 2, renderSeq);
+    textureDrawer(3, 2, renderSeq);
     laneDrawer(1, 0, 3, 2, green);
+    let j = 1;
+    laneDrawer(1+j*4, 0+j*4, 3+j*4, 2+j*4, red);
 }
 
 function rectangleDrawer(a, b, c, d, color) {
@@ -231,13 +273,8 @@ function rectangleDrawer(a, b, c, d, color) {
     for( let i = 0; i < 6; i++) {
         points.push(vertices[indices[i]]);
         colors.push((color));
+        normals.push(vec3(0,1,0));
     }
-    /*textures.push(texCoord[0]);
-    textures.push(texCoord[1]);
-    textures.push(texCoord[2]);
-    textures.push(texCoord[0]);
-    textures.push(texCoord[2]);
-    textures.push(texCoord[3]);*/
 }
 
 var renderSeq = [
@@ -266,12 +303,24 @@ function laneDrawer(a, b, c, d, color) {
         points.push(verticesLane[indices[i]]);
         colors.push((color));
     }
-    textures.push(texCoord[0]);
+    /*textures.push(texCoord[0]);
     textures.push(texCoord[1]);
     textures.push(texCoord[2]);
     textures.push(texCoord[0]);
     textures.push(texCoord[2]);
-    textures.push(texCoord[3]);
+    textures.push(texCoord[3]);*/
+    textures.push(vec2(0, 0));
+    textures.push(vec2(0, 0));
+    textures.push(vec2(0, 0));
+    textures.push(vec2(0, 0));
+    textures.push(vec2(0, 0));
+    textures.push(vec2(0, 0));
+    normals.push(vec3(0,1,0));
+    normals.push(vec3(0,1,0));
+    normals.push(vec3(0,1,0));
+    normals.push(vec3(0,1,0));
+    normals.push(vec3(0,1,0));
+    normals.push(vec3(0,1,0));
 }
 
 function loadImage() {
@@ -391,7 +440,6 @@ function render()
 
         }
     }
-
     requestAnimFrame( render );
 }
 

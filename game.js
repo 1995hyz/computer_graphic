@@ -85,7 +85,7 @@ var uViewMatrix;
 var theta = [20, 0, 0];
 var cubeTranslateLoc;
 var cubeTranslate;
-const x_init = 1.3;
+const x_init = 1.1;
 const y_init = -2;
 const z_init = -50;
 var x_trans, y_trans, z_trans;
@@ -221,6 +221,7 @@ rectangleDrawer(5+i*8, 4+i*8, 0+i*8, 1+i*8, magenta);
 /*for(let j=0; j<numLanePanels; j++) {
     laneDrawer(1+j*4, j*4, 3+j*4, 2+j*4, green);
 }*/
+textureDrawer(3, 2, renderSeq);
     laneDrawer(1, 0, 3, 2, green);
 }
 
@@ -230,12 +231,32 @@ function rectangleDrawer(a, b, c, d, color) {
         points.push(vertices[indices[i]]);
         colors.push((color));
     }
-    textures.push(texCoord[0]);
+    /*textures.push(texCoord[0]);
     textures.push(texCoord[1]);
     textures.push(texCoord[2]);
     textures.push(texCoord[0]);
     textures.push(texCoord[2]);
-    textures.push(texCoord[3]);
+    textures.push(texCoord[3]);*/
+}
+
+var renderSeq = [
+    vec2(0, 0),
+    vec2(0, 1),
+    vec2(0, 2),
+    vec2(1, 0)
+];
+
+function textureDrawer(rowLength, columnLength, renderSeq) {
+    for(let i = 0; i<renderSeq.length; i++) {
+        for(let j = 0; j<6; j++) {
+            textures.push(vec2(1.0 / rowLength * renderSeq[i][0], 1.0 / columnLength * renderSeq[i][1]));
+            textures.push(vec2(1.0 / rowLength * renderSeq[i][0], 1.0 / columnLength * (renderSeq[i][1] + 1)));
+            textures.push(vec2(1.0 / rowLength * (renderSeq[i][0] + 1), 1.0 / columnLength * (renderSeq[i][1] + 1)));
+            textures.push(vec2(1.0 / rowLength * renderSeq[i][0], 1.0 / columnLength * renderSeq[i][1]));
+            textures.push(vec2(1.0 / rowLength * (renderSeq[i][0] + 1), 1.0 / columnLength * (renderSeq[i][1] + 1)));
+            textures.push(vec2(1.0 / rowLength * (renderSeq[i][0] + 1), 1.0 / columnLength * renderSeq[i][1]));
+        }
+    }
 }
 
 function laneDrawer(a, b, c, d, color) {
@@ -259,13 +280,24 @@ function loadImage() {
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE,
         new Uint8Array([0, 0, 255, 255]));
     var image1 = new Image();
-    image1.src = "./textures/f-texture.png";
+    image1.src = "./textures/colorful_1_768x512.jpg";
     image1.addEventListener('load', function () {
         gl.bindTexture(gl.TEXTURE_2D, texture);
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image1);
-        gl.generateMipmap(gl.TEXTURE_2D);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
+        if (isPowerOf2(image1.width) && isPowerOf2(image1.height)) {
+            // If the texture file is a power of 2. Generate mips.
+            gl.generateMipmap(gl.TEXTURE_2D);
+        }
+        else {
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+        }
     });
+}
+
+function isPowerOf2(value) {
+    return (value & (value - 1)) === 0;
 }
 
 function slide(x, y, z) {

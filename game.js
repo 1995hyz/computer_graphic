@@ -56,23 +56,28 @@ var vertices = [
 var verticesLane = [
     vec4( -gap/2-300,      -block_height/2+block_height*30,    -z_far*60,       1.0 ),
     vec4( -gap/2+70,       -block_height/2+block_height*30,    -z_far*60,       1.0 ),
-    vec4( -gap/2+300,      -block_height/2-block_height*30,    block_width*100, 1.0 ),
-    vec4( -gap/2-1600,     -block_height/2-block_height*30,    block_width*100, 1.0 ),
+    vec4( -gap/2+300,      -block_height/2+block_height*30,    block_width*30, 1.0 ),
+    vec4( -gap/2-1900,     -block_height/2+block_height*30,    block_width*30, 1.0 ),
 
     vec4(-gap/2-600,      -block_height/2+block_height*30,    -z_far*60, 1.0 ),
     vec4(-gap/2-300,      -block_height/2+block_height*30,    -z_far*60, 1.0 ),
-    vec4(-gap/2-1600,     -block_height/2-block_height*30,    block_width*100,  1.0),
-    vec4(-gap/2-3300,     -block_height/2-block_height*30,    block_width*100,  1.0),
+    vec4(-gap/2-1900,     -block_height/2+block_height*30,    block_width*30,  1.0),
+    vec4(-gap/2-4000,     -block_height/2+block_height*30,    block_width*30,  1.0),
 
     vec4( -gap/2+70,      -block_height/2+block_height*30,    -z_far*60,       1.0 ),
     vec4( -gap/2+440,     -block_height/2+block_height*30,    -z_far*60,       1.0 ),
-    vec4( -gap/2+2100,    -block_height/2-block_height*30,    block_width*100, 1.0 ),
-    vec4( -gap/2+300,     -block_height/2-block_height*30,    block_width*100, 1.0 ),
+    vec4( -gap/2+2500,    -block_height/2+block_height*30,    block_width*30, 1.0 ),
+    vec4( -gap/2+300,     -block_height/2+block_height*30,    block_width*30, 1.0 ),
 
     vec4( -gap/2+440,     -block_height/2+block_height*30,    -z_far*60,       1.0 ),
     vec4( -gap/2+810,     -block_height/2+block_height*30,    -z_far*60,       1.0 ),
-    vec4( -gap/2+3900,    -block_height/2-block_height*30,    block_width*100, 1.0 ),
-    vec4( -gap/2+2100,    -block_height/2-block_height*30,    block_width*100, 1.0 ),
+    vec4( -gap/2+4800,    -block_height/2+block_height*30,    block_width*30, 1.0 ),
+    vec4( -gap/2+2500,    -block_height/2+block_height*30,    block_width*30, 1.0 ),
+
+    vec4( -gap/2+300,      -block_height/2+block_height*30,    block_width*30, 1.0 ),
+    vec4( -gap/2-1900,     -block_height/2+block_height*30,    block_width*30, 1.0 ),
+    vec4( -gap/2-2300,     -block_height/2+block_height*30,    block_width*50, 1.0 ),
+    vec4( -gap/2+330,      -block_height/2+block_height*30,    block_width*50, 1.0 ),
 ];
 
 var texCoord = [
@@ -87,8 +92,8 @@ var lightAmbient = vec4(0.5, 0.5, 0.5, 1.0 );
 var lightDiffuse = vec4( 1.0, 1.0, 1.0, 1.0 );
 var lightSpecular = vec4( 1.0, 1.0, 1.0, 1.0 );
 var materialAmbient = vec4( 1.0, 1.0, 1.0, 1.0 );
-var materialDiffuse = vec4( 1.0, 0.8, 0.0, 1.0);
-var materialSpecular = vec4( 1.0, 0.8, 0.0, 1.0 );
+var materialDiffuse = vec4( 1.0, 0.8, 1.0, 1.0);
+var materialSpecular = vec4( 1.0, 0.8, 1.0, 1.0 );
 var materialShininess = 20.0;
 var ambientColor, diffuseColor, specularColor;
 
@@ -107,7 +112,8 @@ vec3(x_init, y_init, z_init),
 vec3(x_init, y_init, z_init),
 vec3(x_init, y_init, z_init)
 ];
-const dropSequence = [0, -1, -1, 1, 2, 3];
+const dropSequence = [0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1];
+const musicSequence = ["D", "D", "A", "A", "B", "B", "A", "G", "G", "F", "F", "E", "E", "D"];
 var perspectiveLoc;
 var perspectiveMatrix;
 var orthoMatrixLoc;
@@ -266,6 +272,8 @@ function init_block(){
     laneDrawer(1+j*4, 0+j*4, 3+j*4, 2+j*4, red);
     j = 3;
     laneDrawer(1+j*4, 0+j*4, 3+j*4, 2+j*4, green);
+    j = 4;
+    laneDrawer(1+j*4, 0+j*4, 3+j*4, 2+j*4, blue);
 }
 
 function rectangleDrawer(a, b, c, d, color) {
@@ -375,7 +383,17 @@ function keyDownHandler(event) {
             theta[1] = (theta[1] + 2.0) % 360;
             break;
         case "s":
-            playSound();
+            //playSound("C1vH");
+            hitCube("s");
+            break;
+        case "d":
+            hitCube("d");
+            break;
+        case "j":
+            hitCube("j");
+            break;
+        case "k":
+            hitCube("k");
             break;
         default:
             console.log("Unknown Key Pressed");
@@ -396,7 +414,9 @@ function initLanePos(num) {
 }
 
 var dropCounter = 0;
+var dropHeap = [];
 var indexCounter = 0;
+var cubeFlag = [0, 0, 0, 0, 0, 0, 0, 0];
 function render()
 {
 
@@ -407,11 +427,17 @@ function render()
     uViewMatrix = mult(uViewMatrix, rotateY(theta[1]));
     uViewMatrix = mult(uViewMatrix, rotateZ(theta[2]));
 
-    for(let k = 0; k<4; k++) {
-        if (cubeTransIndex[k][2] > -10) {
-            cubeTransIndex[k][2] += 0.05;
-        } else {
-            cubeTransIndex[k][2] += 0.2;
+    for(let k = 0; k<cubeFlag.length; k++) {
+        if(cubeFlag[k] !== 0) {
+            if (cubeTransIndex[k][2] > -10) {
+                cubeTransIndex[k][2] += 0.05;
+            } else {
+                cubeTransIndex[k][2] += 0.2;
+            }
+            if (cubeTransIndex[k][2] > 0) {
+                cubeFlag[k] = 0;
+                initCubePos(k);
+            }
         }
     }
 
@@ -428,17 +454,21 @@ function render()
     cubeTranslate = slide(x_init, y_init, z_init);//slide(x_init, y_init-0.2, z_init+45);
     gl.uniformMatrix4fv(cubeTranslateLoc, false, flatten(cubeTranslate));
     gl.drawArrays(gl.TRIANGLES, 4*36, 6*numLanePanels);
+    gl.drawArrays(gl.TRIANGLES, 4*36+6*numLanePanels, 6);
 
     dropCounter = dropCounter + 1;
     if(indexCounter < dropSequence.length) {
         if (dropCounter === 180) {
             dropCounter = 0;
-            indexCounter = (indexCounter + 1);// % 4;
             if (dropSequence[indexCounter] !== -1) {
-                initCubePos(dropSequence[indexCounter]);
+                //initCubePos(dropSequence[indexCounter]);
+                cubeFlag[dropSequence[indexCounter]] = 1;
+                dropHeap.push(indexCounter);
+                //console.log(cubeFlag);
             } else {
 
             }
+            indexCounter = (indexCounter + 1);// % 4;
         }
     }
     requestAnimFrame( render );
@@ -462,12 +492,16 @@ function hitCube(keyStroke) {
         default:
             console.log("Error: Unknown Key Stroke.");
     }
-    if (0 > cubeIndex[cubeIndex][2] > -5) {
+    if (0 > cubeTransIndex[cubeIndex][2] && cubeTransIndex[cubeIndex][2] > -5) {
+        cubeFlag[cubeIndex] = 0;
         initCubePos(cubeIndex);
+        let musicIndex = dropHeap.shift();
+        console.log(musicIndex);
+        playSound(musicSequence[musicIndex]);
     }
 }
 
-function playSound() {
-    let audio = new Audio('./samples/C1vH.wav');
+function playSound(tone) {
+    let audio = new Audio("./samples/" + tone + "4vH.wav");
     audio.play();
 }

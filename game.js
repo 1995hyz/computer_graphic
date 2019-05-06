@@ -215,7 +215,6 @@ window.onload = function init() {
     program = initShaders(gl, "vertex-shader", "fragment-shader");
     gl.useProgram(program);
 
-    //initLanePos(numLanePanels);
     init_block();
 
     right = gl.canvas.clientWidth;
@@ -302,77 +301,77 @@ function init_block(){
     rectangleDrawer(5, 4, 0, 1, white);
 
     i = 1;
-    rectangleDrawer(1+i*8, 0+i*8, 3+i*8, 2+i*8, white);
+    rectangleDrawer(1+i*8, i*8,   3+i*8, 2+i*8, white);
     rectangleDrawer(2+i*8, 3+i*8, 7+i*8, 6+i*8, white);
-    rectangleDrawer(3+i*8, 0+i*8, 4+i*8, 7+i*8, white);
+    rectangleDrawer(3+i*8, i*8,   4+i*8, 7+i*8, white);
     rectangleDrawer(6+i*8, 5+i*8, 1+i*8, 2+i*8, white);
     rectangleDrawer(4+i*8, 5+i*8, 6+i*8, 7+i*8, white);
-    rectangleDrawer(5+i*8, 4+i*8, 0+i*8, 1+i*8, white);
+    rectangleDrawer(5+i*8, 4+i*8, i*8,   1+i*8, white);
 
     i = 2;
-    rectangleDrawer(1+i*8, 0+i*8, 3+i*8, 2+i*8, white);
+    rectangleDrawer(1+i*8, i*8,   3+i*8, 2+i*8, white);
     rectangleDrawer(2+i*8, 3+i*8, 7+i*8, 6+i*8, white);
-    rectangleDrawer(3+i*8, 0+i*8, 4+i*8, 7+i*8, white);
+    rectangleDrawer(3+i*8, i*8,   4+i*8, 7+i*8, white);
     rectangleDrawer(6+i*8, 5+i*8, 1+i*8, 2+i*8, white);
     rectangleDrawer(4+i*8, 5+i*8, 6+i*8, 7+i*8, white);
-    rectangleDrawer(5+i*8, 4+i*8, 0+i*8, 1+i*8, white);
+    rectangleDrawer(5+i*8, 4+i*8, i*8,   1+i*8, white);
 
     i = 3;
-    rectangleDrawer(1+i*8, 0+i*8, 3+i*8, 2+i*8, white);
+    rectangleDrawer(1+i*8, i*8,   3+i*8, 2+i*8, white);
     rectangleDrawer(2+i*8, 3+i*8, 7+i*8, 6+i*8, white);
-    rectangleDrawer(3+i*8, 0+i*8, 4+i*8, 7+i*8, white);
+    rectangleDrawer(3+i*8, i*8,   4+i*8, 7+i*8, white);
     rectangleDrawer(6+i*8, 5+i*8, 1+i*8, 2+i*8, white);
     rectangleDrawer(4+i*8, 5+i*8, 6+i*8, 7+i*8, white);
-    rectangleDrawer(5+i*8, 4+i*8, 0+i*8, 1+i*8, white);
+    rectangleDrawer(5+i*8, 4+i*8, i*8,   1+i*8, white);
 
     i = 4;
-    rectangleDrawer(1+i*8, 0+i*8, 3+i*8, 2+i*8, white);
+    rectangleDrawer(1+i*8, i*8,   3+i*8, 2+i*8, white);
     rectangleDrawer(2+i*8, 3+i*8, 7+i*8, 6+i*8, white);
-    rectangleDrawer(3+i*8, 0+i*8, 4+i*8, 7+i*8, white);
+    rectangleDrawer(3+i*8, i*8,   4+i*8, 7+i*8, white);
     rectangleDrawer(6+i*8, 5+i*8, 1+i*8, 2+i*8, white);
     rectangleDrawer(4+i*8, 5+i*8, 6+i*8, 7+i*8, white);
-    rectangleDrawer(5+i*8, 4+i*8, 0+i*8, 1+i*8, white);
+    rectangleDrawer(5+i*8, 4+i*8, i*8,   1+i*8, white);
 
     i = 5;
-    rectangleDrawer(1+i*8, 0+i*8, 3+i*8, 2+i*8, white);
+    rectangleDrawer(1+i*8, i*8,   3+i*8, 2+i*8, white);
     rectangleDrawer(2+i*8, 3+i*8, 7+i*8, 6+i*8, white);
-    rectangleDrawer(3+i*8, 0+i*8, 4+i*8, 7+i*8, white);
+    rectangleDrawer(3+i*8, i*8,   4+i*8, 7+i*8, white);
     rectangleDrawer(6+i*8, 5+i*8, 1+i*8, 2+i*8, white);
     rectangleDrawer(4+i*8, 5+i*8, 6+i*8, 7+i*8, white);
-    rectangleDrawer(5+i*8, 4+i*8, 0+i*8, 1+i*8, white);
+    rectangleDrawer(5+i*8, 4+i*8, i*8,   1+i*8, white);
 
     i = 6;
-    rectangleDrawer(1+i*8, 0+i*8, 3+i*8, 2+i*8, white);
+    rectangleDrawer(1+i*8, i*8,   3+i*8, 2+i*8, white);
     rectangleDrawer(2+i*8, 3+i*8, 7+i*8, 6+i*8, white);
-    rectangleDrawer(3+i*8, 0+i*8, 4+i*8, 7+i*8, white);
+    rectangleDrawer(3+i*8, i*8,   4+i*8, 7+i*8, white);
     rectangleDrawer(6+i*8, 5+i*8, 1+i*8, 2+i*8, white);
     rectangleDrawer(4+i*8, 5+i*8, 6+i*8, 7+i*8, white);
-    rectangleDrawer(5+i*8, 4+i*8, 0+i*8, 1+i*8, white);
+    rectangleDrawer(5+i*8, 4+i*8, i*8,   1+i*8, white);
 
     i = 7;
-    rectangleDrawer(1+i*8, 0+i*8, 3+i*8, 2+i*8, white);
+    rectangleDrawer(1+i*8, i*8,   3+i*8, 2+i*8, white);
     rectangleDrawer(2+i*8, 3+i*8, 7+i*8, 6+i*8, white);
-    rectangleDrawer(3+i*8, 0+i*8, 4+i*8, 7+i*8, white);
+    rectangleDrawer(3+i*8, i*8,   4+i*8, 7+i*8, white);
     rectangleDrawer(6+i*8, 5+i*8, 1+i*8, 2+i*8, white);
     rectangleDrawer(4+i*8, 5+i*8, 6+i*8, 7+i*8, white);
-    rectangleDrawer(5+i*8, 4+i*8, 0+i*8, 1+i*8, white);
+    rectangleDrawer(5+i*8, 4+i*8, i*8,   1+i*8, white);
 
     textureDrawer(3, 2, renderSeq);
     laneDrawer(1, 0, 3, 2, green);
     let j = 1;
-    laneDrawer(1+j*4, 0+j*4, 3+j*4, 2+j*4, red);
+    laneDrawer(1+j*4, j*4, 3+j*4, 2+j*4, red);
     j = 2;
-    laneDrawer(1+j*4, 0+j*4, 3+j*4, 2+j*4, red);
+    laneDrawer(1+j*4, j*4, 3+j*4, 2+j*4, red);
     j = 3;
-    laneDrawer(1+j*4, 0+j*4, 3+j*4, 2+j*4, green);
+    laneDrawer(1+j*4, j*4, 3+j*4, 2+j*4, green);
     j = 4;
-    laneDrawer(1+j*4, 0+j*4, 3+j*4, 2+j*4, blue);
+    laneDrawer(1+j*4, j*4, 3+j*4, 2+j*4, blue);
     j = 5;
-    laneDrawer(1+j*4, 0+j*4, 3+j*4, 2+j*4, blue);
+    laneDrawer(1+j*4, j*4, 3+j*4, 2+j*4, blue);
     j = 6;
-    laneDrawer(1+j*4, 0+j*4, 3+j*4, 2+j*4, blue);
+    laneDrawer(1+j*4, j*4, 3+j*4, 2+j*4, blue);
     j = 7;
-    laneDrawer(1+j*4, 0+j*4, 3+j*4, 2+j*4, blue);
+    laneDrawer(1+j*4, j*4, 3+j*4, 2+j*4, blue);
 }
 
 function rectangleDrawer(a, b, c, d, color) {
@@ -499,15 +498,6 @@ function keyDownHandler(event) {
 
 function initCubePos(index) {
     cubeTransIndex[index] = vec3(x_init, y_init, z_init);
-}
-
-function initLanePos(num) {
-    for(let i=0; i<num; i++) {
-        verticesLane.push(vec4( -gap/2-block_length, -block_height/2, -block_width/2+block_width*i, 1.0 ));
-        verticesLane.push(vec4( -gap/2, -block_height/2, -block_width/2+block_width*i, 1.0 ));
-        verticesLane.push(vec4( -gap/2, -block_height/2, block_width/2+block_width*i, 1.0 ));
-        verticesLane.push(vec4( -gap/2-block_length, -block_height/2, block_width/2+block_width*i, 1.0 ));
-    }
 }
 
 var dropCounter = 0;

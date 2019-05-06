@@ -12,10 +12,47 @@ var colors = [];
 var normals = [];
 var textures = [];
 var NumVertices = 36*4;
-var numLanePanels = 4;
+var NumCubes = 8;
+var numLanePanels = 7;
 const z_near = 1;
 const z_far = 100;
 var vertices = [
+    vec4( -gap/2-block_length-(block_length+gap),    -block_height/2,    block_width/2, 1.0 ),
+    vec4( -gap/2-block_length-(block_length+gap),    block_height/2,     block_width/2, 1.0 ),
+    vec4( -gap/2-(block_length+gap),                 block_height/2,     block_width/2, 1.0 ),
+    vec4( -gap/2-(block_length+gap),                 -block_height/2,    block_width/2, 1.0 ),
+    vec4( -gap/2-block_length-(block_length+gap),    -block_height/2,    -block_width/2, 1.0 ),
+    vec4( -gap/2-block_length-(block_length+gap),    block_height/2,     -block_width/2, 1.0 ),
+    vec4( -gap/2-(block_length+gap),                 block_height/2,     -block_width/2, 1.0 ),
+    vec4( -gap/2-(block_length+gap),                 -block_height/2,    -block_width/2, 1.0 ),
+
+    vec4( -gap/2-block_length,   -block_height/2,    block_width/2, 1.0 ),
+    vec4( -gap/2-block_length,   block_height/2,     block_width/2, 1.0 ),
+    vec4( -gap/2,                block_height/2,     block_width/2, 1.0 ),
+    vec4( -gap/2,                -block_height/2,    block_width/2, 1.0 ),
+    vec4( -gap/2-block_length,   -block_height/2,    -block_width/2, 1.0 ),
+    vec4( -gap/2-block_length,   block_height/2,     -block_width/2, 1.0 ),
+    vec4( -gap/2,                block_height/2,     -block_width/2, 1.0 ),
+    vec4( -gap/2,                -block_height/2,    -block_width/2, 1.0 ),
+
+    vec4(  gap/2,               -block_height/2,    block_width/2, 1.0 ),
+    vec4(  gap/2,               block_height/2,     block_width/2, 1.0 ),
+    vec4(  gap/2+block_length,  block_height/2,     block_width/2, 1.0 ),
+    vec4(  gap/2+block_length,  -block_height/2,    block_width/2, 1.0 ),
+    vec4(  gap/2,               -block_height/2,    -block_width/2, 1.0 ),
+    vec4(  gap/2,               block_height/2,     -block_width/2, 1.0 ),
+    vec4(  gap/2+block_length,  block_height/2,     -block_width/2, 1.0 ),
+    vec4(  gap/2+block_length,  -block_height/2,    -block_width/2, 1.0 ),
+
+    vec4(  gap/2+(block_length+gap),               -block_height/2,    block_width/2, 1.0 ),
+    vec4(  gap/2+(block_length+gap),               block_height/2,     block_width/2, 1.0 ),
+    vec4(  gap/2+block_length+(block_length+gap),  block_height/2,     block_width/2, 1.0 ),
+    vec4(  gap/2+block_length+(block_length+gap),  -block_height/2,    block_width/2, 1.0 ),
+    vec4(  gap/2+(block_length+gap),               -block_height/2,    -block_width/2, 1.0 ),
+    vec4(  gap/2+(block_length+gap),               block_height/2,     -block_width/2, 1.0 ),
+    vec4(  gap/2+block_length+(block_length+gap),  block_height/2,     -block_width/2, 1.0 ),
+    vec4(  gap/2+block_length+(block_length+gap),  -block_height/2,    -block_width/2, 1.0 ),
+
     vec4( -gap/2-block_length-(block_length+gap),    -block_height/2,    block_width/2, 1.0 ),
     vec4( -gap/2-block_length-(block_length+gap),    block_height/2,     block_width/2, 1.0 ),
     vec4( -gap/2-(block_length+gap),                 block_height/2,     block_width/2, 1.0 ),
@@ -74,10 +111,30 @@ var verticesLane = [
     vec4( -gap/2+4800,    -block_height/2+block_height*30,    block_width*30, 1.0 ),
     vec4( -gap/2+2500,    -block_height/2+block_height*30,    block_width*30, 1.0 ),
 
+    // Blue 1
     vec4( -gap/2+300,      -block_height/2+block_height*30,    block_width*30, 1.0 ),
     vec4( -gap/2-1900,     -block_height/2+block_height*30,    block_width*30, 1.0 ),
     vec4( -gap/2-2300,     -block_height/2+block_height*30,    block_width*50, 1.0 ),
-    vec4( -gap/2+330,      -block_height/2+block_height*30,    block_width*50, 1.0 ),
+    vec4( -gap/2+400,      -block_height/2+block_height*30,    block_width*50, 1.0 ),
+
+    // Blue 2
+    vec4( -gap/2-1900,     -block_height/2+block_height*30,    block_width*30,  1.0),
+    vec4( -gap/2-4000,     -block_height/2+block_height*30,    block_width*30,  1.0),
+    vec4( -gap/2-5000,     -block_height/2+block_height*30,    block_width*50, 1.0 ),
+    vec4( -gap/2-2300,      -block_height/2+block_height*30,    block_width*50, 1.0 ),
+
+    // Blue 3
+    vec4( -gap/2+2500,    -block_height/2+block_height*30,    block_width*30, 1.0 ),
+    vec4( -gap/2+300,     -block_height/2+block_height*30,    block_width*30, 1.0 ),
+    vec4( -gap/2+400,     -block_height/2+block_height*30,    block_width*50, 1.0 ),
+    vec4( -gap/2+3100,      -block_height/2+block_height*30,    block_width*50, 1.0 ),
+
+    // Blue 4
+    vec4( -gap/2+4800,    -block_height/2+block_height*30,    block_width*30, 1.0 ),
+    vec4( -gap/2+2500,    -block_height/2+block_height*30,    block_width*30, 1.0 ),
+    vec4( -gap/2+3100,     -block_height/2+block_height*30,    block_width*50, 1.0 ),
+    vec4( -gap/2+6100,      -block_height/2+block_height*30,    block_width*50, 1.0 )
+
 ];
 
 var texCoord = [
@@ -94,7 +151,7 @@ var lightSpecular = vec4( 1.0, 1.0, 1.0, 1.0 );
 var materialAmbient = vec4( 1.0, 1.0, 1.0, 1.0 );
 var materialDiffuse = vec4( 1.0, 0.8, 1.0, 1.0);
 var materialSpecular = vec4( 1.0, 0.8, 1.0, 1.0 );
-var materialShininess = 20.0;
+var materialShininess = 1.0;
 var ambientColor, diffuseColor, specularColor;
 
 var uViewMatrixLoc;
@@ -107,10 +164,14 @@ const y_init = -2;
 const z_init = -50;
 var x_trans, y_trans, z_trans;
 var cubeTransIndex = [
-vec3(x_init, y_init, z_init),
-vec3(x_init, y_init, z_init),
-vec3(x_init, y_init, z_init),
-vec3(x_init, y_init, z_init)
+    vec3(x_init, y_init, z_init),
+    vec3(x_init, y_init, z_init),
+    vec3(x_init, y_init, z_init),
+    vec3(x_init, y_init, z_init),
+    vec3(x_init, y_init, z_init),
+    vec3(x_init, y_init, z_init),
+    vec3(x_init, y_init, z_init),
+    vec3(x_init, y_init, z_init)
 ];
 const dropSequence = [0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1];
 const musicSequence = ["D", "D", "A", "A", "B", "B", "A", "G", "G", "F", "F", "E", "E", "D"];
@@ -264,6 +325,38 @@ function init_block(){
     rectangleDrawer(4+i*8, 5+i*8, 6+i*8, 7+i*8, white);
     rectangleDrawer(5+i*8, 4+i*8, 0+i*8, 1+i*8, white);
 
+    i = 4;
+    rectangleDrawer(1+i*8, 0+i*8, 3+i*8, 2+i*8, white);
+    rectangleDrawer(2+i*8, 3+i*8, 7+i*8, 6+i*8, white);
+    rectangleDrawer(3+i*8, 0+i*8, 4+i*8, 7+i*8, white);
+    rectangleDrawer(6+i*8, 5+i*8, 1+i*8, 2+i*8, white);
+    rectangleDrawer(4+i*8, 5+i*8, 6+i*8, 7+i*8, white);
+    rectangleDrawer(5+i*8, 4+i*8, 0+i*8, 1+i*8, white);
+
+    i = 5;
+    rectangleDrawer(1+i*8, 0+i*8, 3+i*8, 2+i*8, white);
+    rectangleDrawer(2+i*8, 3+i*8, 7+i*8, 6+i*8, white);
+    rectangleDrawer(3+i*8, 0+i*8, 4+i*8, 7+i*8, white);
+    rectangleDrawer(6+i*8, 5+i*8, 1+i*8, 2+i*8, white);
+    rectangleDrawer(4+i*8, 5+i*8, 6+i*8, 7+i*8, white);
+    rectangleDrawer(5+i*8, 4+i*8, 0+i*8, 1+i*8, white);
+
+    i = 6;
+    rectangleDrawer(1+i*8, 0+i*8, 3+i*8, 2+i*8, white);
+    rectangleDrawer(2+i*8, 3+i*8, 7+i*8, 6+i*8, white);
+    rectangleDrawer(3+i*8, 0+i*8, 4+i*8, 7+i*8, white);
+    rectangleDrawer(6+i*8, 5+i*8, 1+i*8, 2+i*8, white);
+    rectangleDrawer(4+i*8, 5+i*8, 6+i*8, 7+i*8, white);
+    rectangleDrawer(5+i*8, 4+i*8, 0+i*8, 1+i*8, white);
+
+    i = 7;
+    rectangleDrawer(1+i*8, 0+i*8, 3+i*8, 2+i*8, white);
+    rectangleDrawer(2+i*8, 3+i*8, 7+i*8, 6+i*8, white);
+    rectangleDrawer(3+i*8, 0+i*8, 4+i*8, 7+i*8, white);
+    rectangleDrawer(6+i*8, 5+i*8, 1+i*8, 2+i*8, white);
+    rectangleDrawer(4+i*8, 5+i*8, 6+i*8, 7+i*8, white);
+    rectangleDrawer(5+i*8, 4+i*8, 0+i*8, 1+i*8, white);
+
     textureDrawer(3, 2, renderSeq);
     laneDrawer(1, 0, 3, 2, green);
     let j = 1;
@@ -273,6 +366,12 @@ function init_block(){
     j = 3;
     laneDrawer(1+j*4, 0+j*4, 3+j*4, 2+j*4, green);
     j = 4;
+    laneDrawer(1+j*4, 0+j*4, 3+j*4, 2+j*4, blue);
+    j = 5;
+    laneDrawer(1+j*4, 0+j*4, 3+j*4, 2+j*4, blue);
+    j = 6;
+    laneDrawer(1+j*4, 0+j*4, 3+j*4, 2+j*4, blue);
+    j = 7;
     laneDrawer(1+j*4, 0+j*4, 3+j*4, 2+j*4, blue);
 }
 
@@ -286,6 +385,10 @@ function rectangleDrawer(a, b, c, d, color) {
 }
 
 var renderSeq = [
+    vec2(0, 0),
+    vec2(0, 1),
+    vec2(0, 2),
+    vec2(1, 0),
     vec2(0, 0),
     vec2(0, 1),
     vec2(0, 2),
@@ -311,12 +414,6 @@ function laneDrawer(a, b, c, d, color) {
         points.push(verticesLane[indices[i]]);
         colors.push((color));
     }
-    /*textures.push(texCoord[0]);
-    textures.push(texCoord[1]);
-    textures.push(texCoord[2]);
-    textures.push(texCoord[0]);
-    textures.push(texCoord[2]);
-    textures.push(texCoord[3]);*/
     textures.push(vec2(0, 0));
     textures.push(vec2(0, 0));
     textures.push(vec2(0, 0));
@@ -446,15 +543,15 @@ function render()
     gl.uniformMatrix4fv(perspectiveLoc, false, flatten(perspectiveMatrix));
     gl.uniformMatrix4fv(orthoMatrixLoc, false, flatten(orthoMatrix));
 
-    for(let i=0; i<4; i++) {
+    for(let i=0; i<NumCubes; i++) {
         cubeTranslate = slide(cubeTransIndex[i][0], cubeTransIndex[i][1], cubeTransIndex[i][2]);
         gl.uniformMatrix4fv(cubeTranslateLoc, false, flatten(cubeTranslate));
         gl.drawArrays(gl.TRIANGLES, i*36, 36);
     }
     cubeTranslate = slide(x_init, y_init, z_init);//slide(x_init, y_init-0.2, z_init+45);
     gl.uniformMatrix4fv(cubeTranslateLoc, false, flatten(cubeTranslate));
-    gl.drawArrays(gl.TRIANGLES, 4*36, 6*numLanePanels);
-    gl.drawArrays(gl.TRIANGLES, 4*36+6*numLanePanels, 6);
+    gl.drawArrays(gl.TRIANGLES, NumCubes*36, 6*numLanePanels);
+    gl.drawArrays(gl.TRIANGLES, NumCubes*36+6*numLanePanels, 6);
 
     dropCounter = dropCounter + 1;
     if(indexCounter < dropSequence.length) {

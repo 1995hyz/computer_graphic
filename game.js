@@ -164,7 +164,7 @@ vec2(1.0, 1.0),
 vec2(1.0, 0.0)
 ];
 
-var lightPosition = vec4(1.0, 1.0, 10.0, 1.0);
+var lightPosition = vec4(50.0, 1.0, -10.0, 1.0);
 var lightAmbient = vec4(0.1, 0.1, 0.1, 1.0 );
 var lightDiffuse = vec4( 1.0, 1.0, 1.0, 1.0 );
 var lightSpecular = vec4( 1.0, 1.0, 1.0, 1.0 );
@@ -436,13 +436,13 @@ function backgroundDrawer(a, b, c, d, color) {
 
 var renderSeq = [
     vec2(0, 0),
-    vec2(0, 1),
-    vec2(0, 2),
     vec2(1, 0),
-    vec2(0, 0),
+    vec2(2, 0),
     vec2(0, 1),
-    vec2(0, 2),
-    vec2(1, 0)
+    vec2(0, 0),
+    vec2(1, 0),
+    vec2(2, 0),
+    vec2(0, 1)
 ];
 
 function textureDrawer(rowLength, columnLength, seq) {
@@ -556,6 +556,7 @@ function initCubePos(index) {
 var dropCounter = 0;
 var dropHeap = [];
 var indexCounter = 0;
+var lightIndex = 0;
 var cubeFlag = [0, 0, 0, 0, 0, 0, 0, 0];
 function render()
 {
@@ -608,9 +609,18 @@ function render()
                 //console.log(cubeFlag);
             }
             indexCounter = (indexCounter + 1);// % 4;
-            moveLighting();
         }
     }
+
+    if(lightIndex > 1) {
+        lightIndex = lightIndex - 1;
+    }
+    else if(lightIndex === 1) {
+        lightIndex = 0;
+        gl.uniform4fv(gl.getUniformLocation(program, "lightPosition"),
+            flatten(vec4(50.0, 1.0, -10.0, 1.0)) );
+    }
+
     requestAnimFrame( render );
 }
 
@@ -639,6 +649,7 @@ function hitCube(keyStroke) {
         console.log(musicIndex);
         playSound(musicSequence[musicIndex]);
         totalScore = totalScore + unitScore;
+        moveLighting();
     }
     if (0 > cubeTransIndex[cubeIndex+4][2] && cubeTransIndex[cubeIndex+4][2] > -5) {
         cubeFlag[cubeIndex+4] = 0;
@@ -647,6 +658,7 @@ function hitCube(keyStroke) {
         console.log(musicIndex);
         playSound(musicSequence[musicIndex]);
         totalScore = totalScore + unitScore;
+        moveLighting();
     }
 }
 
@@ -656,12 +668,9 @@ function playSound(tone) {
 }
 
 function moveLighting() {
-    if(lightPosition[2] > -10) {
-        lightPosition[2] = lightPosition[2] - 20;
-    }
-    else {
-        lightPosition[2] = lightPosition[2] + 30;
-    }
+    lightPosition[0] = -10;//xLightPosition;
+    console.log(lightPosition[0]);
     gl.uniform4fv(gl.getUniformLocation(program, "lightPosition"),
         flatten(lightPosition) );
+    lightIndex = 20;
 }

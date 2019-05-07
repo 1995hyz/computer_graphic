@@ -6,6 +6,8 @@ const block_length = 200;
 const block_width = 160;
 const block_height = 40;
 const gap = 50;
+const unitScore = 1;
+var totalScore = 0;
 var program;
 var points = [];
 var colors = [];
@@ -144,8 +146,8 @@ vec2(1.0, 1.0),
 vec2(1.0, 0.0)
 ];
 
-var lightPosition = vec4(1.0, 1.0, 1.0, 1.0);
-var lightAmbient = vec4(0.5, 0.5, 0.5, 1.0 );
+var lightPosition = vec4(1.0, 1.0, 10.0, 1.0);
+var lightAmbient = vec4(0.1, 0.1, 0.1, 1.0 );
 var lightDiffuse = vec4( 1.0, 1.0, 1.0, 1.0 );
 var lightSpecular = vec4( 1.0, 1.0, 1.0, 1.0 );
 var materialAmbient = vec4( 1.0, 1.0, 1.0, 1.0 );
@@ -173,8 +175,16 @@ var cubeTransIndex = [
     vec3(x_init, y_init, z_init),
     vec3(x_init, y_init, z_init)
 ];
-const dropSequence = [0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1];
-const musicSequence = ["D", "D", "A", "A", "B", "B", "A", "G", "G", "F", "F", "E", "E", "D"];
+const dropSequence = [0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 2, 3, 0, 1, 2, 3];
+/*const musicSequence = [
+    "D", "D", "A", "A", "B", "B", "A", "G", "G", "F", "F", "E", "E", "D",
+    "A", "A", "G", "G", "F", "F", "E", "A", "A", "G", "G", "F", "F", "E",
+    "D", "D", "A", "A", "B", "B", "A", "G", "G", "F", "F", "E", "E", "D"
+];*/
+const musicSequence = [
+    "E", "E", "F", "G", "G", "F", "E", "D", "C", "C", "D", "E", "E", "D", "D",
+    "E", "E", "F", "G", "G", "F", "E", "D", "C", "C", "D", "E", "D", "C", "C"
+];
 var perspectiveLoc;
 var perspectiveMatrix;
 var orthoMatrixLoc;
@@ -434,7 +444,9 @@ function loadImage() {
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE,
         new Uint8Array([0, 0, 255, 255]));
     var image1 = new Image();
+    image1.crossOrigin = "anonymous";
     image1.src = "./textures/colorful_1_768x512.jpg";
+    //image1.src = "https://github.com/1995hyz/computer_graphic/blob/master/textures/colorful_1_768x512.jpg";
     image1.addEventListener('load', function () {
         gl.bindTexture(gl.TEXTURE_2D, texture);
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image1);
@@ -516,20 +528,20 @@ function render()
 
     for(let k = 0; k<cubeFlag.length; k++) {
         if(cubeFlag[k] !== 0) {
-            if (cubeTransIndex[k][2] > -10) {
-                cubeTransIndex[k][2] += 0.05;
+            if (cubeTransIndex[k][2] > -30) {
+                cubeTransIndex[k][2] += 0.4;
             } else {
-                cubeTransIndex[k][2] += 0.2;
+                cubeTransIndex[k][2] += 0.4;
             }
             if (cubeTransIndex[k][2] > 0) {
                 cubeFlag[k] = 0;
                 initCubePos(k);
+                dropHeap.shift();
             }
         }
     }
 
     gl.uniformMatrix4fv(uViewMatrixLoc, false, flatten(uViewMatrix));
-    //gl.uniformMatrix4fv(cubeTranslateLoc, false, flatten(cubeTranslate));
     gl.uniformMatrix4fv(perspectiveLoc, false, flatten(perspectiveMatrix));
     gl.uniformMatrix4fv(orthoMatrixLoc, false, flatten(orthoMatrix));
 
@@ -545,17 +557,16 @@ function render()
 
     dropCounter = dropCounter + 1;
     if(indexCounter < dropSequence.length) {
-        if (dropCounter === 180) {
+        if (dropCounter === 40) {
             dropCounter = 0;
             if (dropSequence[indexCounter] !== -1) {
                 //initCubePos(dropSequence[indexCounter]);
                 cubeFlag[dropSequence[indexCounter]] = 1;
                 dropHeap.push(indexCounter);
                 //console.log(cubeFlag);
-            } else {
-
             }
             indexCounter = (indexCounter + 1);// % 4;
+            moveLighting();
         }
     }
     requestAnimFrame( render );
@@ -585,10 +596,30 @@ function hitCube(keyStroke) {
         let musicIndex = dropHeap.shift();
         console.log(musicIndex);
         playSound(musicSequence[musicIndex]);
+        totalScore = totalScore + unitScore;
+    }
+    if (0 > cubeTransIndex[cubeIndex+4][2] && cubeTransIndex[cubeIndex+4][2] > -5) {
+        cubeFlag[cubeIndex+4] = 0;
+        initCubePos(cubeIndex+4);
+        let musicIndex = dropHeap.shift();
+        console.log(musicIndex);
+        playSound(musicSequence[musicIndex]);
+        totalScore = totalScore + unitScore;
     }
 }
 
 function playSound(tone) {
     let audio = new Audio("./samples/" + tone + "4vH.wav");
     audio.play();
+}
+
+function moveLighting() {
+    if(lightPosition[2] > -10) {
+        lightPosition[2] = lightPosition[2] - 20;
+    }
+    else {
+        lightPosition[2] = lightPosition[2] + 30;
+    }
+    gl.uniform4fv(gl.getUniformLocation(program, "lightPosition"),
+        flatten(lightPosition) );
 }

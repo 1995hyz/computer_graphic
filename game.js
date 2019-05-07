@@ -14,12 +14,84 @@ var colors = [];
 var normals = [];
 var textures = [];
 var NumVertices = 36*4;
-var NumCubes = 8;
+var NumCubes = 16;
 var numLanePanels = 8;
 var numBackground = 3;
 const z_near = 1;
 const z_far = 100;
 var vertices = [
+    vec4( -gap/2-block_length-(block_length+gap),    -block_height/2,    block_width/2, 1.0 ),
+    vec4( -gap/2-block_length-(block_length+gap),    block_height/2,     block_width/2, 1.0 ),
+    vec4( -gap/2-(block_length+gap),                 block_height/2,     block_width/2, 1.0 ),
+    vec4( -gap/2-(block_length+gap),                 -block_height/2,    block_width/2, 1.0 ),
+    vec4( -gap/2-block_length-(block_length+gap),    -block_height/2,    -block_width/2, 1.0 ),
+    vec4( -gap/2-block_length-(block_length+gap),    block_height/2,     -block_width/2, 1.0 ),
+    vec4( -gap/2-(block_length+gap),                 block_height/2,     -block_width/2, 1.0 ),
+    vec4( -gap/2-(block_length+gap),                 -block_height/2,    -block_width/2, 1.0 ),
+
+    vec4( -gap/2-block_length,   -block_height/2,    block_width/2, 1.0 ),
+    vec4( -gap/2-block_length,   block_height/2,     block_width/2, 1.0 ),
+    vec4( -gap/2,                block_height/2,     block_width/2, 1.0 ),
+    vec4( -gap/2,                -block_height/2,    block_width/2, 1.0 ),
+    vec4( -gap/2-block_length,   -block_height/2,    -block_width/2, 1.0 ),
+    vec4( -gap/2-block_length,   block_height/2,     -block_width/2, 1.0 ),
+    vec4( -gap/2,                block_height/2,     -block_width/2, 1.0 ),
+    vec4( -gap/2,                -block_height/2,    -block_width/2, 1.0 ),
+
+    vec4(  gap/2,               -block_height/2,    block_width/2, 1.0 ),
+    vec4(  gap/2,               block_height/2,     block_width/2, 1.0 ),
+    vec4(  gap/2+block_length,  block_height/2,     block_width/2, 1.0 ),
+    vec4(  gap/2+block_length,  -block_height/2,    block_width/2, 1.0 ),
+    vec4(  gap/2,               -block_height/2,    -block_width/2, 1.0 ),
+    vec4(  gap/2,               block_height/2,     -block_width/2, 1.0 ),
+    vec4(  gap/2+block_length,  block_height/2,     -block_width/2, 1.0 ),
+    vec4(  gap/2+block_length,  -block_height/2,    -block_width/2, 1.0 ),
+
+    vec4(  gap/2+(block_length+gap),               -block_height/2,    block_width/2, 1.0 ),
+    vec4(  gap/2+(block_length+gap),               block_height/2,     block_width/2, 1.0 ),
+    vec4(  gap/2+block_length+(block_length+gap),  block_height/2,     block_width/2, 1.0 ),
+    vec4(  gap/2+block_length+(block_length+gap),  -block_height/2,    block_width/2, 1.0 ),
+    vec4(  gap/2+(block_length+gap),               -block_height/2,    -block_width/2, 1.0 ),
+    vec4(  gap/2+(block_length+gap),               block_height/2,     -block_width/2, 1.0 ),
+    vec4(  gap/2+block_length+(block_length+gap),  block_height/2,     -block_width/2, 1.0 ),
+    vec4(  gap/2+block_length+(block_length+gap),  -block_height/2,    -block_width/2, 1.0 ),
+
+    vec4( -gap/2-block_length-(block_length+gap),    -block_height/2,    block_width/2, 1.0 ),
+    vec4( -gap/2-block_length-(block_length+gap),    block_height/2,     block_width/2, 1.0 ),
+    vec4( -gap/2-(block_length+gap),                 block_height/2,     block_width/2, 1.0 ),
+    vec4( -gap/2-(block_length+gap),                 -block_height/2,    block_width/2, 1.0 ),
+    vec4( -gap/2-block_length-(block_length+gap),    -block_height/2,    -block_width/2, 1.0 ),
+    vec4( -gap/2-block_length-(block_length+gap),    block_height/2,     -block_width/2, 1.0 ),
+    vec4( -gap/2-(block_length+gap),                 block_height/2,     -block_width/2, 1.0 ),
+    vec4( -gap/2-(block_length+gap),                 -block_height/2,    -block_width/2, 1.0 ),
+
+    vec4( -gap/2-block_length,   -block_height/2,    block_width/2, 1.0 ),
+    vec4( -gap/2-block_length,   block_height/2,     block_width/2, 1.0 ),
+    vec4( -gap/2,                block_height/2,     block_width/2, 1.0 ),
+    vec4( -gap/2,                -block_height/2,    block_width/2, 1.0 ),
+    vec4( -gap/2-block_length,   -block_height/2,    -block_width/2, 1.0 ),
+    vec4( -gap/2-block_length,   block_height/2,     -block_width/2, 1.0 ),
+    vec4( -gap/2,                block_height/2,     -block_width/2, 1.0 ),
+    vec4( -gap/2,                -block_height/2,    -block_width/2, 1.0 ),
+
+    vec4(  gap/2,               -block_height/2,    block_width/2, 1.0 ),
+    vec4(  gap/2,               block_height/2,     block_width/2, 1.0 ),
+    vec4(  gap/2+block_length,  block_height/2,     block_width/2, 1.0 ),
+    vec4(  gap/2+block_length,  -block_height/2,    block_width/2, 1.0 ),
+    vec4(  gap/2,               -block_height/2,    -block_width/2, 1.0 ),
+    vec4(  gap/2,               block_height/2,     -block_width/2, 1.0 ),
+    vec4(  gap/2+block_length,  block_height/2,     -block_width/2, 1.0 ),
+    vec4(  gap/2+block_length,  -block_height/2,    -block_width/2, 1.0 ),
+
+    vec4(  gap/2+(block_length+gap),               -block_height/2,    block_width/2, 1.0 ),
+    vec4(  gap/2+(block_length+gap),               block_height/2,     block_width/2, 1.0 ),
+    vec4(  gap/2+block_length+(block_length+gap),  block_height/2,     block_width/2, 1.0 ),
+    vec4(  gap/2+block_length+(block_length+gap),  -block_height/2,    block_width/2, 1.0 ),
+    vec4(  gap/2+(block_length+gap),               -block_height/2,    -block_width/2, 1.0 ),
+    vec4(  gap/2+(block_length+gap),               block_height/2,     -block_width/2, 1.0 ),
+    vec4(  gap/2+block_length+(block_length+gap),  block_height/2,     -block_width/2, 1.0 ),
+    vec4(  gap/2+block_length+(block_length+gap),  -block_height/2,    -block_width/2, 1.0 ),
+
     vec4( -gap/2-block_length-(block_length+gap),    -block_height/2,    block_width/2, 1.0 ),
     vec4( -gap/2-block_length-(block_length+gap),    block_height/2,     block_width/2, 1.0 ),
     vec4( -gap/2-(block_length+gap),                 block_height/2,     block_width/2, 1.0 ),
@@ -157,13 +229,6 @@ var verticesBackground = [
     vec4( 9600,      -block_height/2+block_height*30,    block_width*50, 1.0 )
 ];
 
-var texCoord = [
-vec2(0.0, 0.0),
-vec2(0.0, 1.0),
-vec2(1.0, 1.0),
-vec2(1.0, 0.0)
-];
-
 var lightPosition = vec4(50.0, 1.0, -10.0, 1.0);
 var lightAmbient = vec4(0.1, 0.1, 0.1, 1.0 );
 var lightDiffuse = vec4( 1.0, 1.0, 1.0, 1.0 );
@@ -191,17 +256,36 @@ var cubeTransIndex = [
     vec3(x_init, y_init, z_init),
     vec3(x_init, y_init, z_init),
     vec3(x_init, y_init, z_init),
+    vec3(x_init, y_init, z_init),
+
+    vec3(x_init, y_init, z_init),
+    vec3(x_init, y_init, z_init),
+    vec3(x_init, y_init, z_init),
+    vec3(x_init, y_init, z_init),
+    vec3(x_init, y_init, z_init),
+    vec3(x_init, y_init, z_init),
+    vec3(x_init, y_init, z_init),
     vec3(x_init, y_init, z_init)
 ];
-const dropSequence = [0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 2, 3, 0, 1, 2, 3];
+const dropSequence = [
+    8, 12, 9, 10, 14, 13, 8, 3, 2, 6, 3, 8, 12, 3, 7,
+    8, 12, 9, 10, 14, 13, 8, 3, 2, 6, 3, 8, 7, 2, 6,
+
+];
+/*const dropSequence = [
+    3, 7, 0, 0, 1, 5, 0, 6, 3, 5, 1, 4, 0, 3,
+    0, 0, 6, 6, 5, 5, 4, 0, 0, 6, 6, 5, 5, 4
+];*/
 /*const musicSequence = [
-    "D", "D", "A", "A", "B", "B", "A", "G", "G", "F", "F", "E", "E", "D",
-    "A", "A", "G", "G", "F", "F", "E", "A", "A", "G", "G", "F", "F", "E",
-    "D", "D", "A", "A", "B", "B", "A", "G", "G", "F", "F", "E", "E", "D"
+    "D", "D", "A", "A", "B", "B", "A", "G", "G", "Fs", "Fs", "E", "E", "D",
+    "A", "A", "G", "G", "Fs", "Fs", "E", "A", "A", "G", "G", "Fs", "Fs", "E",
+    "D", "D", "A", "A", "B", "B", "A", "G", "G", "Fs", "Fs", "E", "E", "D"
 ];*/
 const musicSequence = [
     "E", "E", "F", "G", "G", "F", "E", "D", "C", "C", "D", "E", "E", "D", "D",
-    "E", "E", "F", "G", "G", "F", "E", "D", "C", "C", "D", "E", "D", "C", "C"
+    "E", "E", "F", "G", "G", "F", "E", "D", "C", "C", "D", "E", "D", "C", "C",
+    "D", "D", "E", "C", "D", "F", "E", "C", "D", "F", "E", "D", "C", "D", "G",
+    "E", "E", "F", "G", "G", "F", "E", "D", "C", "C", "D", "E", "D", "C", "C",
 ];
 var perspectiveLoc;
 var perspectiveMatrix;
@@ -390,6 +474,70 @@ function init_block(){
     rectangleDrawer(4+i*8, 5+i*8, 6+i*8, 7+i*8, white);
     rectangleDrawer(5+i*8, 4+i*8, i*8,   1+i*8, white);
 
+    i = 8;
+    rectangleDrawer(1+i*8, i*8,   3+i*8, 2+i*8, white);
+    rectangleDrawer(2+i*8, 3+i*8, 7+i*8, 6+i*8, white);
+    rectangleDrawer(3+i*8, i*8,   4+i*8, 7+i*8, white);
+    rectangleDrawer(6+i*8, 5+i*8, 1+i*8, 2+i*8, white);
+    rectangleDrawer(4+i*8, 5+i*8, 6+i*8, 7+i*8, white);
+    rectangleDrawer(5+i*8, 4+i*8, i*8,   1+i*8, white);
+
+    i = 9;
+    rectangleDrawer(1+i*8, i*8,   3+i*8, 2+i*8, white);
+    rectangleDrawer(2+i*8, 3+i*8, 7+i*8, 6+i*8, white);
+    rectangleDrawer(3+i*8, i*8,   4+i*8, 7+i*8, white);
+    rectangleDrawer(6+i*8, 5+i*8, 1+i*8, 2+i*8, white);
+    rectangleDrawer(4+i*8, 5+i*8, 6+i*8, 7+i*8, white);
+    rectangleDrawer(5+i*8, 4+i*8, i*8,   1+i*8, white);
+
+    i=10;
+    rectangleDrawer(1+i*8, i*8,   3+i*8, 2+i*8, white);
+    rectangleDrawer(2+i*8, 3+i*8, 7+i*8, 6+i*8, white);
+    rectangleDrawer(3+i*8, i*8,   4+i*8, 7+i*8, white);
+    rectangleDrawer(6+i*8, 5+i*8, 1+i*8, 2+i*8, white);
+    rectangleDrawer(4+i*8, 5+i*8, 6+i*8, 7+i*8, white);
+    rectangleDrawer(5+i*8, 4+i*8, i*8,   1+i*8, white);
+
+    i=11;
+    rectangleDrawer(1+i*8, i*8,   3+i*8, 2+i*8, white);
+    rectangleDrawer(2+i*8, 3+i*8, 7+i*8, 6+i*8, white);
+    rectangleDrawer(3+i*8, i*8,   4+i*8, 7+i*8, white);
+    rectangleDrawer(6+i*8, 5+i*8, 1+i*8, 2+i*8, white);
+    rectangleDrawer(4+i*8, 5+i*8, 6+i*8, 7+i*8, white);
+    rectangleDrawer(5+i*8, 4+i*8, i*8,   1+i*8, white);
+
+    i=12;
+    rectangleDrawer(1+i*8, i*8,   3+i*8, 2+i*8, white);
+    rectangleDrawer(2+i*8, 3+i*8, 7+i*8, 6+i*8, white);
+    rectangleDrawer(3+i*8, i*8,   4+i*8, 7+i*8, white);
+    rectangleDrawer(6+i*8, 5+i*8, 1+i*8, 2+i*8, white);
+    rectangleDrawer(4+i*8, 5+i*8, 6+i*8, 7+i*8, white);
+    rectangleDrawer(5+i*8, 4+i*8, i*8,   1+i*8, white);
+
+    i=13;
+    rectangleDrawer(1+i*8, i*8,   3+i*8, 2+i*8, white);
+    rectangleDrawer(2+i*8, 3+i*8, 7+i*8, 6+i*8, white);
+    rectangleDrawer(3+i*8, i*8,   4+i*8, 7+i*8, white);
+    rectangleDrawer(6+i*8, 5+i*8, 1+i*8, 2+i*8, white);
+    rectangleDrawer(4+i*8, 5+i*8, 6+i*8, 7+i*8, white);
+    rectangleDrawer(5+i*8, 4+i*8, i*8,   1+i*8, white);
+
+    i=14;
+    rectangleDrawer(1+i*8, i*8,   3+i*8, 2+i*8, white);
+    rectangleDrawer(2+i*8, 3+i*8, 7+i*8, 6+i*8, white);
+    rectangleDrawer(3+i*8, i*8,   4+i*8, 7+i*8, white);
+    rectangleDrawer(6+i*8, 5+i*8, 1+i*8, 2+i*8, white);
+    rectangleDrawer(4+i*8, 5+i*8, 6+i*8, 7+i*8, white);
+    rectangleDrawer(5+i*8, 4+i*8, i*8,   1+i*8, white);
+
+    i=15;
+    rectangleDrawer(1+i*8, i*8,   3+i*8, 2+i*8, white);
+    rectangleDrawer(2+i*8, 3+i*8, 7+i*8, 6+i*8, white);
+    rectangleDrawer(3+i*8, i*8,   4+i*8, 7+i*8, white);
+    rectangleDrawer(6+i*8, 5+i*8, 1+i*8, 2+i*8, white);
+    rectangleDrawer(4+i*8, 5+i*8, 6+i*8, 7+i*8, white);
+    rectangleDrawer(5+i*8, 4+i*8, i*8,   1+i*8, white);
+
     textureDrawer(3, 3, renderSeq);
     laneDrawer(1, 0, 3, 2, green);
     let j = 1;
@@ -439,9 +587,20 @@ var renderSeq = [
     vec2(1, 0),
     vec2(2, 0),
     vec2(0, 1),
+
     vec2(0, 0),
     vec2(1, 0),
     vec2(2, 0),
+    vec2(0, 1),
+
+    vec2(1, 1),
+    vec2(2, 1),
+    vec2(0, 0),
+    vec2(0, 1),
+
+    vec2(1, 1),
+    vec2(2, 1),
+    vec2(0, 0),
     vec2(0, 1)
 ];
 
@@ -532,7 +691,6 @@ function keyDownHandler(event) {
             theta[1] = (theta[1] + 2.0) % 360;
             break;
         case "s":
-            //playSound("C1vH");
             hitCube("s");
             break;
         case "d":
@@ -557,7 +715,7 @@ var dropCounter = 0;
 var dropHeap = [];
 var indexCounter = 0;
 var lightIndex = 0;
-var cubeFlag = [0, 0, 0, 0, 0, 0, 0, 0];
+var cubeFlag = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 function render()
 {
 
@@ -571,9 +729,9 @@ function render()
     for(let k = 0; k<cubeFlag.length; k++) {
         if(cubeFlag[k] !== 0) {
             if (cubeTransIndex[k][2] > -30) {
-                cubeTransIndex[k][2] += 0.4;
+                cubeTransIndex[k][2] += 0.5;
             } else {
-                cubeTransIndex[k][2] += 0.4;
+                cubeTransIndex[k][2] += 0.5;
             }
             if (cubeTransIndex[k][2] > 0) {
                 cubeFlag[k] = 0;
@@ -603,10 +761,9 @@ function render()
         if (dropCounter === 40) {
             dropCounter = 0;
             if (dropSequence[indexCounter] !== -1) {
-                //initCubePos(dropSequence[indexCounter]);
                 cubeFlag[dropSequence[indexCounter]] = 1;
                 dropHeap.push(indexCounter);
-                //console.log(cubeFlag);
+                //console.log(dropHeap);
             }
             indexCounter = (indexCounter + 1);// % 4;
         }
@@ -642,24 +799,31 @@ function hitCube(keyStroke) {
         default:
             console.log("Error: Unknown Key Stroke.");
     }
+    let tempFlag = false;
+    let tempIndex = 0;
     if (0 > cubeTransIndex[cubeIndex][2] && cubeTransIndex[cubeIndex][2] > -5) {
-        cubeFlag[cubeIndex] = 0;
-        initCubePos(cubeIndex);
+        tempFlag = true;
+        tempIndex = cubeIndex;
+    } else if (0 > cubeTransIndex[cubeIndex+4][2] && cubeTransIndex[cubeIndex+4][2] > -5) {
+        tempFlag = true;
+        tempIndex = cubeIndex+4;
+    } else if (0 > cubeTransIndex[cubeIndex+8][2] && cubeTransIndex[cubeIndex+8][2] > -5) {
+        tempFlag = true;
+        tempIndex = cubeIndex+8;
+    } else if (0 > cubeTransIndex[cubeIndex+12][2] && cubeTransIndex[cubeIndex+12][2] > -5) {
+        tempFlag = true;
+        tempIndex = cubeIndex+12;
+    }
+    if (tempFlag) {
+        cubeFlag[tempIndex] = 0;
+        initCubePos(tempIndex);
         let musicIndex = dropHeap.shift();
         console.log(musicIndex);
         playSound(musicSequence[musicIndex]);
         totalScore = totalScore + unitScore;
         moveLighting();
     }
-    if (0 > cubeTransIndex[cubeIndex+4][2] && cubeTransIndex[cubeIndex+4][2] > -5) {
-        cubeFlag[cubeIndex+4] = 0;
-        initCubePos(cubeIndex+4);
-        let musicIndex = dropHeap.shift();
-        console.log(musicIndex);
-        playSound(musicSequence[musicIndex]);
-        totalScore = totalScore + unitScore;
-        moveLighting();
-    }
+    document.getElementById("p1").innerHTML = "Hit Cubes: " + totalScore;
 }
 
 function playSound(tone) {
@@ -669,7 +833,6 @@ function playSound(tone) {
 
 function moveLighting() {
     lightPosition[0] = -10;//xLightPosition;
-    console.log(lightPosition[0]);
     gl.uniform4fv(gl.getUniformLocation(program, "lightPosition"),
         flatten(lightPosition) );
     lightIndex = 20;

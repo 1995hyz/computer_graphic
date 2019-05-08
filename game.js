@@ -358,23 +358,23 @@ var verticesLane = [
 ];
 
 var verticesBackground = [
-    vec4(-20000,           -3500,    -z_far*60, 1.0 ),
-    vec4(20000,          -3500,    -z_far*60, 1.0 ),
-    vec4(20000,           -block_height/2+block_height*30,    -z_far*60, 1.0 ),
-    vec4(-20000,           -block_height/2+block_height*30,    -z_far*60, 1.0 ),
+    vec4( -20000,    -3500,    -z_far*60, 1.0 ),
+    vec4( 20000,     -3500,    -z_far*60, 1.0 ),
+    vec4( 20000,     -block_height/2+block_height*30,    -z_far*60, 1.0 ),
+    vec4( -20000,    -block_height/2+block_height*30,    -z_far*60, 1.0 ),
 
-    vec4(-20000,           -block_height/2+block_height*30,    -z_far*60, 1.0 ),
-    vec4(-gap/2-600,      -block_height/2+block_height*30,    -z_far*60, 1.0 ),
-    vec4( -gap/2-5000,      -block_height/2+block_height*30,    block_width*50, 1.0 ),
-    vec4( -9600,      -block_height/2+block_height*30,    block_width*50, 1.0 ),
+    vec4( -20000,       -block_height/2+block_height*30,    -z_far*60, 1.0 ),
+    vec4( -gap/2-600,   -block_height/2+block_height*30,    -z_far*60, 1.0 ),
+    vec4( -gap/2-5000,  -block_height/2+block_height*30,    block_width*50, 1.0 ),
+    vec4( -9600,        -block_height/2+block_height*30,    block_width*50, 1.0 ),
 
-    vec4( 20000,     -block_height/2+block_height*30,    -z_far*60,       1.0 ),
-    vec4( -gap/2+810,     -block_height/2+block_height*30,    -z_far*60,       1.0 ),
-    vec4( -gap/2+6000,     -block_height/2+block_height*30,    block_width*50, 1.0 ),
-    vec4( 9600,      -block_height/2+block_height*30,    block_width*50, 1.0 )
+    vec4( 20000,        -block_height/2+block_height*30,    -z_far*60,       1.0 ),
+    vec4( -gap/2+810,   -block_height/2+block_height*30,    -z_far*60,       1.0 ),
+    vec4( -gap/2+6000,  -block_height/2+block_height*30,    block_width*50, 1.0 ),
+    vec4( 9600,         -block_height/2+block_height*30,    block_width*50, 1.0 )
 ];
 
-var lightPosition = vec4(50.0, 1.0, -10.0, 1.0);
+var lightPosition = vec4(0, 1.0, 50.0, 1.0);
 var lightAmbient = vec4(0.1, 0.1, 0.1, 1.0 );
 var lightDiffuse = vec4( 1.0, 1.0, 1.0, 1.0 );
 var lightSpecular = vec4( 1.0, 1.0, 1.0, 1.0 );
@@ -482,7 +482,7 @@ window.onload = function init() {
     if ( !gl ) { alert( "WebGL isn't available" ); }
 
     gl.viewport(0, 0, canvas.width, canvas.height);
-    gl.clearColor(0.8, 0.8, 0.8, 1.0);
+    gl.clearColor(0, 0, 0, 1.0);
 
     gl.enable(gl.DEPTH_TEST);
 
@@ -566,9 +566,9 @@ window.onload = function init() {
 };
 
 var backgroundRenderSeq = [
-    vec2(1, 2),
-    vec2(0, 2),
-    vec2(0, 2)
+    vec2(0, 3),
+    vec2(0, 3),
+    vec2(0, 3)
 ];
 
 function init_block(){
@@ -581,7 +581,7 @@ function init_block(){
         rectangleDrawer(5 + i * 8, 4 + i * 8, i * 8, 1 + i * 8, white);
     }
 
-    textureDrawer(3, 3, renderSeq);
+    textureDrawer(3, 5, renderSeq, 1);
     laneDrawer(1, 0, 3, 2, green);
     let j = 1;
     laneDrawer(1+j*4, j*4, 3+j*4, 2+j*4, red);
@@ -599,12 +599,12 @@ function init_block(){
     laneDrawer(1+j*4, j*4, 3+j*4, 2+j*4, yellow);
 
     let k = 0;
-    backgroundDrawer(1, 0, 3, 2, yellow);
+    backgroundDrawer(1, 0, 3, 2, white);
     k = 1;
     backgroundDrawer(1+k*4, k*4, 3+k*4, 2+k*4, yellow);
     k = 2;
     backgroundDrawer(1+k*4, k*4, 3+k*4, 2+k*4, yellow);
-    textureDrawer(3, 3, backgroundRenderSeq);
+    textureDrawer(3, 5, backgroundRenderSeq, 2);
 }
 
 function rectangleDrawer(a, b, c, d, color) {
@@ -667,15 +667,15 @@ var renderSeq = [
     vec2(0, 1)
 ];
 
-function textureDrawer(rowLength, columnLength, seq) {
+function textureDrawer(rowLength, columnLength, seq, span) {
     for(let i = 0; i<seq.length; i++) {
         for(let j = 0; j<6; j++) {
             textures.push(vec2(1.0 / rowLength * seq[i][0], 1.0 / columnLength * seq[i][1]));
-            textures.push(vec2(1.0 / rowLength * seq[i][0], 1.0 / columnLength * (seq[i][1] + 1)));
-            textures.push(vec2(1.0 / rowLength * (seq[i][0] + 1), 1.0 / columnLength * (seq[i][1] + 1)));
+            textures.push(vec2(1.0 / rowLength * seq[i][0], 1.0 / columnLength * (seq[i][1] + span)));
+            textures.push(vec2(1.0 / rowLength * (seq[i][0] + span), 1.0 / columnLength * (seq[i][1] + span)));
             textures.push(vec2(1.0 / rowLength * seq[i][0], 1.0 / columnLength * seq[i][1]));
-            textures.push(vec2(1.0 / rowLength * (seq[i][0] + 1), 1.0 / columnLength * (seq[i][1] + 1)));
-            textures.push(vec2(1.0 / rowLength * (seq[i][0] + 1), 1.0 / columnLength * seq[i][1]));
+            textures.push(vec2(1.0 / rowLength * (seq[i][0] + span), 1.0 / columnLength * (seq[i][1] + span)));
+            textures.push(vec2(1.0 / rowLength * (seq[i][0] + span), 1.0 / columnLength * seq[i][1]));
         }
     }
 }
@@ -708,7 +708,7 @@ function loadImage() {
         new Uint8Array([0, 0, 255, 255]));
     var image1 = new Image();
     image1.crossOrigin = "anonymous";
-    image1.src = "./textures/colorful_1_768x768.jpg";
+    image1.src = "./textures/colorful_1_768x1280.jpg";
     //image1.src = "https://github.com/1995hyz/computer_graphic/blob/master/textures/colorful_1_768x512.jpg";
     image1.addEventListener('load', function () {
         gl.bindTexture(gl.TEXTURE_2D, texture);
@@ -848,7 +848,7 @@ function render()
     else if(lightIndex === 1) {
         lightIndex = 0;
         gl.uniform4fv(gl.getUniformLocation(program, "lightPosition"),
-            flatten(vec4(50.0, 1.0, -10.0, 1.0)) );
+            flatten(vec4(0, 1.0, 50.0, 1.0)) );
     }
 
     requestAnimFrame( render );
@@ -918,7 +918,7 @@ function playSound(tone) {
 }
 
 function moveLighting() {
-    lightPosition[0] = -10;//xLightPosition;
+    lightPosition[2] = -10;//xLightPosition;
     gl.uniform4fv(gl.getUniformLocation(program, "lightPosition"),
         flatten(lightPosition) );
     lightIndex = 20;

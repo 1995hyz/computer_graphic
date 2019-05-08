@@ -709,7 +709,6 @@ function loadImage() {
     var image1 = new Image();
     image1.crossOrigin = "anonymous";
     image1.src = "./textures/colorful_1_768x1280.jpg";
-    //image1.src = "https://github.com/1995hyz/computer_graphic/blob/master/textures/colorful_1_768x512.jpg";
     image1.addEventListener('load', function () {
         gl.bindTexture(gl.TEXTURE_2D, texture);
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image1);
@@ -729,30 +728,13 @@ function isPowerOf2(value) {
     return (value & (value - 1)) === 0;
 }
 
+// Translation Matrix is for sliding the cubes down the track.
 function slide(x, y, z) {
     return translate(x, y, z);
 }
 
 function keyDownHandler(event) {
     switch (event.key) {
-        case "ArrowUp":
-            theta[0] = (theta[0] - 2.0) % 360;
-            break;
-        case "ArrowDown":
-            theta[0] = (theta[0] + 2.0) % 360;
-            break;
-        case "ArrowLeft":
-            theta[2] = (theta[2] + 2.0) % 360;
-            break;
-        case "ArrowRight":
-            theta[2] = (theta[2] - 2.0) % 360;
-            break;
-        case ",":
-            theta[1] = (theta[1] - 2.0) % 360;
-            break;
-        case ".":
-            theta[1] = (theta[1] + 2.0) % 360;
-            break;
         case "s":
             hitCube("s");
             break;
@@ -847,6 +829,7 @@ function render()
     }
     else if(lightIndex === 1) {
         lightIndex = 0;
+        // Restore lighting back to dark.
         gl.uniform4fv(gl.getUniformLocation(program, "lightPosition"),
             flatten(vec4(0, 1.0, 50.0, 1.0)) );
     }
@@ -874,6 +857,7 @@ function hitCube(keyStroke) {
     }
     let tempFlag = false;
     let tempIndex = 0;
+    // Detect if a cube is in the target zone.
     if (0 > cubeTransIndex[cubeIndex][2] && cubeTransIndex[cubeIndex][2] > -5) {
         tempFlag = true;
         tempIndex = cubeIndex;
@@ -917,8 +901,10 @@ function playSound(tone) {
     audio.play();
 }
 
+
+// This function lights up the tracks.
 function moveLighting() {
-    lightPosition[2] = -10;//xLightPosition;
+    lightPosition[2] = -10;
     gl.uniform4fv(gl.getUniformLocation(program, "lightPosition"),
         flatten(lightPosition) );
     lightIndex = 20;

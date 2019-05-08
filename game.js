@@ -14,7 +14,7 @@ var colors = [];
 var normals = [];
 var textures = [];
 var NumVertices = 36*4;
-var NumCubes = 24;
+var NumCubes = 32;
 var numLanePanels = 8;
 var numBackground = 3;
 const z_near = 1;
@@ -235,6 +235,78 @@ var vertices = [
     vec4(  gap/2+(block_length+gap),               -block_height/2,    -block_width/2, 1.0 ),
     vec4(  gap/2+(block_length+gap),               block_height/2,     -block_width/2, 1.0 ),
     vec4(  gap/2+block_length+(block_length+gap),  block_height/2,     -block_width/2, 1.0 ),
+    vec4(  gap/2+block_length+(block_length+gap),  -block_height/2,    -block_width/2, 1.0 ),
+    // Cube 25
+    vec4( -gap/2-block_length-(block_length+gap),    -block_height/2,    block_width/2, 1.0 ),
+    vec4( -gap/2-block_length-(block_length+gap),    block_height/2,     block_width/2, 1.0 ),
+    vec4( -gap/2-(block_length+gap),                 block_height/2,     block_width/2, 1.0 ),
+    vec4( -gap/2-(block_length+gap),                 -block_height/2,    block_width/2, 1.0 ),
+    vec4( -gap/2-block_length-(block_length+gap),    -block_height/2,    -block_width/2, 1.0 ),
+    vec4( -gap/2-block_length-(block_length+gap),    block_height/2,     -block_width/2, 1.0 ),
+    vec4( -gap/2-(block_length+gap),                 block_height/2,     -block_width/2, 1.0 ),
+    vec4( -gap/2-(block_length+gap),                 -block_height/2,    -block_width/2, 1.0 ),
+    // Cube 26
+    vec4( -gap/2-block_length,   -block_height/2,    block_width/2, 1.0 ),
+    vec4( -gap/2-block_length,   block_height/2,     block_width/2, 1.0 ),
+    vec4( -gap/2,                block_height/2,     block_width/2, 1.0 ),
+    vec4( -gap/2,                -block_height/2,    block_width/2, 1.0 ),
+    vec4( -gap/2-block_length,   -block_height/2,    -block_width/2, 1.0 ),
+    vec4( -gap/2-block_length,   block_height/2,     -block_width/2, 1.0 ),
+    vec4( -gap/2,                block_height/2,     -block_width/2, 1.0 ),
+    vec4( -gap/2,                -block_height/2,    -block_width/2, 1.0 ),
+    // Cube 27
+    vec4(  gap/2,               -block_height/2,    block_width/2, 1.0 ),
+    vec4(  gap/2,               block_height/2,     block_width/2, 1.0 ),
+    vec4(  gap/2+block_length,  block_height/2,     block_width/2, 1.0 ),
+    vec4(  gap/2+block_length,  -block_height/2,    block_width/2, 1.0 ),
+    vec4(  gap/2,               -block_height/2,    -block_width/2, 1.0 ),
+    vec4(  gap/2,               block_height/2,     -block_width/2, 1.0 ),
+    vec4(  gap/2+block_length,  block_height/2,     -block_width/2, 1.0 ),
+    vec4(  gap/2+block_length,  -block_height/2,    -block_width/2, 1.0 ),
+    // Cube 28
+    vec4(  gap/2+(block_length+gap),               -block_height/2,    block_width/2, 1.0 ),
+    vec4(  gap/2+(block_length+gap),               block_height/2,     block_width/2, 1.0 ),
+    vec4(  gap/2+block_length+(block_length+gap),  block_height/2,     block_width/2, 1.0 ),
+    vec4(  gap/2+block_length+(block_length+gap),  -block_height/2,    block_width/2, 1.0 ),
+    vec4(  gap/2+(block_length+gap),               -block_height/2,    -block_width/2, 1.0 ),
+    vec4(  gap/2+(block_length+gap),               block_height/2,     -block_width/2, 1.0 ),
+    vec4(  gap/2+block_length+(block_length+gap),  block_height/2,     -block_width/2, 1.0 ),
+    vec4(  gap/2+block_length+(block_length+gap),  -block_height/2,    -block_width/2, 1.0 ),
+    // Cube 29
+    vec4( -gap/2-block_length-(block_length+gap),    -block_height/2,    block_width/2, 1.0 ),
+    vec4( -gap/2-block_length-(block_length+gap),    block_height/2,     block_width/2, 1.0 ),
+    vec4( -gap/2-(block_length+gap),                 block_height/2,     block_width/2, 1.0 ),
+    vec4( -gap/2-(block_length+gap),                 -block_height/2,    block_width/2, 1.0 ),
+    vec4( -gap/2-block_length-(block_length+gap),    -block_height/2,    -block_width/2, 1.0 ),
+    vec4( -gap/2-block_length-(block_length+gap),    block_height/2,     -block_width/2, 1.0 ),
+    vec4( -gap/2-(block_length+gap),                 block_height/2,     -block_width/2, 1.0 ),
+    vec4( -gap/2-(block_length+gap),                 -block_height/2,    -block_width/2, 1.0 ),
+    // Cube 30
+    vec4( -gap/2-block_length,   -block_height/2,    block_width/2, 1.0 ),
+    vec4( -gap/2-block_length,   block_height/2,     block_width/2, 1.0 ),
+    vec4( -gap/2,                block_height/2,     block_width/2, 1.0 ),
+    vec4( -gap/2,                -block_height/2,    block_width/2, 1.0 ),
+    vec4( -gap/2-block_length,   -block_height/2,    -block_width/2, 1.0 ),
+    vec4( -gap/2-block_length,   block_height/2,     -block_width/2, 1.0 ),
+    vec4( -gap/2,                block_height/2,     -block_width/2, 1.0 ),
+    vec4( -gap/2,                -block_height/2,    -block_width/2, 1.0 ),
+    // Cube 31
+    vec4(  gap/2,               -block_height/2,    block_width/2, 1.0 ),
+    vec4(  gap/2,               block_height/2,     block_width/2, 1.0 ),
+    vec4(  gap/2+block_length,  block_height/2,     block_width/2, 1.0 ),
+    vec4(  gap/2+block_length,  -block_height/2,    block_width/2, 1.0 ),
+    vec4(  gap/2,               -block_height/2,    -block_width/2, 1.0 ),
+    vec4(  gap/2,               block_height/2,     -block_width/2, 1.0 ),
+    vec4(  gap/2+block_length,  block_height/2,     -block_width/2, 1.0 ),
+    vec4(  gap/2+block_length,  -block_height/2,    -block_width/2, 1.0 ),
+    // Cube 32
+    vec4(  gap/2+(block_length+gap),               -block_height/2,    block_width/2, 1.0 ),
+    vec4(  gap/2+(block_length+gap),               block_height/2,     block_width/2, 1.0 ),
+    vec4(  gap/2+block_length+(block_length+gap),  block_height/2,     block_width/2, 1.0 ),
+    vec4(  gap/2+block_length+(block_length+gap),  -block_height/2,    block_width/2, 1.0 ),
+    vec4(  gap/2+(block_length+gap),               -block_height/2,    -block_width/2, 1.0 ),
+    vec4(  gap/2+(block_length+gap),               block_height/2,     -block_width/2, 1.0 ),
+    vec4(  gap/2+block_length+(block_length+gap),  block_height/2,     -block_width/2, 1.0 ),
     vec4(  gap/2+block_length+(block_length+gap),  -block_height/2,    -block_width/2, 1.0 )
 ];
 
@@ -347,15 +419,24 @@ var cubeTransIndex = [
     vec3(x_init, y_init, z_init),
     vec3(x_init, y_init, z_init),
     vec3(x_init, y_init, z_init),
+    vec3(x_init, y_init, z_init),
+
+    vec3(x_init, y_init, z_init),
+    vec3(x_init, y_init, z_init),
+    vec3(x_init, y_init, z_init),
+    vec3(x_init, y_init, z_init),
+    vec3(x_init, y_init, z_init),
+    vec3(x_init, y_init, z_init),
+    vec3(x_init, y_init, z_init),
     vec3(x_init, y_init, z_init)
 ];
 const dropSequence = [
-    4, 12, 5, 6, 14, 13, 20, 3, 2, 10, 11, 4, 12, 11, 17,
-    -1, 20, 4, 5, 6, 14, 13, 20, 3, 2, 10, 11, 4, 19, 18, 2
+    4, 12, 5, 6, 14, 13, 20, 3, 2, 10, 11, 4, 12, 17, 3,
+    -1, -1, 20, 28, 5, 6, 14, 13, 20, 3, 2, 10, 11, 4, 19, 18, 2
 ];
 /*const dropSequence = [
-    3, 7, 0, 0, 1, 5, 0, 6, 3, 5, 1, 4, 0, 3,
-    0, 0, 6, 6, 5, 5, 4, 0, 0, 6, 6, 5, 5, 4
+    3, 11, 0, 8, 1, 9, 16, 6, 14, 5, 13, 4, 12, 3,
+    0, 8, 6, 14, 5, 13, 4, 16, 24, 22, 30, 21, 29, 12
 ];*/
 /*const musicSequence = [
     "D", "D", "A", "A", "B", "B", "A", "G", "G", "Fs", "Fs", "E", "E", "D",
@@ -573,6 +654,16 @@ var renderSeq = [
     vec2(1, 1),
     vec2(2, 1),
     vec2(0, 0),
+    vec2(0, 1),
+
+    vec2(0, 0),
+    vec2(1, 0),
+    vec2(2, 0),
+    vec2(0, 1),
+
+    vec2(1, 1),
+    vec2(2, 1),
+    vec2(0, 0),
     vec2(0, 1)
 ];
 
@@ -686,8 +777,11 @@ function initCubePos(index) {
 var dropCounter = 0;
 var dropHeap = [];
 var indexCounter = 0;
+var noteCounter = 0;
 var lightIndex = 0;
 var cubeFlag = [
+    0, 0, 0, 0,
+    0, 0, 0, 0,
     0, 0, 0, 0,
     0, 0, 0, 0,
     0, 0, 0, 0,
@@ -708,9 +802,9 @@ function render()
     for(let k = 0; k<cubeFlag.length; k++) {
         if(cubeFlag[k] !== 0) {
             if (cubeTransIndex[k][2] > -30) {
-                cubeTransIndex[k][2] += 0.3;
+                cubeTransIndex[k][2] += 0.25;
             } else {
-                cubeTransIndex[k][2] += 0.3;
+                cubeTransIndex[k][2] += 0.25;
             }
             if (cubeTransIndex[k][2] > 0) {
                 cubeFlag[k] = 0;
@@ -741,8 +835,8 @@ function render()
             dropCounter = 0;
             if (dropSequence[indexCounter] !== -1) {
                 cubeFlag[dropSequence[indexCounter]] = 1;
-                dropHeap.push(indexCounter);
-                //console.log(dropHeap);
+                dropHeap.push(noteCounter);
+                noteCounter = noteCounter + 1;
             }
             indexCounter = (indexCounter + 1);// % 4;
         }
@@ -798,6 +892,12 @@ function hitCube(keyStroke) {
     } else if (0 > cubeTransIndex[cubeIndex+20][2] && cubeTransIndex[cubeIndex+20][2] > -5) {
         tempFlag = true;
         tempIndex = cubeIndex+20;
+    } else if (0 > cubeTransIndex[cubeIndex+24][2] && cubeTransIndex[cubeIndex+24][2] > -5) {
+        tempFlag = true;
+        tempIndex = cubeIndex+24;
+    } else if (0 > cubeTransIndex[cubeIndex+28][2] && cubeTransIndex[cubeIndex+28][2] > -5) {
+        tempFlag = true;
+        tempIndex = cubeIndex+28;
     }
 
     if (tempFlag) {
